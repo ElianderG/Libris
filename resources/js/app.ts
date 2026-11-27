@@ -1,5 +1,6 @@
 import { createInertiaApp } from '@inertiajs/vue3';
 import { initializeTheme } from '@/composables/useAppearance';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import StoreLayout from '@/layouts/StoreLayout.vue';
@@ -15,6 +16,8 @@ void createInertiaApp({
                 return [StoreLayout, AuthLayout];
             case name.startsWith('settings/'):
                 return [StoreLayout, SettingsLayout];
+            case name.startsWith('admin/'):
+                return AdminLayout;
             default:
                 return StoreLayout;
         }

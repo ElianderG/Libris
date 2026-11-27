@@ -380,3 +380,51 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: guardar o JPEG que o navegador já cortou e devolvê-lo pela aplicação, porque a produção não tem GD nem ffmpeg e o nginx não entrega `/storage` nem um `.jpg` ausente
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (7 testes). No PHP 8.6, sem GD, `GET /avatars/2` respondeu 200 com JPEG
 
+## 2026-11-27 — Ticket 27, casca do painel
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 27
+- Feito com auxílio: `Admin\HomeController`, `AdminLayout`, `admin/Home.vue` e `admin/Section.vue`
+- Finalidade: o administrador entrar em `/admin` num menu próprio e ver livros publicados, pedidos pagos, total vendido e comissões confirmadas
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou (11 testes). Zerado mostra 0 e R$ 0,00; dois pedidos pagos somam R$ 62,90 e o pendente de R$ 100,00 fica de fora; comissão `pending` não entra na contagem; cliente recebe 403 nas cinco rotas do menu
+
+## 2026-11-27 — Ticket 28, categorias e livros
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 28
+- Feito com auxílio: `Admin\CategoryController`, `Admin\BookController`, `BookRequest`, `BookCover` e as páginas `admin/categories` e `admin/books`
+- Finalidade: o administrador cadastrar categorias e livros, com preço em reais, capa em `public/covers` e bloqueio de exclusão quando o livro já foi comprado
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminCatalogTest` passou (9 testes). `37,90` e `37.90` viraram 3790; o título novo manteve o slug; livro comprado não foi apagado e, despublicado, saiu do catálogo e continuou na biblioteca; capa nova apagou a anterior; capa acima de 2 MB foi recusada; categoria com livro não foi apagada; cliente recebeu 403
+
+## 2026-11-27 — Ticket 29, pedidos e usuários
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 29
+- Feito com auxílio: `Admin\OrderController`, `Admin\UserController`, `admin/orders` e `admin/users/Index.vue`
+- Finalidade: o administrador filtrar pedidos, ver as tentativas de Pix e promover ou remover o acesso de outra conta
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (4 testes). O filtro de pendentes abriu o detalhe com as duas cobranças e o `gateway_id`; promover liberou `/admin` e remover fechou de novo; a própria conta recusou a alteração; cliente recebeu 403
+
+## 2026-11-27 — Ticket 30, vendas e afiliados
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 30
+- Feito com auxílio: `Admin\HomeController`, `Admin\AffiliateController`, `admin/Home.vue` e `admin/affiliates/Index.vue`
+- Finalidade: mostrar os cinco pedidos pagos mais recentes e, em afiliados, cliques, vendas pagas e comissão confirmada de quem indicou
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou (15 testes). A home trouxe os cinco pagos mais novos e deixou o pendente de fora; Ana apareceu com 2 cliques, 1 venda paga e R$ 3,79; Caio só com clique; Bruno e Davi ficaram de fora
+
+## 2026-11-27 — Menu lateral do painel
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: painel administrativo
+- Feito com auxílio: `AdminLayout.vue` e o CSS de `.admin-sheet`
+- Finalidade: tirar as áreas do cabeçalho e colocá-las numa coluna à esquerda; no celular, a lista ocupa a tela e o conteúdo abre com um botão Voltar
+- Revisão: Pendente de revisão do autor
+
+## 2026-11-27 — Ícones no menu da conta
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: menu da conta no cabeçalho
+- Feito com auxílio: `StoreAccountMenu.vue`
+- Finalidade: colocar um ícone antes de Painel, Minha conta, Compras, Indicar, Configurações e Sair
+- Revisão: Pendente de revisão do autor
+

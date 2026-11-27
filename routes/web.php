@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AffiliateController as AdminAffiliateController;
+use App\Http\Controllers\Admin\BookController as AdminBookController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\Settings\ProfileAvatarController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -10,6 +15,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\Settings\ProfileAvatarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/avatars/{avatar}', [ProfileAvatarController::class, 'show'])
@@ -52,7 +58,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::inertia('/admin', 'admin/Home')->name('admin.home');
+    Route::get('/admin', AdminHomeController::class)->name('admin.home');
+    Route::get('/admin/livros', [AdminBookController::class, 'index'])->name('admin.books');
+    Route::get('/admin/livros/novo', [AdminBookController::class, 'create'])->name('admin.books.create');
+    Route::post('/admin/livros', [AdminBookController::class, 'store'])->name('admin.books.store');
+    Route::get('/admin/livros/{product}/editar', [AdminBookController::class, 'edit'])->whereNumber('product')->name('admin.books.edit');
+    Route::put('/admin/livros/{product}', [AdminBookController::class, 'update'])->whereNumber('product')->name('admin.books.update');
+    Route::delete('/admin/livros/{product}', [AdminBookController::class, 'destroy'])->whereNumber('product')->name('admin.books.destroy');
+    Route::post('/admin/livros/{product}/despublicar', [AdminBookController::class, 'unpublish'])->whereNumber('product')->name('admin.books.unpublish');
+    Route::get('/admin/categorias', [AdminCategoryController::class, 'index'])->name('admin.categories');
+    Route::get('/admin/categorias/nova', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
+    Route::post('/admin/categorias', [AdminCategoryController::class, 'store'])->name('admin.categories.store');
+    Route::get('/admin/categorias/{category}/editar', [AdminCategoryController::class, 'edit'])->whereNumber('category')->name('admin.categories.edit');
+    Route::put('/admin/categorias/{category}', [AdminCategoryController::class, 'update'])->whereNumber('category')->name('admin.categories.update');
+    Route::delete('/admin/categorias/{category}', [AdminCategoryController::class, 'destroy'])->whereNumber('category')->name('admin.categories.destroy');
+    Route::get('/admin/pedidos', [AdminOrderController::class, 'index'])->name('admin.orders');
+    Route::get('/admin/pedidos/{order}', [AdminOrderController::class, 'show'])->whereNumber('order')->name('admin.orders.show');
+    Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.users');
+    Route::post('/admin/usuarios/{user}', [AdminUserController::class, 'update'])->whereNumber('user')->name('admin.users.update');
+    Route::get('/admin/afiliados', [AdminAffiliateController::class, 'index'])->name('admin.affiliates');
 });
 
 require __DIR__.'/settings.php';

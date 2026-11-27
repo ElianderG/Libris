@@ -24,7 +24,7 @@ class SettlePayment
         };
 
         if ($expected === null) {
-            throw new RuntimeException('Essa ação não existe.');
+            throw new RuntimeException('Não foi possível atualizar este pagamento.');
         }
 
         if ($payment->status !== Payment::STATUS_PENDING) {
@@ -38,7 +38,7 @@ class SettlePayment
         }
 
         if (! is_string($payment->gateway_id) || $payment->gateway_id === '') {
-            throw new RuntimeException('Essa tentativa ainda não tem cobrança no gateway.');
+            throw new RuntimeException('Não foi possível atualizar este pagamento.');
         }
 
         $latestId = Payment::query()
@@ -59,7 +59,7 @@ class SettlePayment
         $this->confirmPayment->confirm($payment, $result);
 
         if ($payment->fresh()?->status !== $expected) {
-            throw new RuntimeException('O gateway não confirmou essa ação.');
+            throw new RuntimeException('Não foi possível atualizar este pagamento.');
         }
     }
 }

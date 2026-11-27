@@ -468,6 +468,14 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o administrador aprova, recusa, cancela ou expira a tentativa pendente chamando a ação do sandbox e aplicando a resposta no pedido
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou (21 testes). Aprovar fechou o pedido; recusar, cancelar e expirar mudaram só a tentativa; valor divergente e HTTP 500 mantiveram pendente; cliente recebeu 403. `yarn types:check` passou
 
+## 2026-11-27 — Textos da interface
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: loja, checkout e painel de pedidos
+- Feito com auxílio: páginas Vue do pedido, do pagamento, da vitrine e do rodapé; `CheckoutController`, `PurchaseController`, `Admin\OrderController` e `SettlePayment`
+- Finalidade: tirar da tela explicações de sandbox, identificador e JSON da cobrança, e avisos de ambiente de teste
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou (33 testes). `yarn types:check` passou
+
 ## 2026-11-27 — Logo do painel
 
 - Ferramenta: Cursor, Grok 4.7

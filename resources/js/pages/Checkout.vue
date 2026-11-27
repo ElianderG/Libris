@@ -15,7 +15,6 @@ defineProps<{
         name: string;
         email: string;
     };
-    notice: string;
 }>();
 </script>
 
@@ -25,9 +24,6 @@ defineProps<{
     <section class="mx-auto max-w-2xl py-6">
         <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Checkout</p>
         <h1 class="mt-2 font-serif text-4xl text-foreground">Pagar com Pix</h1>
-        <p class="mt-3 rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground">
-            {{ notice }}
-        </p>
 
         <ul class="mt-8 divide-y divide-border">
             <li v-for="item in items" :key="item.slug" class="flex gap-4 py-5">
@@ -72,9 +68,7 @@ defineProps<{
             class="mt-8 space-y-4"
             v-slot="{ errors, processing }"
         >
-            <p class="text-sm text-foreground/80">
-                Confira o nome e o e-mail. A cobrança usa a conta em que você entrou.
-            </p>
+            <p class="text-sm text-foreground/80">Confira o nome e o e-mail.</p>
             <div class="grid gap-2">
                 <Label for="name">Nome</Label>
                 <Input id="name" name="name" :default-value="payer.name" autocomplete="name" required />

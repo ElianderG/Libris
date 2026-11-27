@@ -19,7 +19,7 @@ class ChargeOrder
         }
 
         if ($order->status !== Order::STATUS_PENDING_PAYMENT) {
-            throw new RuntimeException('Esse pedido não pode ser cobrado.');
+            throw new RuntimeException('Esse pedido não está aguardando pagamento.');
         }
 
         $payment = DB::transaction(function () use ($order): Payment {

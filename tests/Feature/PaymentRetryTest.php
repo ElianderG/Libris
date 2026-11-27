@@ -69,7 +69,7 @@ it('explica o pix recusado e abre outra tentativa no mesmo pedido', function () 
             ->has('attempts', 1)
             ->where('attempts.0.active', true)
             ->where('attempts.0.status', Payment::STATUS_FAILED)
-            ->where('attempts.0.gateway_id', 'payments_antigo'));
+            ->missing('attempts.0.gateway_id'));
 
     $this->actingAs($order->user)
         ->post(route('payments.store', $order))
@@ -84,10 +84,9 @@ it('explica o pix recusado e abre outra tentativa no mesmo pedido', function () 
             ->has('attempts', 2)
             ->where('attempts.0.active', true)
             ->where('attempts.0.status', Payment::STATUS_PENDING)
-            ->where('attempts.0.gateway_id', 'payments_novo')
             ->where('attempts.1.active', false)
             ->where('attempts.1.status', Payment::STATUS_FAILED)
-            ->where('attempts.1.gateway_id', 'payments_antigo'));
+            ->missing('attempts.0.gateway_id'));
 
     expect($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT)
         ->and(Payment::query()->where('order_id', $order->id)->count())->toBe(2);

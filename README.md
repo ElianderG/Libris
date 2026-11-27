@@ -136,7 +136,7 @@ Ao selecionar **Pagar com Pix**, o sistema cria um pedido com status `pending_pa
 O fluxo de pagamento contempla os seguintes cenários:
 
 - **Falha na criação da cobrança:** a tentativa recebe o status `failed`, mas o pedido permanece aguardando pagamento.
-- **Consulta de pagamento:** em `/pedidos/{order}/pagamento`, o proprietário do pedido pode visualizar o status em português, o valor, a data e o identificador do gateway.
+- **Consulta de pagamento:** em `/pedidos/{order}/pagamento`, o proprietário do pedido pode visualizar o status em português, o valor e a data. Quando a resposta traz um código Pix utilizável, a página mostra o copia e cola.
 - **Atualização do status:** o usuário pode solicitar uma nova consulta ao gateway. Caso ela falhe, o último status conhecido é preservado.
 - **Confirmação do pagamento:** quando a consulta ou a ação do painel retorna o status de pagamento confirmado e o valor recebido corresponde ao valor do pedido, ambos são atualizados para `paid`, garantindo que a confirmação ocorra uma única vez. Valor ausente na resposta da ação também confirma.
 - **Ação no painel:** na tentativa pendente mais recente, o administrador aprova, recusa, cancela ou expira. A aprovação fecha o pedido. As outras três deixam o pedido aguardando pagamento.
@@ -191,7 +191,7 @@ Em `/admin/categorias`, o administrador cadastra e edita o nome. A categoria nã
 
 A página inicial abre com atalhos para livros, categorias, pedidos, usuários e afiliados. Abaixo ficam os quatro números e os gráficos do Chart.js: vendas pagas dos últimos 14 dias, pedidos por status e livros publicados por categoria. Pedido antigo não entra no gráfico de vendas, e livro não publicado não entra no de categorias. Em seguida, a home lista os cinco pedidos pagos mais recentes. Em `/admin/afiliados`, cada linha é alguém que já teve clique ou comissão: código, cliques, pedidos pagos atribuídos e a soma das comissões confirmadas. Quem nunca indicou fica de fora. Não há saque nem alteração de percentual; o percentual segue o da configuração.
 
-Em `/admin/pedidos`, a lista filtra por status e abre o pedido com os itens e as tentativas de Pix. O administrador vê o identificador do gateway e o status. O JSON da cobrança fica num bloco recolhido. Na tentativa pendente mais recente há **Aprovar**, **Recusar**, **Cancelar** e **Expirar**, cada um com confirmação. A ação vai ao sandbox e a resposta atualiza o pedido. Tentativa antiga, pedido já pago e cliente não usam esses botões. A lista também abre só os pedidos de uma conta, a partir do menu de usuários. Em `/admin/usuarios`, cada conta tem um menu flutuante: ver pedidos, tornar ou remover administrador e apagar a conta. Promover, remover o acesso e apagar pedem confirmação. A própria conta não muda por essa tela. Conta com pedido ou comissão não é apagada, para o histórico da loja continuar. As duas listas são paginadas. Senha e token não aparecem.
+Em `/admin/pedidos`, a lista filtra por status e abre o pedido com os itens e o pagamento. O administrador vê o status e o valor. Na tentativa pendente mais recente há **Aprovar**, **Recusar**, **Cancelar** e **Expirar**, cada um com confirmação. A ação vai ao sandbox e a resposta atualiza o pedido. Tentativa antiga, pedido já pago e cliente não usam esses botões. A lista também abre só os pedidos de uma conta, a partir do menu de usuários. Em `/admin/usuarios`, cada conta tem um menu flutuante: ver pedidos, tornar ou remover administrador e apagar a conta. Promover, remover o acesso e apagar pedem confirmação. A própria conta não muda por essa tela. Conta com pedido ou comissão não é apagada, para o histórico da loja continuar. As duas listas são paginadas. Senha e token não aparecem.
 
 ### 10. Pendências e limitações
 
@@ -251,6 +251,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Usuários do painel: menu flutuante com pedidos, acesso de administrador e exclusão, sempre com confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
 - Logo do painel: abre a página inicial da loja. Revisão: pendente de revisão do autor. `yarn types:check` passou.
 - Painel: aprovar, recusar, cancelar e expirar o Pix pendente pela resposta do sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou. `yarn types:check` passou.
+- Textos da loja e do painel: saíram as explicações de sandbox, o identificador e o JSON da cobrança, e os avisos de ambiente de teste. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou. `yarn types:check` passou.
 
 ## Aplicação hospedada
 

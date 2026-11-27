@@ -37,7 +37,7 @@ defineProps<{
         <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Estante</p>
         <h1 class="mt-2 font-serif text-4xl text-foreground">Catálogo</h1>
         <p class="mt-3 max-w-xl text-base leading-7 text-foreground">
-            Livros publicados, com capa, autor e preço. A busca e os filtros ficam no endereço da página.
+            Livros publicados, com capa, autor e preço.
         </p>
 
         <form :action="catalog.url()" method="get" class="mt-6 grid gap-3 sm:grid-cols-[1fr_1.4fr_1fr_auto] sm:items-end">

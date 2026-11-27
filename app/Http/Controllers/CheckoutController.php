@@ -44,7 +44,6 @@ class CheckoutController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
             ],
-            'notice' => 'Pagamento de teste, sem dinheiro real.',
         ]);
     }
 
@@ -148,7 +147,6 @@ class CheckoutController extends Controller
         $latest = $payments->first();
 
         return Inertia::render('CheckoutPayment', [
-            'notice' => 'Pagamento de teste, sem dinheiro real.',
             'total' => Money::format($order->total_cents),
             'items' => $order->items->map(fn (OrderItem $item): array => [
                 'title' => $item->title,
@@ -161,7 +159,6 @@ class CheckoutController extends Controller
                 'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
                 'label' => $this->statusLabel($payment->status),
                 'status' => $payment->status,
-                'gateway_id' => $payment->gateway_id,
                 'active' => $index === 0,
             ])->all(),
             'orderId' => $order->id,
@@ -196,7 +193,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @return array{status: string, label: string, gateway_id: string|null, pix_code: string|null, simulated: bool, created_at: string|null}|null
+     * @return array{status: string, label: string, pix_code: string|null, created_at: string|null, can_refresh: bool}|null
      */
     private function paymentPayload(?Payment $payment): ?array
     {
@@ -206,15 +203,18 @@ class CheckoutController extends Controller
 
         $stored = $payment->raw_response;
         $pix = is_array($stored) ? ($stored['pix_code'] ?? null) : null;
-        $pixCode = is_string($pix) && $pix !== '' ? $pix : null;
+        $pixCode = is_string($pix) && $pix !== '' && ! str_starts_with($pix, 'SIMULATED_PIX_NOT_PAYABLE')
+            ? $pix
+            : null;
 
         return [
             'status' => $payment->status,
             'label' => $this->statusLabel($payment->status),
-            'gateway_id' => $payment->gateway_id,
             'pix_code' => $pixCode,
-            'simulated' => $pixCode === null || str_starts_with($pixCode, 'SIMULATED_PIX_NOT_PAYABLE'),
             'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
+            'can_refresh' => $payment->status === Payment::STATUS_PENDING
+                && is_string($payment->gateway_id)
+                && $payment->gateway_id !== '',
         ];
     }
 

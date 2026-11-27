@@ -63,9 +63,10 @@ it('consulta ao abrir e fecha o pedido quando o gateway responde pago', function
             ->component('CheckoutPayment')
             ->where('payment.status', Payment::STATUS_PAID)
             ->where('payment.label', 'Pago')
-            ->where('payment.gateway_id', 'payments_abc')
+            ->missing('payment.gateway_id')
+            ->missing('payment.simulated')
             ->where('payment.pix_code', '00020126580014br.gov.bcb.pix')
-            ->where('payment.simulated', false)
+            ->where('payment.can_refresh', false)
             ->where('total', 'R$ 37,90')
             ->where('payment.created_at', $order->payments()->first()->created_at->timezone(config('app.timezone'))->format('d/m/Y H:i')));
 
@@ -94,8 +95,9 @@ it('atualiza de novo pelo botão e não consulta no redirect', function () {
         ->assertOk()
         ->assertInertia(fn ($page) => $page
             ->where('payment.label', 'Pendente')
-            ->where('payment.simulated', true)
-            ->where('payment.pix_code', 'SIMULATED_PIX_NOT_PAYABLE_payments_abc'));
+            ->where('payment.pix_code', null)
+            ->where('payment.can_refresh', true)
+            ->missing('notice'));
 
     $this->actingAs($order->user)
         ->post(route('payments.refresh', $order))
@@ -149,7 +151,7 @@ it('mantém o último status quando a consulta falha', function () {
         ->assertInertia(fn ($page) => $page
             ->where('payment.status', Payment::STATUS_PENDING)
             ->where('payment.label', 'Pendente')
-            ->where('payment.pix_code', 'SIMULATED_PIX_NOT_PAYABLE_payments_abc'));
+            ->where('payment.pix_code', null));
 
     expect($order->payments()->first()->status)->toBe(Payment::STATUS_PENDING)
         ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);

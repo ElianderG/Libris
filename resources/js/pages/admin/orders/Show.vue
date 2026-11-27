@@ -23,8 +23,6 @@ defineProps<{
             status: string;
             label: string;
             amount: string;
-            gateway_id: string | null;
-            raw: string | null;
             settle_url: string | null;
             actions: Array<{
                 name: string;
@@ -101,10 +99,7 @@ const statusClass: Record<string, string> = {
         </ul>
         <p class="mt-6 text-lg font-medium text-foreground">Total {{ order.total }}</p>
 
-        <h2 class="mt-10 font-serif text-2xl text-foreground">Tentativas de Pix</h2>
-        <p class="mt-2 text-sm leading-6 text-foreground/80">
-            O sandbox não guarda o status. Na tentativa pendente, a ação pede a simulação ao gateway e aplica a resposta neste pedido.
-        </p>
+        <h2 class="mt-10 font-serif text-2xl text-foreground">Pagamento</h2>
         <p v-if="order.payments.length === 0" class="mt-3 text-sm text-foreground">
             Nenhuma cobrança foi registrada.
         </p>
@@ -113,7 +108,6 @@ const statusClass: Record<string, string> = {
                 <p :class="statusClass[payment.status] ?? 'text-foreground'">{{ payment.label }}</p>
                 <p v-if="payment.created_at" class="mt-1">{{ payment.created_at }}</p>
                 <p class="mt-1">{{ payment.amount }}</p>
-                <p v-if="payment.gateway_id" class="mt-1">Cobrança {{ payment.gateway_id }}</p>
                 <div v-if="payment.settle_url && payment.actions.length > 0" class="mt-3 flex flex-wrap gap-2">
                     <button
                         v-for="action in payment.actions"
@@ -131,10 +125,6 @@ const statusClass: Record<string, string> = {
                         {{ action.label }}
                     </button>
                 </div>
-                <details v-if="payment.raw" class="mt-3">
-                    <summary class="cursor-pointer text-foreground/80">Dados do gateway</summary>
-                    <pre class="mt-2 overflow-x-auto rounded-md border border-border bg-card p-3 text-xs leading-5">{{ payment.raw }}</pre>
-                </details>
             </li>
         </ul>
     </section>

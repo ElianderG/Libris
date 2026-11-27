@@ -80,7 +80,6 @@ class PurchaseController extends Controller
                     'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
                     'status' => $payment->status,
                     'label' => $this->paymentLabel($payment->status),
-                    'gateway_id' => $payment->gateway_id,
                 ]),
             ],
         ]);

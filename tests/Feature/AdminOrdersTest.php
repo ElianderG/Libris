@@ -79,7 +79,6 @@ it('filtra pedidos pendentes e abre as tentativas sem marcar pago', function () 
         ->assertInertia(fn ($page) => $page
             ->component('admin/orders/Show')
             ->has('order.payments', 2)
-            ->where('order.payments.0.gateway_id', 'pay_nova')
             ->where('order.payments.0.label', 'Pendente')
             ->where('order.payments.0.actions', [
                 ['name' => 'approve', 'label' => 'Aprovar'],
@@ -88,11 +87,9 @@ it('filtra pedidos pendentes e abre as tentativas sem marcar pago', function () 
                 ['name' => 'expire', 'label' => 'Expirar'],
             ])
             ->where('order.payments.1.actions', [])
-            ->where('order.payments.1.gateway_id', 'pay_antiga')
-            ->where('order.items.0.title', 'Notas da tarde')
-            ->where('order.payments.0.raw', fn (string $raw): bool => str_contains($raw, 'pay_nova')
-                && str_contains($raw, '"request"')
-                && str_contains($raw, '"response"')));
+            ->missing('order.payments.0.gateway_id')
+            ->missing('order.payments.0.raw')
+            ->where('order.items.0.title', 'Notas da tarde'));
 });
 
 it('pagina pedidos e usuários', function () {
@@ -323,7 +320,7 @@ it('não aprova quando o valor do sandbox diverge e mantém a tentativa se o gat
     $this->actingAs($admin)
         ->from(route('admin.orders.show', $order))
         ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'approve'])
-        ->assertSessionHas('error', 'O gateway não confirmou essa ação.');
+        ->assertSessionHas('error', 'Não foi possível atualizar este pagamento.');
 
     expect($payment->fresh()->status)->toBe(Payment::STATUS_PENDING)
         ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
@@ -341,5 +338,5 @@ it('não aprova quando o valor do sandbox diverge e mantém a tentativa se o gat
 
     $this->actingAs($admin)
         ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'refund'])
-        ->assertSessionHas('error', 'Essa ação não existe.');
+        ->assertSessionHas('error', 'Não foi possível atualizar este pagamento.');
 });

@@ -21,7 +21,7 @@ defineProps<{
         </span>
         <h1 class="mt-5 font-serif text-4xl text-foreground">Sua sacola está vazia</h1>
         <p class="mt-3 text-base leading-7 text-foreground">
-            Os livros que você separar aparecem aqui, com o preço daquele momento, antes do Pix.
+            Os livros que você separar aparecem aqui.
         </p>
         <Link
             :href="catalog()"

@@ -90,8 +90,6 @@ class OrderController extends Controller
                         'status' => $payment->status,
                         'label' => $this->paymentLabel($payment->status),
                         'amount' => Money::format($payment->amount_cents),
-                        'gateway_id' => $payment->gateway_id,
-                        'raw' => $this->rawBlock($payment),
                         'settle_url' => $actions === [] ? null : route('admin.orders.settle', [$order, $payment]),
                         'actions' => $actions,
                     ];
@@ -142,20 +140,6 @@ class OrderController extends Controller
             ['name' => 'cancel', 'label' => 'Cancelar'],
             ['name' => 'expire', 'label' => 'Expirar'],
         ];
-    }
-
-    private function rawBlock(Payment $payment): ?string
-    {
-        if ($payment->raw_request === null && $payment->raw_response === null) {
-            return null;
-        }
-
-        $json = json_encode(
-            ['request' => $payment->raw_request, 'response' => $payment->raw_response],
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
-        );
-
-        return is_string($json) ? $json : null;
     }
 
     private function orderLabel(string $status): string

@@ -48,8 +48,8 @@ it('mostra o preço da compra e as tentativas, sem o json do gateway', function 
             ->where('order.items.0.read_url', null)
             ->where('order.total', 'R$ 37,90')
             ->has('order.payments', 2)
-            ->where('order.payments.0.gateway_id', 'payments_nova')
-            ->where('order.payments.1.gateway_id', 'payments_antiga')
+            ->where('order.payments.0.label', 'Pendente')
+            ->missing('order.payments.0.gateway_id')
             ->missing('order.payments.0.raw_response')
             ->missing('order.payments.0.raw_request'));
 });

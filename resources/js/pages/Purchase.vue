@@ -18,7 +18,6 @@ defineProps<{
             created_at: string | null;
             status: string;
             label: string;
-            gateway_id: string | null;
         }>;
     };
 }>();
@@ -64,7 +63,7 @@ const statusClass: Record<string, string> = {
         </ul>
         <p class="mt-6 text-lg font-medium text-foreground">Total {{ order.total }}</p>
 
-        <h2 class="mt-10 font-serif text-2xl text-foreground">Tentativas de Pix</h2>
+        <h2 class="mt-10 font-serif text-2xl text-foreground">Pagamento</h2>
         <p v-if="order.payments.length === 0" class="mt-3 text-sm text-foreground">
             Nenhuma cobrança foi registrada.
         </p>
@@ -72,7 +71,6 @@ const statusClass: Record<string, string> = {
             <li v-for="(payment, index) in order.payments" :key="index" class="py-4 text-sm text-foreground">
                 <p :class="statusClass[payment.status] ?? 'text-foreground'">{{ payment.label }}</p>
                 <p v-if="payment.created_at" class="mt-1">{{ payment.created_at }}</p>
-                <p v-if="payment.gateway_id" class="mt-1">Cobrança {{ payment.gateway_id }}</p>
             </li>
         </ul>
     </section>

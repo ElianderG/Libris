@@ -11,7 +11,7 @@ const page = usePage();
             <div>
                 <p class="font-serif text-2xl text-foreground">Libris <span class="italic">te liberant</span></p>
                 <p class="mt-2 max-w-xs text-sm leading-6 text-foreground">
-                    Livros digitais para ler na própria plataforma, com pagamento Pix em ambiente de testes.
+                    Livros digitais para ler na própria plataforma, com pagamento Pix.
                 </p>
             </div>
             <div>
@@ -38,7 +38,7 @@ const page = usePage();
         </div>
         <div class="border-t border-border">
             <p class="mx-auto max-w-6xl px-4 py-4 text-xs text-foreground">
-                Libris te liberant · sem movimentação de dinheiro real
+                Libris te liberant
             </p>
         </div>
     </footer>

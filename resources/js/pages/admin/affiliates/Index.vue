@@ -19,7 +19,7 @@ defineProps<{
         <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Administração</p>
         <h1 class="mt-2 font-serif text-4xl text-foreground">Afiliados</h1>
         <p class="mt-3 max-w-xl text-base leading-7 text-foreground">
-            Quem já teve clique ou comissão. O percentual continua o mesmo para todo mundo.
+            Quem já teve clique ou comissão.
         </p>
 
         <p v-if="affiliates.length === 0" class="mt-8 text-base leading-7 text-foreground">

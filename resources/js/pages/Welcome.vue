@@ -80,7 +80,7 @@ defineProps<{
         <article class="rounded-2xl border border-border bg-card p-5">
             <p class="font-serif text-2xl text-primary">02</p>
             <h3 class="mt-3 font-medium text-foreground">Compre com facilidade</h3>
-            <p class="mt-2 text-sm leading-6 text-foreground">Finalize sua compra utilizando Pix, com praticidade e segurança. O pagamento atual está disponível em ambiente de testes.</p>
+            <p class="mt-2 text-sm leading-6 text-foreground">Finalize sua compra utilizando Pix, com praticidade e segurança.</p>
         </article>
         <article class="rounded-2xl border border-border bg-card p-5">
             <p class="font-serif text-2xl text-primary">03</p>

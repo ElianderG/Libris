@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import CheckoutController from '@/actions/App/Http/Controllers/CheckoutController';
 
 const props = defineProps<{
-    notice: string;
     total: string;
     items: Array<{
         title: string;
@@ -13,10 +12,9 @@ const props = defineProps<{
     payment: {
         status: string;
         label: string;
-        gateway_id: string | null;
         pix_code: string | null;
-        simulated: boolean;
         created_at: string | null;
+        can_refresh: boolean;
     } | null;
     explanation: string | null;
     canRetry: boolean;
@@ -24,7 +22,6 @@ const props = defineProps<{
         created_at: string | null;
         label: string;
         status: string;
-        gateway_id: string | null;
         active: boolean;
     }>;
     orderId: number;
@@ -58,9 +55,6 @@ async function copyPix(): Promise<void> {
     <section class="mx-auto max-w-2xl py-6">
         <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Pedido</p>
         <h1 class="mt-2 font-serif text-4xl text-foreground">Pagamento</h1>
-        <p class="mt-3 rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground">
-            {{ notice }}
-        </p>
 
         <div v-if="payment" class="mt-6 space-y-2 text-sm text-foreground">
             <p :class="statusClass[payment.status] ?? 'text-foreground'">
@@ -68,7 +62,6 @@ async function copyPix(): Promise<void> {
             </p>
             <p>Valor {{ total }}</p>
             <p v-if="payment.created_at">{{ payment.created_at }}</p>
-            <p v-if="payment.gateway_id">Cobrança {{ payment.gateway_id }}</p>
         </div>
 
         <div v-if="payment?.pix_code" class="mt-4 rounded-lg border border-border bg-card px-4 py-3">
@@ -79,9 +72,6 @@ async function copyPix(): Promise<void> {
             </button>
         </div>
 
-        <p v-if="payment?.simulated" class="mt-3 text-sm text-foreground">
-            A cobrança é simulada e não pode ser paga.
-        </p>
         <p v-if="explanation" class="mt-3 text-sm text-foreground">
             {{ explanation }}
         </p>
@@ -92,7 +82,6 @@ async function copyPix(): Promise<void> {
                     {{ attempt.active ? 'Ativa' : 'Encerrada' }} · {{ attempt.label }}
                 </p>
                 <p v-if="attempt.created_at" class="mt-1">{{ attempt.created_at }}</p>
-                <p v-if="attempt.gateway_id" class="mt-1">Cobrança {{ attempt.gateway_id }}</p>
             </li>
         </ul>
 
@@ -104,7 +93,7 @@ async function copyPix(): Promise<void> {
         </ul>
 
         <Form
-            v-if="payment?.status === 'pending' && payment.gateway_id"
+            v-if="payment?.can_refresh"
             v-bind="CheckoutController.refresh.form(orderId)"
             class="mt-6"
             v-slot="{ processing }"

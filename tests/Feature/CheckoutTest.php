@@ -33,7 +33,7 @@ it('devolve o visitante ao checkout com a mesma sacola', function () {
             ->component('Checkout')
             ->where('items.0.title', 'A janela do terceiro andar')
             ->where('total', 'R$ 37,90')
-            ->where('notice', 'Pagamento de teste, sem dinheiro real.')
+            ->missing('notice')
             ->where('payer.email', $user->email));
 });
 

@@ -84,6 +84,63 @@ it('cria um pedido pending_payment e recusa o segundo envio imediato', function 
     expect(Order::query()->count())->toBe(1);
 });
 
+it('remove um livro no checkout e esvazia a sacola', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'o-mapa-que-cabia-no-bolso']);
+
+    $this->actingAs($user)
+        ->from(route('checkout'))
+        ->post('/carrinho/o-mapa-que-cabia-no-bolso?_method=DELETE')
+        ->assertRedirect(route('checkout'))
+        ->assertSessionHas('success', 'Livro removido da sacola.');
+
+    $this->actingAs($user)
+        ->get(route('checkout'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('Checkout')
+            ->has('items', 1)
+            ->where('items.0.slug', 'a-janela-do-terceiro-andar')
+            ->where('total', 'R$ 37,90'));
+
+    $this->actingAs($user)
+        ->post('/carrinho?_method=DELETE')
+        ->assertRedirect(route('cart'))
+        ->assertSessionHas('success', 'Sacola esvaziada.');
+
+    $this->actingAs($user)
+        ->get(route('cart'))
+        ->assertInertia(fn ($page) => $page->has('items', 0));
+
+    $this->actingAs($user)
+        ->get(route('checkout'))
+        ->assertRedirect(route('cart'));
+});
+
+it('remover o único livro no checkout volta para a sacola vazia', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
+
+    $this->actingAs($user)
+        ->from(route('checkout'))
+        ->post('/carrinho/a-janela-do-terceiro-andar?_method=DELETE')
+        ->assertRedirect(route('checkout'));
+
+    $this->actingAs($user)
+        ->get(route('checkout'))
+        ->assertRedirect(route('cart'));
+
+    $this->actingAs($user)
+        ->get(route('cart'))
+        ->assertInertia(fn ($page) => $page->has('items', 0));
+});
+
 it('não grava pedido quando o nome está vazio', function () {
     $user = User::factory()->create();
 

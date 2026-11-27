@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
+import CartController from '@/actions/App/Http/Controllers/CartController';
 import CheckoutController from '@/actions/App/Http/Controllers/CheckoutController';
 import InputError from '@/components/InputError.vue';
 import CoverSlot from '@/components/store/CoverSlot.vue';
@@ -40,11 +41,31 @@ defineProps<{
                 <div class="min-w-0 flex-1">
                     <h2 class="font-serif text-xl leading-snug break-words text-foreground">{{ item.title }}</h2>
                     <p class="mt-1 text-sm break-words text-foreground/80">{{ item.author }}</p>
+                    <Form v-bind="CartController.destroy.form(item.slug)" v-slot="{ processing }">
+                        <button
+                            type="submit"
+                            :disabled="processing"
+                            class="mt-2 text-sm text-foreground/80 underline-offset-4 hover:text-red-700 hover:underline disabled:opacity-60"
+                        >
+                            Remover
+                        </button>
+                    </Form>
                 </div>
                 <p class="text-sm font-medium text-foreground">{{ item.price }}</p>
             </li>
         </ul>
-        <p class="mt-6 text-lg font-medium text-foreground">Total {{ total }}</p>
+        <div class="mt-6 flex items-center justify-between gap-4">
+            <p class="text-lg font-medium text-foreground">Total {{ total }}</p>
+            <Form v-bind="CartController.clear.form()" v-slot="{ processing }">
+                <button
+                    type="submit"
+                    :disabled="processing"
+                    class="text-sm text-foreground/80 underline-offset-4 hover:text-red-700 hover:underline disabled:opacity-60"
+                >
+                    Esvaziar sacola
+                </button>
+            </Form>
+        </div>
 
         <Form
             v-bind="CheckoutController.store.form()"

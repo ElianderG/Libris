@@ -28,6 +28,7 @@ Route::get('/livros/{slug}', BookController::class)
     ->name('books.show');
 Route::get('/carrinho', [CartController::class, 'show'])->name('cart');
 Route::post('/carrinho', [CartController::class, 'store'])->name('cart.store');
+Route::delete('/carrinho', [CartController::class, 'clear'])->name('cart.clear');
 Route::delete('/carrinho/{slug}', [CartController::class, 'destroy'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('cart.destroy');

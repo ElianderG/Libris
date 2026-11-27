@@ -43,6 +43,13 @@ class CartController extends Controller
     {
         $cart->remove($slug);
 
-        return redirect()->route('cart');
+        return back(fallback: route('cart'))->with('success', 'Livro removido da sacola.');
+    }
+
+    public function clear(Cart $cart): RedirectResponse
+    {
+        $cart->clear();
+
+        return redirect()->route('cart')->with('success', 'Sacola esvaziada.');
     }
 }

@@ -32,7 +32,18 @@ defineProps<{
     </section>
 
     <section v-else class="mx-auto max-w-2xl py-6">
-        <h1 class="font-serif text-4xl text-foreground">Sacola</h1>
+        <div class="flex items-end justify-between gap-4">
+            <h1 class="font-serif text-4xl text-foreground">Sacola</h1>
+            <Form v-bind="CartController.clear.form()" v-slot="{ processing }">
+                <button
+                    type="submit"
+                    :disabled="processing"
+                    class="text-sm text-foreground/80 underline-offset-4 hover:text-red-700 hover:underline disabled:opacity-60"
+                >
+                    Esvaziar sacola
+                </button>
+            </Form>
+        </div>
         <ul class="mt-8 divide-y divide-border">
             <li v-for="item in items" :key="item.slug" class="flex gap-4 py-5">
                 <img

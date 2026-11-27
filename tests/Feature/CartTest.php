@@ -54,8 +54,10 @@ it('remove um livro e acompanha o preço vivo do banco', function () {
     $this->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
     $this->post(route('cart.store'), ['slug' => 'o-mapa-que-cabia-no-bolso']);
 
-    $this->delete(route('cart.destroy', 'o-mapa-que-cabia-no-bolso'))
-        ->assertRedirect(route('cart'));
+    $this->from(route('cart'))
+        ->delete(route('cart.destroy', 'o-mapa-que-cabia-no-bolso'))
+        ->assertRedirect(route('cart'))
+        ->assertSessionHas('success');
 
     $this->get(route('cart'))
         ->assertInertia(fn ($page) => $page

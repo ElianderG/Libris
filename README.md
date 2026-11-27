@@ -76,12 +76,12 @@ Cada livro publicado possui uma página individual em `/livros/{slug}`, que apre
 
 ### 2. Sacola de compras e checkout
 
-A sacola é armazenada na sessão do usuário e permite adicionar livros publicados, sem duplicar títulos. O valor total é calculado com base nos preços atuais registrados no banco de dados.
+A sacola é armazenada na sessão do usuário e permite adicionar livros publicados, sem duplicar títulos. Na sacola e no checkout dá para remover um livro ou esvaziar tudo. O valor total é calculado com base nos preços atuais registrados no banco de dados.
 
 Na página de cada livro, estão disponíveis duas ações:
 
 - **Adicionar à sacola:** adiciona o livro à sacola e mantém o usuário na página atual.
-- **Comprar agora:** adiciona o livro à sacola e redireciona diretamente para o checkout.
+- **Comprar agora:** adiciona o livro à sacola e abre o checkout, onde cada livro pode ser removido antes do Pix.
 
 Ao confirmar a sacola:
 - Usuários autenticados são direcionados ao checkout.
@@ -246,6 +246,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
 - Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: pendente de revisão do autor.
 - Ticket 37: cliente HTTP da Pagsmile, com criação e consulta de Pix no sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou.
+- Checkout: **Comprar agora** passa a remover um livro ou esvaziar a sacola antes do Pix. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou.
 
 ## Aplicação hospedada
 

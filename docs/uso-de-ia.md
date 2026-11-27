@@ -444,3 +444,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: criar e consultar Pix no sandbox da Pagsmile, com valor em texto, Basic auth e status traduzido, sem vazar a security_key nem o CPF
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou (9 testes). Criação, consulta, timeout, HTTP 400, code diferente de 10000, credencial vazia, valor fora da faixa e status desconhecido foram cobertos com `Http::fake`; a chave e o CPF não apareceram na exceção nem no log
 
+## 2026-11-27 — Remover no checkout
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: sacola e checkout
+- Feito com auxílio: `Checkout.vue`, `Cart.vue` e `CartController`
+- Finalidade: quem entra por **Comprar agora** consegue remover um livro ou esvaziar a sacola antes do Pix
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou (11 testes). Remover no checkout deixou o outro livro e o total em `R$ 37,90`; remover o único livro e esvaziar levaram à sacola vazia
+

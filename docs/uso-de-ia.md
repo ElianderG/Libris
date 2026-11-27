@@ -180,3 +180,67 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: abrir o livro publicado pela slug, com capa ou fallback, e enviar só os dois primeiros parágrafos
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=BookPageTest` passou. O livro do seed abre a `R$ 37,90`; a resposta não traz o terceiro parágrafo; slug inválida e o livro oculto respondem 404
 
+## 2026-11-27 — Ticket 11, sacola
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 11
+- Feito com auxílio: `Cart`, `CartController`, a página da sacola e o botão em `Book.vue`
+- Finalidade: guardar livros publicados na sessão, sem repetir título, e mostrar o total com o preço atual do banco
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CartTest` passou. Dois livros somam `R$ 62,90`; o mesmo título não duplica; o não publicado não entra; mudar o preço no banco muda o total
+
+## 2026-11-27 — Ticket 12, pedido
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 12
+- Feito com auxílio: migrations de `orders` e `order_items`, models e `PlaceOrder`
+- Finalidade: gravar a sacola autenticada como pedido `pending_payment`, com título e preço copiados, e esvaziar a sessão só depois do commit
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PlaceOrderTest` passou. O total ficou `6290` depois de o livro mudar para `1000`; sacola vazia e falha no meio não deixaram pedido
+
+## 2026-11-27 — Ticket 13, checkout
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 13
+- Feito com auxílio: página de checkout, volta do login para a URL pretendida e a trava de pedido repetido em `PlaceOrder`
+- Finalidade: quem tem conta e sacola rever o total, confirmar nome e e-mail e gravar um único pedido de teste
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CheckoutTest` passou. O visitante voltou ao checkout com o mesmo livro; o segundo envio não criou outro pedido; nome vazio não gravou pedido
+
+## 2026-11-27 — Ticket 14, cliente do gateway
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 14
+- Feito com auxílio: `JuntosSeFazClient`, `GatewayException` e `GatewayPayment`
+- Finalidade: concentrar a chamada HTTP do Juntos Se Faz, com timeout, status traduzido e o valor em reais num método só, sem vazar o token
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou. Criação, consulta, timeout, HTTP 422 e status desconhecido foram cobertos com `Http::fake`; o token não apareceu na exceção nem no log
+
+## 2026-11-27 — Cliente alinhado à documentação do gateway
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 14
+- Feito com auxílio: `JuntosSeFazClient`, `GatewayPayment` e `.env.example`
+- Finalidade: seguir a referência oficial em `https://www.juntosefaz.com.br/gateway/docs`: base `/gateway/api/v1`, `POST /payments` com `amount` numérico em reais, `reference` e `pix_code`, e status `approved`/`declined` traduzidos
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou de novo, agora contra `POST /payments`, `amount` 49.9 e status `approved` traduzido para `paid`
+
+## 2026-11-27 — Ticket 15, cobrança Pix
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 15
+- Feito com auxílio: migration `payments`, `ChargeOrder` e a página do pedido depois do checkout
+- Finalidade: gravar a tentativa de Pix com o total do pedido, cancelar a pendência anterior e marcar `failed` se o gateway não responder
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ChargeOrderTest` passou. Sucesso preenche `gateway_id`; falha mantém o pedido pendente; a segunda chamada abre outra linha; pedido alheio ou pago é recusado
+
+## 2026-11-27 — Ticket 16, status do Pix
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 16
+- Feito com auxílio: `RefreshPayment`, a rota `/pedidos/{order}/pagamento` e `CheckoutPayment.vue`
+- Finalidade: consultar o gateway ao abrir e no botão, mostrar o status em português e manter o último status se a rede falhar
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PaymentStatusTest` passou. A consulta paga não fecha o pedido; o botão consulta de novo e o redirect seguinte não consulta; outra conta recebe 404; timeout mantém o status pendente
+
+## 2026-11-27 — Ticket 17, nova tentativa de Pix
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 17
+- Feito com auxílio: `CheckoutController`, `CheckoutPayment.vue` e `PaymentRetryTest`
+- Finalidade: explicar Pix recusado, encerrado ou expirado, gerar outra cobrança no mesmo pedido e listar as tentativas sem apagar as antigas
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PaymentRetryTest` passou. O Pix recusado abre outra linha e o histórico marca a nova como ativa; pedido pago não mostra o botão e o POST não cria pagamento; encerrado e expirado mostram a frase correspondente
+

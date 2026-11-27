@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +12,19 @@ Route::get('/catalogo', CatalogController::class)->name('catalog');
 Route::get('/livros/{slug}', BookController::class)
     ->where('slug', '[a-z0-9\-]+')
     ->name('books.show');
-Route::inertia('/carrinho', 'Cart')->name('cart');
+Route::get('/carrinho', [CartController::class, 'show'])->name('cart');
+Route::post('/carrinho', [CartController::class, 'store'])->name('cart.store');
+Route::delete('/carrinho/{slug}', [CartController::class, 'destroy'])
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('cart.destroy');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/pedidos/{order}/pagamento', [CheckoutController::class, 'payment'])->name('payments.show');
+    Route::post('/pedidos/{order}/pagamento', [CheckoutController::class, 'refresh'])->name('payments.refresh');
+    Route::post('/checkout/pedidos/{order}/pagamento', [CheckoutController::class, 'retry'])->name('payments.store');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('/biblioteca', 'Library')->name('library');

@@ -13,7 +13,7 @@ Leia a documentação oficial do Juntos Se Faz antes de fixar URL, nomes de camp
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (Payments como tentativa de liquidação).
 **Menções na documentação:** `Desafio Técnico`, seção 3 (gateway Juntos Se Faz, sandbox) e seção 4 (integração, tratamento de erros e exceções).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 03.
 
@@ -42,7 +42,7 @@ Leia a documentação oficial do Juntos Se Faz antes de fixar URL, nomes de camp
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (checkout Pix) e seção 3 (um pedido, várias tentativas).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (criação de pagamentos, persistência e validação).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 13, Ticket 14.
 
@@ -73,7 +73,7 @@ Leia a documentação oficial do Juntos Se Faz antes de fixar URL, nomes de camp
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (status dos pagamentos e detalhes da transação).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (exibição do status, consulta de pagamentos, feedback visual e tratamento de erros).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 15.
 
@@ -103,7 +103,7 @@ Leia a documentação oficial do Juntos Se Faz antes de fixar URL, nomes de camp
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (várias tentativas sem inconsistência).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (tratamento de erros e feedback visual) e seção 7 (segurança e validação, 10%).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 16.
 

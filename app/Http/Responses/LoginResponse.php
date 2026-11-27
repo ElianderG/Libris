@@ -13,6 +13,10 @@ class LoginResponse implements LoginResponseContract
      */
     public function toResponse($request): Response
     {
+        if ($request->session()->has('url.intended')) {
+            return redirect()->intended(route('library'));
+        }
+
         if ($request->user()?->is_admin) {
             return redirect()->route('admin.home');
         }

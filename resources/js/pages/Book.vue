@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Form, Head } from '@inertiajs/vue3';
+import CartController from '@/actions/App/Http/Controllers/CartController';
 import CoverSlot from '@/components/store/CoverSlot.vue';
 import type { CatalogBook } from '@/components/store/BookCard.vue';
 
@@ -30,14 +31,15 @@ defineProps<{
                 <p class="mt-3 text-base break-words text-foreground">{{ book.author }}</p>
                 <p class="mt-4 text-lg font-medium text-foreground">{{ book.price }}</p>
                 <p class="mt-4 max-w-xl text-base leading-7 break-words text-foreground">{{ book.description }}</p>
-                <button
-                    type="button"
-                    disabled
-                    class="mt-6 inline-flex h-11 cursor-not-allowed items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground opacity-60"
-                >
-                    Adicionar à biblioteca
-                </button>
-                <p class="mt-2 text-sm text-foreground/80">A sacola abre no próximo passo.</p>
+                <Form v-bind="CartController.store.form()" class="mt-6">
+                    <input type="hidden" name="slug" :value="book.slug" />
+                    <button
+                        type="submit"
+                        class="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground"
+                    >
+                        Adicionar à biblioteca
+                    </button>
+                </Form>
             </div>
         </div>
 

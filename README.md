@@ -45,15 +45,15 @@ A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8.
 
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Juntos Se Faz e o afiliado. `JUNTOS_SE_FAZ_BASE_URL`, `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios até a documentação oficial do gateway. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
+Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Juntos Se Faz e o afiliado. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
 
 ## Gateway
 
-Juntos Se Faz, em sandbox. A integração ainda não foi implementada.
+Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/v1`. O checkout chama `POST /payments` com o total do pedido em reais. Enquanto a cobrança está pendente, a página do pedido consulta `GET /payments/{id}`. O sandbox devolve o id pedido e não guarda a cobrança. O token continua só no `.env`.
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto e não entra na vitrine. Checkout, biblioteca e API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. A sacola fica na sessão: dá para juntar livros publicados, sem repetir o mesmo título, e o total usa o preço atual do banco. Confirmar essa sacola, com a conta autenticada, abre o checkout. Quem ainda não entrou vai ao login e volta com os mesmos livros. **Pagar com Pix** grava um pedido `pending_payment` e uma tentativa de cobrança. Se o gateway falha, o pagamento fica `failed` e o pedido continua pendente. Em `/pedidos/{order}/pagamento`, o dono vê o status em português, o valor, a data e o id do gateway, e pode atualizar a consulta. Se a consulta falha, o último status permanece. O pedido só fecha como pago no passo seguinte. Se a última tentativa foi recusada, encerrada ou expirada e o pedido ainda espera pagamento, a página explica o que houve e oferece **Gerar novo Pix**. O histórico lista as tentativas, da mais nova para a mais antiga. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto e não entra na vitrine. A biblioteca e a API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -74,6 +74,13 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: revisado pelo autor.
 - Ticket 09: vitrine com destaques e catálogo filtrado na URL. Revisão: pendente de revisão do autor.
 - Ticket 10: página do livro em `/livros/{slug}`, com prévia cortada no servidor. Revisão: pendente de revisão do autor.
+- Ticket 11: sacola na sessão, com total lido do banco. Revisão: pendente de revisão do autor.
+- Ticket 12: pedido e itens com preço congelado, sem chamar o gateway. Revisão: pendente de revisão do autor.
+- Ticket 13: tela de checkout, com volta ao login e um único pedido em cliques repetidos. Revisão: pendente de revisão do autor.
+- Ticket 14: cliente HTTP do Juntos Se Faz. Revisão: pendente de revisão do autor.
+- Ticket 15: cobrança Pix do pedido, com nova tentativa se a anterior falhar. Revisão: pendente de revisão do autor.
+- Ticket 16: página do pagamento com consulta ao gateway e status em português. Revisão: pendente de revisão do autor.
+- Ticket 17: nova tentativa de Pix na mesma página, com a frase do erro e o histórico. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

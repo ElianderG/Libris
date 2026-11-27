@@ -74,7 +74,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (home, catálogo, categorias e filtros).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface funcional e responsiva).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 04, Ticket 08.
 
@@ -104,7 +104,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (página individual: descrição, capa, autor e preço).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (formulário para iniciar uma transação entra no épico seguinte; a página do produto é o ponto de partida).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 09.
 

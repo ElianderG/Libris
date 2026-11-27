@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
     tone?: 'ink' | 'wine' | 'sand' | 'moss';
+    label?: string;
 }>();
 </script>
 
@@ -17,7 +18,7 @@ defineProps<{
         <div class="absolute inset-y-0 left-0 w-2 bg-black/15" />
         <div class="flex h-full flex-col justify-between p-4 pl-5">
             <span class="text-[0.65rem] font-medium tracking-[0.14em] uppercase">Libris te liberant</span>
-            <span class="font-serif text-lg leading-tight">Capa reservada</span>
+            <span class="font-serif text-lg leading-tight break-words">{{ label || 'Capa reservada' }}</span>
         </div>
     </div>
 </template>

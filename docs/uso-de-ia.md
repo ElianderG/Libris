@@ -164,3 +164,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o envio da foto funcionar no PHP 8.6, que não tem a extensão GD, usando o ffmpeg para cortar e gerar o JPEG
 - Revisão: Revisado pelo autor. Um JPEG de 640×400 virou 400×400 no PHP 8.6. Os testes de avatar no PHP 8.3 continuaram passando
 
+## 2026-11-27 — Ticket 09, vitrine
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 09
+- Feito com auxílio: `Money`, a listagem pública em `Product`, home, catálogo e `BookCard`
+- Finalidade: a home mostrar só destaques publicados e o catálogo filtrar por categoria, texto e preço, sem enviar o texto do livro
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogListingTest` passou. A home no ar mostrou *A janela do terceiro andar* a `R$ 37,90` e escondeu o livro não publicado. `/catalogo?categoria=ensaios&q=mesa` mostrou só *Notas sobre mesas vazias* a `R$ 9,90`
+
+## 2026-11-27 — Ticket 10, página do livro
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 10
+- Feito com auxílio: rota `books.show`, `BookController`, `readingPreview` em `Product`, `Book.vue` e o link no `BookCard`
+- Finalidade: abrir o livro publicado pela slug, com capa ou fallback, e enviar só os dois primeiros parágrafos
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=BookPageTest` passou. O livro do seed abre a `R$ 37,90`; a resposta não traz o terceiro parágrafo; slug inválida e o livro oculto respondem 404
+

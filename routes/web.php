@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Welcome')->name('home');
-Route::inertia('/catalogo', 'Catalog')->name('catalog');
+Route::get('/', HomeController::class)->name('home');
+Route::get('/catalogo', CatalogController::class)->name('catalog');
+Route::get('/livros/{slug}', BookController::class)
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('books.show');
 Route::inertia('/carrinho', 'Cart')->name('cart');
 
 Route::middleware(['auth', 'verified'])->group(function () {

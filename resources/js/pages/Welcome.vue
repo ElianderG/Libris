@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import BookCard, { type CatalogBook } from '@/components/store/BookCard.vue';
 import CoverSlot from '@/components/store/CoverSlot.vue';
 import { catalog } from '@/routes';
+
+defineProps<{
+    featured: CatalogBook[];
+    recent: CatalogBook[];
+}>();
 </script>
 
 <template>
@@ -42,20 +48,26 @@ import { catalog } from '@/routes';
     </section>
 
     <section class="mt-8 border-t border-border pt-8">
+        <p class="text-xs font-medium tracking-[0.16em] text-foreground uppercase">Em destaque</p>
+        <h2 class="mt-2 font-serif text-3xl text-foreground">Livros para começar</h2>
+        <div v-if="featured.length" class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <BookCard v-for="book in featured" :key="book.slug" :book="book" />
+        </div>
+        <p v-else class="mt-3 max-w-2xl text-sm leading-6 text-foreground">
+            Os livros em destaque aparecem aqui quando forem publicados.
+        </p>
+    </section>
+
+    <section v-if="recent.length" class="mt-12">
         <div class="flex items-end justify-between gap-4">
             <div>
-                <p class="text-xs font-medium tracking-[0.16em] text-foreground uppercase">Novidades em breve</p>
-                <h2 class="mt-2 font-serif text-3xl text-foreground">Uma nova coleção está a caminho</h2>
+                <p class="text-xs font-medium tracking-[0.16em] text-foreground uppercase">Catálogo</p>
+                <h2 class="mt-2 font-serif text-3xl text-foreground">Também na estante</h2>
             </div>
+            <Link :href="catalog()" class="text-sm font-medium text-primary">Ver todos</Link>
         </div>
-        <p class="mt-3 max-w-2xl text-sm leading-6 text-foreground">
-            Estamos preparando nossa seleção de livros para você. Em breve, cada espaço desta estante terá uma nova história esperando para ser descoberta.
-        </p>
-        <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <CoverSlot tone="sand" />
-            <CoverSlot tone="wine" />
-            <CoverSlot tone="ink" />
-            <CoverSlot tone="moss" />
+        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <BookCard v-for="book in recent" :key="book.slug" :book="book" />
         </div>
     </section>
 

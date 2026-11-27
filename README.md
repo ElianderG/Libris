@@ -53,7 +53,7 @@ Juntos Se Faz, em sandbox. A integração ainda não foi implementada.
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto. A vitrine ainda não lista os publicados. Checkout, biblioteca e API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto e não entra na vitrine. Checkout, biblioteca e API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -72,6 +72,8 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Hover do menu: Sair fica vermelho, e os botões do cabeçalho ganham um realce leve. Revisão: revisado pelo autor.
 - Foto do perfil: envio com corte e zoom, várias fotos guardadas, escolha da padrão e exclusão. Revisão: revisado pelo autor.
 - O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: revisado pelo autor.
+- Ticket 09: vitrine com destaques e catálogo filtrado na URL. Revisão: pendente de revisão do autor.
+- Ticket 10: página do livro em `/livros/{slug}`, com prévia cortada no servidor. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

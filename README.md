@@ -11,7 +11,7 @@ Vender livros digitais, guardar a compra do cliente e liberar a leitura na próp
 - Laravel 13, Inertia e Vue 3
 - Vite
 - Yarn
-- MySQL 8, previsto no projeto. A instalação oficial do starter kit deixou o SQLite ativo; a troca para MySQL entra quando houver usuário e senha do banco local
+- MySQL 8.4 no Docker Compose. Sem Docker, o ambiente local continua no SQLite do starter kit
 - Pest
 
 ## Execução local
@@ -31,9 +31,19 @@ php artisan serve
 
 A aplicação abre em `http://localhost:8000`. O `yarn dev` sobe o Vite. O `php artisan serve` sobe o PHP.
 
+## Docker Compose
+
+Preencha `DB_PASSWORD` e `DB_ROOT_PASSWORD` no `.env`. Esses valores não vão para o repositório.
+
+```bash
+docker compose up --build
+```
+
+A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8. O front é compilado com Yarn dentro da imagem. A aplicação fala com o banco pelo nome do serviço, `mysql`, não pela porta do computador. Os dados ficam no volume `mysql-data`.
+
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env`. Não há credencial de gateway ainda. Nenhum segredo entra no repositório.
+Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Juntos Se Faz e o afiliado. `JUNTOS_SE_FAZ_BASE_URL`, `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios até a documentação oficial do gateway. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
 
 ## Gateway
 
@@ -51,6 +61,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Etapas: planejamento dos épicos e criação deste projeto pelo comando oficial `laravel new libris --vue --pest --database=mysql --no-interaction`.
 - O que teve auxílio: a estrutura de épicos, a regra de documentação e os ajustes depois do instalador (nome Libris, locale `pt_BR`, fuso `America/Sao_Paulo`, scripts do Composer apontando para o Yarn).
 - Finalidade: começar o Libris com o starter oficial, sem montar o Inertia à mão.
+- Também houve auxílio no Docker Compose do Ticket 02 e, no Ticket 03, na configuração do Juntos Se Faz em `config/services.php` e no `.env.example`, sem gravar token.
 - Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada

@@ -35,3 +35,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Feito com auxílio: campo **Status** em todos os tickets de `docs/epicos/`
 - Finalidade: distinguir o que já foi feito do que ainda está pendente. O Ticket 01 ficou `Concluído`; os demais, `Pendente`
 - Revisão: Pendente de revisão do autor
+
+## 2026-11-27 — Ticket 02, Docker Compose
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 02
+- Feito com auxílio: `Dockerfile`, `docker/entrypoint.sh`, `compose.yaml`, `.dockerignore` e a seção de execução do `README.md`
+- Finalidade: subir PHP, MySQL 8 e o front compilado com Yarn num comando, sem gravar senha no Compose
+- Revisão: Pendente de revisão do autor. `docker compose up` respondeu a home em `http://localhost:8080` e, depois de reiniciar, a migration acusou que o schema continuava no volume
+
+## 2026-11-27 — Ticket 03, credenciais
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 03
+- Feito com auxílio: entrada `juntos_se_faz` em `config/services.php`, `config/libris.php` para comissão e cookie, e as chaves vazias no `.env.example`
+- Finalidade: o token do gateway ficar só no `.env`, com o repositório mostrando os nomes das variáveis
+- Revisão: Pendente de revisão do autor. `config('services.juntos_se_faz')` leu URL, token e segredo vazios; nenhum token real foi gravado

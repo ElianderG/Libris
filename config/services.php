@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'juntos_se_faz' => [
+        'base_url' => env('JUNTOS_SE_FAZ_BASE_URL'),
+        'token' => env('JUNTOS_SE_FAZ_TOKEN'),
+        'webhook_secret' => env('JUNTOS_SE_FAZ_WEBHOOK_SECRET'),
+    ],
+
 ];

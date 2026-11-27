@@ -42,7 +42,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 4 (Docker como prioridade média).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (Docker e Docker Compose) e seção 10 (instruções de execução local).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** média.
 **Depende de:** Ticket 01.
 
@@ -70,7 +70,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (gateway).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (armazenamento seguro das credenciais) e seção 10 (`.env.example`, sem segredos no repositório).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 

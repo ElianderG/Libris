@@ -3,7 +3,8 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Menu, Search, ShoppingBag, X } from '@lucide/vue';
 import { ref } from 'vue';
 import ThemeToggle from '@/components/store/ThemeToggle.vue';
-import { catalog, cart, dashboard, home, login } from '@/routes';
+import { catalog, cart, home, library, login } from '@/routes';
+import { home as adminHome } from '@/routes/admin';
 
 const page = usePage();
 const menuOpen = ref(false);
@@ -62,8 +63,15 @@ function closeMenu(): void {
             <div class="ml-auto hidden items-center gap-2 md:flex">
                 <ThemeToggle />
                 <Link
+                    v-if="page.props.auth.user?.is_admin"
+                    :href="adminHome()"
+                    class="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                >
+                    Painel
+                </Link>
+                <Link
                     v-if="page.props.auth.user"
-                    :href="dashboard()"
+                    :href="library()"
                     class="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                 >
                     Minha conta
@@ -115,8 +123,16 @@ function closeMenu(): void {
                     Catálogo
                 </Link>
                 <Link
+                    v-if="page.props.auth.user?.is_admin"
+                    :href="adminHome()"
+                    class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary"
+                    @click="closeMenu"
+                >
+                    Painel
+                </Link>
+                <Link
                     v-if="page.props.auth.user"
-                    :href="dashboard()"
+                    :href="library()"
                     class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary"
                     @click="closeMenu"
                 >

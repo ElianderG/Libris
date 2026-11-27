@@ -1,0 +1,1 @@
+@include('errors.minimal', ['code' => '503', 'title' => 'Serviço indisponível', 'message' => 'A loja está temporariamente fora do ar.'])

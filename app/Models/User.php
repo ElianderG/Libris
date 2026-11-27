@@ -18,8 +18,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property string $affiliate_code
  * @property Carbon|null $email_verified_at
  * @property string $password
+ * @property bool $is_admin
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
  * @property Carbon|null $two_factor_confirmed_at
@@ -39,11 +41,39 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
      *
      * @return array<string, string>
      */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user): void {
+            if (filled($user->affiliate_code)) {
+                return;
+            }
+
+            $user->affiliate_code = static::newAffiliateCode();
+        });
+    }
+
+    public static function newAffiliateCode(): string
+    {
+        $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $length = strlen($alphabet) - 1;
+
+        do {
+            $code = '';
+
+            for ($i = 0; $i < 8; $i++) {
+                $code .= $alphabet[random_int(0, $length)];
+            }
+        } while (static::query()->where('affiliate_code', $code)->exists());
+
+        return $code;
+    }
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
         ];
     }

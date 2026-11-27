@@ -92,3 +92,27 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o `php artisan` no computador alcançar o MySQL do Compose em `127.0.0.1:3308`, sem mudar a porta 3306 usada dentro da rede do Compose. A 3307 já pertence ao MySQL de outro projeto
 - Revisão: Pendente de revisão do autor
 
+## 2026-11-27 — Ticket 05, cadastro
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 05
+- Feito com auxílio: código de afiliado no usuário, mensagens de validação em português e textos das telas de entrar e criar conta
+- Finalidade: a conta nascer com um código único e o formulário recusar e-mail repetido e senha curta em português
+- Revisão: Pendente de revisão do autor. O teste de cadastro passou, inclusive a mensagem de senha curta
+
+## 2026-11-27 — Ticket 06, administrador
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 06
+- Feito com auxílio: coluna `is_admin`, middleware `admin`, redirecionamento depois do login, seeder condicional e páginas iniciais de biblioteca e painel
+- Finalidade: cliente e administrador caírem em casas diferentes, sem o cliente conseguir se promover
+- Revisão: Pendente de revisão do autor. Os testes cobrem 403 do cliente, entrada do admin, redirecionamento e perfil sem `is_admin`
+
+## 2026-11-27 — Textos em português
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: interface e mensagens
+- Feito com auxílio: tradução das telas de conta, segurança, autenticação, avisos de validação e páginas de erro HTTP
+- Finalidade: o visitante não encontrar texto em inglês na loja
+- Revisão: Pendente de revisão do autor
+

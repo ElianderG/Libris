@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import { orders } from '@/routes/admin';
 
 defineProps<{
@@ -24,9 +25,46 @@ defineProps<{
             amount: string;
             gateway_id: string | null;
             raw: string | null;
+            settle_url: string | null;
+            actions: Array<{
+                name: string;
+                label: string;
+            }>;
         }>;
     };
 }>();
+
+const confirms: Record<string, string> = {
+    approve: 'Aprovar este Pix e marcar o pedido como pago?',
+    decline: 'Recusar este Pix?',
+    cancel: 'Cancelar este Pix?',
+    expire: 'Marcar este Pix como expirado?',
+};
+
+const pendingAction = ref<string | null>(null);
+
+function settle(url: string, paymentId: number, action: string): void {
+    if (pendingAction.value !== null) {
+        return;
+    }
+
+    if (!window.confirm(confirms[action] ?? 'Confirmar esta ação?')) {
+        return;
+    }
+
+    pendingAction.value = `${paymentId}:${action}`;
+
+    router.post(
+        url,
+        { action },
+        {
+            preserveScroll: true,
+            onFinish: () => {
+                pendingAction.value = null;
+            },
+        },
+    );
+}
 
 const statusClass: Record<string, string> = {
     pending_payment: 'text-amber-700 dark:text-amber-300',
@@ -64,6 +102,9 @@ const statusClass: Record<string, string> = {
         <p class="mt-6 text-lg font-medium text-foreground">Total {{ order.total }}</p>
 
         <h2 class="mt-10 font-serif text-2xl text-foreground">Tentativas de Pix</h2>
+        <p class="mt-2 text-sm leading-6 text-foreground/80">
+            O sandbox não guarda o status. Na tentativa pendente, a ação pede a simulação ao gateway e aplica a resposta neste pedido.
+        </p>
         <p v-if="order.payments.length === 0" class="mt-3 text-sm text-foreground">
             Nenhuma cobrança foi registrada.
         </p>
@@ -73,6 +114,23 @@ const statusClass: Record<string, string> = {
                 <p v-if="payment.created_at" class="mt-1">{{ payment.created_at }}</p>
                 <p class="mt-1">{{ payment.amount }}</p>
                 <p v-if="payment.gateway_id" class="mt-1">Cobrança {{ payment.gateway_id }}</p>
+                <div v-if="payment.settle_url && payment.actions.length > 0" class="mt-3 flex flex-wrap gap-2">
+                    <button
+                        v-for="action in payment.actions"
+                        :key="action.name"
+                        type="button"
+                        class="inline-flex h-10 items-center rounded-full px-4 text-sm font-medium disabled:opacity-60"
+                        :class="
+                            action.name === 'approve'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'border border-border text-foreground'
+                        "
+                        :disabled="pendingAction !== null"
+                        @click="payment.settle_url && settle(payment.settle_url, payment.id, action.name)"
+                    >
+                        {{ action.label }}
+                    </button>
+                </div>
                 <details v-if="payment.raw" class="mt-3">
                     <summary class="cursor-pointer text-foreground/80">Dados do gateway</summary>
                     <pre class="mt-2 overflow-x-auto rounded-md border border-border bg-card p-3 text-xs leading-5">{{ payment.raw }}</pre>

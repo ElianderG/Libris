@@ -34,6 +34,23 @@ class JuntosSeFazClient
         return $this->paymentFrom($response, $externalId);
     }
 
+    public function simulate(string $externalId, string $action): GatewayPayment
+    {
+        if (! in_array($action, ['approve', 'decline', 'cancel', 'expire'], true)) {
+            $this->logFailure(null, $externalId);
+
+            throw new GatewayException;
+        }
+
+        $response = $this->send(
+            'post',
+            '/payments/'.rawurlencode($externalId).'/'.$action,
+            [],
+        );
+
+        return $this->paymentFrom($response, $externalId);
+    }
+
     public function amountForApi(int $cents): float
     {
         if ($cents < 1) {

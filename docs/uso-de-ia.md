@@ -460,6 +460,14 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: cada conta ganha um menu flutuante para ver pedidos, mudar o acesso de administrador ou apagar, com confirmação; conta com pedido ou comissão não é apagada
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (6 testes). Conta sem histórico foi apagada; a própria conta, quem comprou e quem indicou um pedido ficaram; a lista de pedidos abriu só os da Ana. `yarn types:check` passou
 
+## 2026-11-27 — Ações do Pix no painel
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: painel administrativo, pagamentos
+- Feito com auxílio: `SettlePayment`, `JuntosSeFazClient::simulate`, `Admin\OrderController` e `admin/orders/Show.vue`
+- Finalidade: o administrador aprova, recusa, cancela ou expira a tentativa pendente chamando a ação do sandbox e aplicando a resposta no pedido
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou (21 testes). Aprovar fechou o pedido; recusar, cancelar e expirar mudaram só a tentativa; valor divergente e HTTP 500 mantiveram pendente; cliente recebeu 403. `yarn types:check` passou
+
 ## 2026-11-27 — Logo do painel
 
 - Ferramenta: Cursor, Grok 4.7

@@ -75,6 +75,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/categorias/{category}', [AdminCategoryController::class, 'destroy'])->whereNumber('category')->name('admin.categories.destroy');
     Route::get('/admin/pedidos', [AdminOrderController::class, 'index'])->name('admin.orders');
     Route::get('/admin/pedidos/{order}', [AdminOrderController::class, 'show'])->whereNumber('order')->name('admin.orders.show');
+    Route::post('/admin/pedidos/{order}/pagamentos/{payment}', [AdminOrderController::class, 'settle'])
+        ->whereNumber(['order', 'payment'])
+        ->name('admin.orders.settle');
     Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.users');
     Route::post('/admin/usuarios/{user}', [AdminUserController::class, 'update'])->whereNumber('user')->name('admin.users.update');
     Route::delete('/admin/usuarios/{user}', [AdminUserController::class, 'destroy'])->whereNumber('user')->name('admin.users.destroy');

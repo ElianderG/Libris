@@ -82,7 +82,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 
 **Pontos de atenção:**
 
-- Admin não marca pedido como pago na mão. Status de pagamento só muda pela confirmação do gateway (Tickets 16 e 18). Evita "pago" sem lastro.
+- O sandbox não guarda status na consulta. Na tentativa pendente mais recente, o admin aprova, recusa, cancela ou expira chamando a ação do gateway e aplicando essa resposta. Valor divergente não marca pago.
 - Não permitir que o único admin se rebaixe se isso for a própria sessão. Regra simples: ninguém altera o próprio `is_admin`.
 - Paginar as duas listas.
 - Não exibir hash de senha nem token.
@@ -92,7 +92,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 - Admin filtra pedidos pendentes e abre o detalhe com as tentativas.
 - Admin promove outro usuário e esse usuário passa a entrar no `/admin`.
 - Admin não consegue tirar o próprio acesso por essa tela.
-- Não há botão de "marcar como pago".
+- A tentativa pendente oferece aprovar, recusar, cancelar e expirar. A lista de pedidos não marca pago sozinha.
 
 ---
 

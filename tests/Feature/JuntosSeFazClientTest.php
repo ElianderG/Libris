@@ -135,3 +135,35 @@ it('traduz status desconhecido para pending sem lançar erro', function () {
         ->and(implode("\n", $logged))->toContain('juntos_se_faz.unknown_status')
         ->and(implode("\n", $logged))->not->toContain('token-secreto-teste');
 });
+
+it('simula aprovar, recusar, cancelar e expirar pelo id externo', function (string $action, string $gatewayStatus, string $internal) {
+    Http::fake([
+        'https://gateway.test/payments/pay_nova/'.$action => Http::response([
+            'id' => 'pay_nova',
+            'status' => $gatewayStatus,
+        ]),
+    ]);
+
+    $payment = app(JuntosSeFazClient::class)->simulate('pay_nova', $action);
+
+    expect($payment->status)->toBe($internal)
+        ->and($payment->id)->toBe('pay_nova');
+
+    Http::assertSent(fn ($request): bool => $request->method() === 'POST'
+        && $request->url() === 'https://gateway.test/payments/pay_nova/'.$action
+        && $request->hasHeader('Authorization', 'Bearer token-secreto-teste'));
+})->with([
+    ['approve', 'approved', 'paid'],
+    ['decline', 'declined', 'failed'],
+    ['cancel', 'cancelled', 'canceled'],
+    ['expire', 'expired', 'expired'],
+]);
+
+it('recusa uma ação desconhecida sem chamar o gateway', function () {
+    Http::fake();
+
+    expect(fn () => app(JuntosSeFazClient::class)->simulate('pay_nova', 'refund'))
+        ->toThrow(GatewayException::class);
+
+    Http::assertNothingSent();
+});

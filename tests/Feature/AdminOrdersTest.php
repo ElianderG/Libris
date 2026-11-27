@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 
 uses(RefreshDatabase::class);
 
@@ -80,6 +81,13 @@ it('filtra pedidos pendentes e abre as tentativas sem marcar pago', function () 
             ->has('order.payments', 2)
             ->where('order.payments.0.gateway_id', 'pay_nova')
             ->where('order.payments.0.label', 'Pendente')
+            ->where('order.payments.0.actions', [
+                ['name' => 'approve', 'label' => 'Aprovar'],
+                ['name' => 'decline', 'label' => 'Recusar'],
+                ['name' => 'cancel', 'label' => 'Cancelar'],
+                ['name' => 'expire', 'label' => 'Expirar'],
+            ])
+            ->where('order.payments.1.actions', [])
             ->where('order.payments.1.gateway_id', 'pay_antiga')
             ->where('order.items.0.title', 'Notas da tarde')
             ->where('order.payments.0.raw', fn (string $raw): bool => str_contains($raw, 'pay_nova')
@@ -218,9 +226,120 @@ it('recusa pedidos e usuários para um cliente', function () {
     $customer = User::factory()->create();
     $order = placeOrder($customer, Order::STATUS_PENDING_PAYMENT);
 
+    $payment = new Payment;
+    $payment->order_id = $order->id;
+    $payment->amount_cents = $order->total_cents;
+    $payment->status = Payment::STATUS_PENDING;
+    $payment->method = Payment::METHOD_PIX;
+    $payment->gateway_id = 'pay_cliente';
+    $payment->save();
+
     $this->actingAs($customer)->get(route('admin.orders.show', $order))->assertForbidden();
+    $this->actingAs($customer)
+        ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'approve'])
+        ->assertForbidden();
     $this->actingAs($customer)->post(route('admin.users.update', $customer))->assertForbidden();
     $this->actingAs($customer)->delete(route('admin.users.destroy', $customer))->assertForbidden();
 
-    expect($customer->fresh()->is_admin)->toBeFalse();
+    expect($customer->fresh()->is_admin)->toBeFalse()
+        ->and($payment->fresh()->status)->toBe(Payment::STATUS_PENDING);
+});
+
+it('aplica no sandbox aprovar, recusar, cancelar e expirar', function (string $action, string $gatewayStatus, string $paymentStatus, string $orderStatus, string $message) {
+    config([
+        'services.juntos_se_faz.base_url' => 'https://gateway.test',
+        'services.juntos_se_faz.token' => 'token-secreto-teste',
+    ]);
+
+    $admin = ordersAdmin();
+    $buyer = User::factory()->create();
+    $order = placeOrder($buyer, Order::STATUS_PENDING_PAYMENT);
+    $payment = new Payment;
+    $payment->order_id = $order->id;
+    $payment->amount_cents = 3790;
+    $payment->status = Payment::STATUS_PENDING;
+    $payment->method = Payment::METHOD_PIX;
+    $payment->gateway_id = 'pay_nova';
+    $payment->save();
+
+    Http::preventStrayRequests();
+    Http::fake([
+        'https://gateway.test/payments/pay_nova/'.$action => Http::response([
+            'id' => 'pay_nova',
+            'status' => $gatewayStatus,
+            'amount' => 37.9,
+        ]),
+    ]);
+
+    $this->actingAs($admin)
+        ->from(route('admin.orders.show', $order))
+        ->post(route('admin.orders.settle', [$order, $payment]), ['action' => $action])
+        ->assertRedirect(route('admin.orders.show', $order))
+        ->assertSessionHas('success', $message);
+
+    expect($payment->fresh()->status)->toBe($paymentStatus)
+        ->and($order->fresh()->status)->toBe($orderStatus);
+
+    if ($action === 'approve') {
+        expect($payment->fresh()->paid_at)->not->toBeNull();
+    }
+
+    Http::assertSent(function ($request) use ($action): bool {
+        return $request->method() === 'POST'
+            && $request->url() === 'https://gateway.test/payments/pay_nova/'.$action
+            && $request->hasHeader('Authorization', 'Bearer token-secreto-teste');
+    });
+})->with([
+    ['approve', 'approved', Payment::STATUS_PAID, Order::STATUS_PAID, 'Pagamento aprovado.'],
+    ['decline', 'declined', Payment::STATUS_FAILED, Order::STATUS_PENDING_PAYMENT, 'Pagamento recusado.'],
+    ['cancel', 'cancelled', Payment::STATUS_CANCELED, Order::STATUS_PENDING_PAYMENT, 'Pagamento cancelado.'],
+    ['expire', 'expired', Payment::STATUS_EXPIRED, Order::STATUS_PENDING_PAYMENT, 'Pagamento expirado.'],
+]);
+
+it('não aprova quando o valor do sandbox diverge e mantém a tentativa se o gateway falha', function () {
+    config([
+        'services.juntos_se_faz.base_url' => 'https://gateway.test',
+        'services.juntos_se_faz.token' => 'token-secreto-teste',
+    ]);
+
+    $admin = ordersAdmin();
+    $order = placeOrder(User::factory()->create(), Order::STATUS_PENDING_PAYMENT);
+    $payment = new Payment;
+    $payment->order_id = $order->id;
+    $payment->amount_cents = 3790;
+    $payment->status = Payment::STATUS_PENDING;
+    $payment->method = Payment::METHOD_PIX;
+    $payment->gateway_id = 'pay_nova';
+    $payment->save();
+
+    Http::fake([
+        'https://gateway.test/payments/pay_nova/approve' => Http::response([
+            'id' => 'pay_nova',
+            'status' => 'approved',
+            'amount' => 1,
+        ]),
+    ]);
+
+    $this->actingAs($admin)
+        ->from(route('admin.orders.show', $order))
+        ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'approve'])
+        ->assertSessionHas('error', 'O gateway não confirmou essa ação.');
+
+    expect($payment->fresh()->status)->toBe(Payment::STATUS_PENDING)
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+
+    Http::fake([
+        'https://gateway.test/payments/pay_nova/decline' => Http::response(['error' => 'request_error'], 500),
+    ]);
+
+    $this->actingAs($admin)
+        ->from(route('admin.orders.show', $order))
+        ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'decline'])
+        ->assertSessionHas('error', 'Não foi possível falar com o serviço de pagamento.');
+
+    expect($payment->fresh()->status)->toBe(Payment::STATUS_PENDING);
+
+    $this->actingAs($admin)
+        ->post(route('admin.orders.settle', [$order, $payment]), ['action' => 'refund'])
+        ->assertSessionHas('error', 'Essa ação não existe.');
 });

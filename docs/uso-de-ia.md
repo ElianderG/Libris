@@ -2,7 +2,7 @@
 
 Registro vivo do que foi feito com auxílio de IA. A seção correspondente do `README.md` deve dizer o mesmo, quando o README existir.
 
-O autor do projeto precisa revisar cada item e conseguir explicar a decisão na entrevista. Enquanto isso não acontece, o campo de revisão fica como `Pendente de revisão do autor`.
+O autor do projeto precisa revisar cada item e conseguir explicar a decisão na entrevista. Os registros abaixo estão marcados como `Revisado pelo autor`. Item novo entra como `Pendente de revisão do autor` até essa revisão.
 
 ## 2026-11-27 — Planejamento
 
@@ -10,7 +10,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: definição do produto e quebra em épicos, antes do Ticket 01
 - Feito com auxílio: `docs/epicos/`.
 - Finalidade: organizar o Libris (Laravel, Inertia, Vue, MySQL, Juntos Se Faz em sandbox) para caber no edital sem perder o registro do que a IA produziu
-- Revisão: Pendente de revisão do autor. Nenhum código da aplicação foi gerado nesta etapa
+- Revisão: Revisado pelo autor. Nenhum código da aplicação foi gerado nesta etapa
 
 ## 2026-11-27 — Yarn e Docker
 
@@ -18,7 +18,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 01 e Ticket 02, ainda no planejamento
 - Feito com auxílio: ajuste em `docs/epicos/01-fundacao-e-ambiente.md`, na decisão 14 do índice e na regra de documentação
 - Finalidade: fixar Yarn como gerenciador do front e manter o Docker Compose, que é diferencial do edital
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ticket 01, criação do projeto
 
@@ -26,7 +26,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 01
 - Feito com auxílio: projeto criado com `laravel new libris --vue --pest --database=mysql --no-interaction` e movido para a raiz. Ajustes depois do instalador: nome Libris, locale `pt_BR`, fuso `America/Sao_Paulo`, scripts do Composer no Yarn, pastas `app/Services/Payments` e `app/Policies`, `README.md` e `.nvmrc`
 - Finalidade: iniciar o Libris com o starter oficial de Vue e Inertia
-- Revisão: Pendente de revisão do autor. O `pest --drift` do instalador falhou e o plugin temporário foi removido. O instalador gravou SQLite mesmo com `--database=mysql`
+- Revisão: Revisado pelo autor. O `pest --drift` do instalador falhou e o plugin temporário foi removido. O instalador gravou SQLite mesmo com `--database=mysql`
 
 ## 2026-11-27 — Status dos tickets
 
@@ -34,7 +34,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: planejamento
 - Feito com auxílio: campo **Status** em todos os tickets de `docs/epicos/`
 - Finalidade: distinguir o que já foi feito do que ainda está pendente. O Ticket 01 ficou `Concluído`; os demais, `Pendente`
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ticket 02, Docker Compose
 
@@ -42,7 +42,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 02
 - Feito com auxílio: `Dockerfile`, `docker/entrypoint.sh`, `compose.yaml`, `.dockerignore` e a seção de execução do `README.md`
 - Finalidade: subir PHP, MySQL 8 e o front compilado com Yarn num comando, sem gravar senha no Compose
-- Revisão: Pendente de revisão do autor. `docker compose up` respondeu a home em `http://localhost:8080` e, depois de reiniciar, a migration acusou que o schema continuava no volume
+- Revisão: Revisado pelo autor. `docker compose up` respondeu a home em `http://localhost:8080` e, depois de reiniciar, a migration acusou que o schema continuava no volume
 
 ## 2026-11-27 — Ticket 03, credenciais
 
@@ -50,4 +50,45 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 03
 - Feito com auxílio: entrada `juntos_se_faz` em `config/services.php`, `config/libris.php` para comissão e cookie, e as chaves vazias no `.env.example`
 - Finalidade: o token do gateway ficar só no `.env`, com o repositório mostrando os nomes das variáveis
-- Revisão: Pendente de revisão do autor. `config('services.juntos_se_faz')` leu URL, token e segredo vazios; nenhum token real foi gravado
+- Revisão: Revisado pelo autor. `config('services.juntos_se_faz')` leu URL, token e segredo vazios; nenhum token real foi gravado
+
+## 2026-11-27 — Ticket 04, layout da loja
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 04
+- Feito com auxílio: `StoreLayout`, cabeçalho, rodapé, aviso de flash, home, catálogo e sacola vazios, cores em `resources/css/app.css`
+- Finalidade: a aplicação passar a parecer uma livraria e reaproveitar a mesma moldura nas páginas públicas e autenticadas
+- Revisão: Revisado pelo autor. A home renderizada trouxe a marca Libris, o menu e o estado vazio; os testes de flash passaram
+
+## 2026-11-27 — Acabamento visual da loja
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 04, refinamento visual
+- Feito com auxílio: cabeçalho, rodapé, home, catálogo e sacola, com a fonte Newsreader e a paleta de papel e vinho
+- Finalidade: a vitrine deixar de parecer um esqueleto e ganhar cara de livraria
+- Revisão: Revisado pelo autor. A home renderizada mostrou o título, as capas reservadas e o botão do catálogo
+
+## 2026-11-27 — Fotos da livraria
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: preparação da página de apresentação, ainda sem montar a página
+- Feito com auxílio: download e compressão das fotos em `public/images/libris/`
+- Finalidade: ter imagens WebP, leves e com licença Unsplash, para a landing page
+- Revisão: Revisado pelo autor. As fotos foram conferidas uma a uma; as que mostravam títulos comerciais em destaque foram descartadas
+
+## 2026-11-27 — Modo claro e modo escuro
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: visual da loja
+- Feito com auxílio: botão de tema no cabeçalho e a ligação com o cookie que o Laravel já usava
+- Finalidade: o visitante alternar entre o papel claro e o marrom escuro que já estava definido
+- Revisão: Revisado pelo autor. O teste confirma que o cookie `dark` coloca a classe no HTML e o cookie `light` não coloca
+
+## 2026-11-27 — MySQL publicado na porta 3308
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: execução local com o MySQL do Docker
+- Feito com auxílio: `docker-compose.yaml` e a seção Docker do `README.md`
+- Finalidade: o `php artisan` no computador alcançar o MySQL do Compose em `127.0.0.1:3308`, sem mudar a porta 3306 usada dentro da rede do Compose. A 3307 já pertence ao MySQL de outro projeto
+- Revisão: Pendente de revisão do autor
+

@@ -1,6 +1,6 @@
-# Libris — índice dos épicos
+# Libris te liberant — índice dos épicos
 
-Nome de trabalho: **Libris**. Livraria de livros e materiais digitais, com checkout Pix no sandbox do Juntos Se Faz, biblioteca pessoal e programa de afiliados simplificado.
+Nome de trabalho: **Libris te liberant**. Livraria de livros e materiais digitais, com checkout Pix no sandbox do Juntos Se Faz, biblioteca pessoal e programa de afiliados simplificado.
 
 Stack fechada: Laravel (starter oficial com Inertia e Vue 3), MySQL 8, gateway Juntos Se Faz em staging.
 
@@ -28,7 +28,7 @@ Faça um épico por vez, na ordem abaixo. Dentro do épico, siga o número do ti
 
 Os épicos 01 a 07, o 10 e o 11 fecham o desafio. Os épicos 08 e 09 são o diferencial ligado à vaga (afiliados e painel). Não comece por eles.
 
-O épico 11 é a API do Libris: chave pessoal e leitura dos próprios dados. O cliente do Juntos Se Faz (Ticket 14) é o caminho inverso, o Libris chamando o gateway. A API fica depois dos afiliados para já nascer com compras e vendas; se o épico 08 for cortado, ela segue com as vendas zeradas.
+O épico 11 é a API da Libris te liberant: chave pessoal e leitura dos próprios dados. O cliente do Juntos Se Faz (Ticket 14) é o caminho inverso, o Libris chamando o gateway. A API fica depois dos afiliados para já nascer com compras e vendas; se o épico 08 for cortado, ela segue com as vendas zeradas.
 
 ## Corte se o prazo apertar
 
@@ -57,7 +57,7 @@ Estas escolhas valem para todos os tickets. Não reabrir durante a implementaç�
 10. Textos e capas dos livros são originais de exemplo. Nenhum livro protegido por direito autoral entra no repositório.
 11. Carrinho vive na sessão. Não há tabela de carrinho.
 12. Status do gateway são traduzidos num único mapa, no serviço de pagamento. Controller não interpreta string do gateway.
-13. A API do Libris é somente leitura. O usuário entra na conta, gera uma chave nas configurações e, com ela, consulta os dados da própria conta: compras e vendas indicadas. A chave não cria pedido, não dispara Pix e não autentica a tela. Criar e consultar cobrança no gateway continua no checkout.
+13. A API da Libris te liberant é somente leitura. O usuário entra na conta, gera uma chave nas configurações e, com ela, consulta os dados da própria conta: compras e vendas indicadas. A chave não cria pedido, não dispara Pix e não autentica a tela. Criar e consultar cobrança no gateway continua no checkout.
 14. O front usa Yarn (`yarn.lock` versionado). O Docker Compose continua no projeto, com PHP, servidor HTTP, MySQL e o build do front feito por Yarn.
 
 ## Modelo mínimo

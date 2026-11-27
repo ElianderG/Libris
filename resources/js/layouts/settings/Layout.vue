@@ -25,6 +25,10 @@ const sidebarNavItems: NavItem[] = [
     },
 ];
 
+defineProps<{
+    breadcrumbs?: Array<{ title: string; href: string }>;
+}>();
+
 const { isCurrentOrParentUrl } = useCurrentUrl();
 </script>
 

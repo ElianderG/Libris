@@ -1,4 +1,4 @@
-# Libris
+# Libris te liberant
 
 Livraria de livros e materiais digitais. O pagamento será Pix, no sandbox do Juntos Se Faz.
 
@@ -39,7 +39,7 @@ Preencha `DB_PASSWORD` e `DB_ROOT_PASSWORD` no `.env`. Esses valores não vão p
 docker compose up --build
 ```
 
-A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8. O front é compilado com Yarn dentro da imagem. A aplicação fala com o banco pelo nome do serviço, `mysql`, não pela porta do computador. Os dados ficam no volume `mysql-data`.
+A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8. O front é compilado com Yarn dentro da imagem. Dentro da rede do Compose, a aplicação fala com o banco pelo nome do serviço, `mysql`, na porta 3306. No computador, o mesmo MySQL fica em `127.0.0.1:3308`, para o `php artisan` local usar o `.env`. Os dados ficam no volume `mysql-data`.
 
 ## Variáveis de ambiente
 
@@ -51,7 +51,7 @@ Juntos Se Faz, em sandbox. A integração ainda não foi implementada.
 
 ## Funcionalidades
 
-Nesta etapa existe a aplicação gerada pelo starter oficial do Laravel com Vue: página inicial Inertia, cadastro e login. Catálogo, checkout, biblioteca e API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. O cadastro e o login do starter continuam dentro dessa moldura. Checkout, biblioteca e API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -61,8 +61,9 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Etapas: planejamento dos épicos e criação deste projeto pelo comando oficial `laravel new libris --vue --pest --database=mysql --no-interaction`.
 - O que teve auxílio: a estrutura de épicos, a regra de documentação e os ajustes depois do instalador (nome Libris, locale `pt_BR`, fuso `America/Sao_Paulo`, scripts do Composer apontando para o Yarn).
 - Finalidade: começar o Libris com o starter oficial, sem montar o Inertia à mão.
-- Também houve auxílio no Docker Compose do Ticket 02 e, no Ticket 03, na configuração do Juntos Se Faz em `config/services.php` e no `.env.example`, sem gravar token.
-- Revisão: pendente de revisão do autor.
+- Também houve auxílio no Docker Compose, nas credenciais do gateway e no layout da loja (cabeçalho Libris, páginas vazias de catálogo e sacola, avisos que somem).
+- Revisão: revisado pelo autor.
+- Nesta sessão, o MySQL do Compose passou a ser publicado em `127.0.0.1:3308`. A porta interna do serviço continua 3306. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

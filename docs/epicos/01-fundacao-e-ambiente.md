@@ -23,7 +23,7 @@
 
 - Usar o starter oficial do Laravel para Inertia + Vue. Não montar o Inertia na mão.
 - Front-end com Yarn. Versionar `yarn.lock`. Se o instalador gerar `package-lock.json`, apagar esse arquivo e não versioná-lo. Script do Composer que sobe o Vite chama `yarn dev`.
-- Nome interno da aplicação: Libris. Pode ser trocado depois num único lugar (`APP_NAME`).
+- Nome interno da aplicação: Libris te liberant. Fica em `APP_NAME`.
 - Não instalar pacote de pagamento, de permissão ou de admin pronto. O gateway será um cliente HTTP nosso.
 - Fuso e locale da aplicação em `America/Sao_Paulo` e `pt_BR`.
 - O repositório deste desafio não deve ser fork do repositório da empresa. Este ticket não cria o remoto.
@@ -98,11 +98,11 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, abertura (identidade ligada a livros; nomes Libris, Lumi, Folium, Letria).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface funcional e responsiva) e seção 7 (criatividade e experiência do usuário, 10%).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 
-**Descrição:** Criar o layout Inertia compartilhado: cabeçalho com marca Libris, busca visual (o filtro de verdade vem no Ticket 09), link para o catálogo, acesso à conta e ao carrinho, rodapé curto. Definir tipografia, cor e espaçamento num único lugar (CSS simples ou Tailwind, o que o starter já trouxer). Estados vazios e mensagens de flash (sucesso e erro) já entram neste layout.
+**Descrição:** Criar o layout Inertia compartilhado: cabeçalho com marca Libris te liberant, busca visual (o filtro de verdade vem no Ticket 09), link para o catálogo, acesso à conta e ao carrinho, rodapé curto. Definir tipografia, cor e espaçamento num único lugar (CSS simples ou Tailwind, o que o starter já trouxer). Estados vazios e mensagens de flash (sucesso e erro) já entram neste layout.
 
 **Explicação:** É a moldura da loja. Todas as telas seguintes reaproveitam o mesmo cabeçalho e o mesmo jeito de avisar se algo deu certo ou errado. A pessoa precisa entender, em um segundo, que está numa livraria, não num painel genérico.
 
@@ -119,4 +119,4 @@
 - Toda página autenticada e pública usa o mesmo layout.
 - Em largura de celular e de desktop o cabeçalho não quebra.
 - Uma mensagem flash de sucesso e uma de erro aparecem e somem de forma visível.
-- A marca Libris está no cabeçalho e no título do navegador.
+- A marca Libris te liberant está no cabeçalho e no título do navegador.

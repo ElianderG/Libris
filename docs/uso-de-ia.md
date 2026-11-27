@@ -276,3 +276,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: entrar com a conta do Google, criar a conta se o e-mail for novo e reaproveitar a conta se o e-mail já existir, sem tornar a pessoa administradora
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=GoogleLoginTest` passou. Conta nova fica verificada e sem `is_admin`; e-mail existente não duplica; e-mail não confirmado pelo Google não entra; conta com segundo fator para no desafio
 
+## 2026-11-27 — Tela de entrar
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: autenticação
+- Feito com auxílio: `Login.vue`, `AuthSimpleLayout.vue` e `GoogleLoginLink.vue`
+- Finalidade: a entrada deixar de parecer o formulário padrão e seguir a moldura da livraria, com o Google separado do e-mail
+- Revisão: Pendente de revisão do autor. `yarn types:check` passou
+

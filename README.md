@@ -85,6 +85,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Épico 12: plano da Pagsmile no mesmo checkout, ainda sem código. Revisão: revisado pelo autor.
 - Sair esquece o histórico do navegador, e página autenticada não fica em cache. Revisão: revisado pelo autor.
 - Login com Google: cria a conta ou entra na que já tem o mesmo e-mail, sem promover administrador. Revisão: pendente de revisão do autor.
+- Tela de entrar alinhada à livraria, com o Google separado do e-mail. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

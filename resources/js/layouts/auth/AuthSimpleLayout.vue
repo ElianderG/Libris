@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { home } from '@/routes';
-
 defineProps<{
     title?: string;
     description?: string;
@@ -10,32 +6,13 @@ defineProps<{
 </script>
 
 <template>
-    <div
-        class="flex flex-col items-center gap-6 bg-background px-6 py-10 md:py-14"
-    >
-        <div class="w-full max-w-sm">
-            <div class="flex flex-col gap-8">
-                <div class="flex flex-col items-center gap-4">
-                    <Link
-                        :href="home()"
-                        class="flex flex-col items-center gap-2 font-medium"
-                    >
-                        <div
-                            class="mb-1 flex size-11 items-center justify-center rounded-md bg-primary text-primary-foreground"
-                        >
-                            <AppLogoIcon class="size-6" />
-                        </div>
-                        <span class="sr-only">{{ title }}</span>
-                    </Link>
-                    <div class="space-y-2 text-center">
-                        <h1 class="text-xl font-medium">{{ title }}</h1>
-                        <p class="text-center text-sm text-muted-foreground">
-                            {{ description }}
-                        </p>
-                    </div>
-                </div>
-                <slot />
-            </div>
+    <div class="mx-auto w-full max-w-md py-4">
+        <div v-if="title || description" class="mb-6 text-center">
+            <h1 v-if="title" class="font-serif text-4xl text-foreground">{{ title }}</h1>
+            <p v-if="description" class="mt-2 text-sm leading-6 text-muted-foreground">
+                {{ description }}
+            </p>
         </div>
+        <slot />
     </div>
 </template>

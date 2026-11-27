@@ -44,7 +44,7 @@ Não usar a URL de produção. Não gravar `app_id`, `security_key` nem o exempl
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (checkout Pix).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (criação de pagamentos, persistência e validação) e seção 6 (ambos os gateways).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** diferencial.
 **Depende de:** Ticket 15, Ticket 37.
 
@@ -77,7 +77,7 @@ Não usar a URL de produção. Não gravar `app_id`, `security_key` nem o exempl
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (status do pagamento).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (consulta e exibição do status) e seção 6 (webhooks, se o gateway disponibilizar).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** diferencial.
 **Depende de:** Ticket 16, Ticket 19, Ticket 38.
 

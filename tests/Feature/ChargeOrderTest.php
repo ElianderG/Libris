@@ -9,6 +9,7 @@ use App\Support\Cart;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
@@ -81,6 +82,109 @@ it('cancela a pendência anterior e abre outra cobrança', function () {
         ->and($second->gateway_id)->toBe('payments_dois')
         ->and($second->status)->toBe(Payment::STATUS_PENDING)
         ->and(Payment::query()->where('order_id', $order->id)->count())->toBe(2);
+});
+
+it('cobra na pagsmile e não grava o cpf', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+
+    Http::fake([
+        'https://pagsmile.test/trade/pay' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-38',
+            'trade_status' => 'PROCESSING',
+            'qr_code' => '00020126580014br.gov.bcb.pix',
+            'qr_code_url' => 'https://pagsmile.test/qr/38',
+            'qr_code_img' => 'data:image/png;base64,abc',
+        ]),
+    ]);
+
+    $logged = [];
+    Log::listen(function ($event) use (&$logged): void {
+        $logged[] = $event->message.' '.json_encode($event->context);
+    });
+
+    $order = pendingOrder();
+    $order->gateway = Order::GATEWAY_PAGSMILE;
+    $order->save();
+
+    $payment = app(ChargeOrder::class)->charge($order, $order->user, '123.456.789-01');
+    $stored = json_encode([$payment->raw_request, $payment->raw_response, $payment->getAttributes()]);
+
+    expect($order->fresh()->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and($payment->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and($payment->gateway_id)->toBe('trade-38')
+        ->and($payment->status)->toBe(Payment::STATUS_PENDING)
+        ->and($payment->raw_response['qr_code'] ?? null)->toBe('00020126580014br.gov.bcb.pix')
+        ->and($payment->raw_response['qr_code_url'] ?? null)->toBe('https://pagsmile.test/qr/38')
+        ->and($stored)->not->toContain('12345678901')
+        ->and($stored)->not->toContain('chave-secreta-teste')
+        ->and(implode("\n", $logged))->not->toContain('12345678901')
+        ->and(implode("\n", $logged))->not->toContain('chave-secreta-teste');
+
+    Http::assertSent(function ($request) use ($order, $payment): bool {
+        return $request->url() === 'https://pagsmile.test/trade/pay'
+            && $request['out_trade_no'] === (string) $payment->id
+            && $request['buyer_id'] === (string) $order->user_id
+            && $request['subject'] === 'A janela do terceiro andar'
+            && $request['order_amount'] === '37.90'
+            && $request['order_currency'] === 'BRL'
+            && $request['notify_url'] === url('/webhooks/pagsmile')
+            && $request['customer']['identify']['number'] === '12345678901';
+    });
+});
+
+it('não chama a pagsmile com cpf curto nem abaixo do mínimo', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+    Http::fake();
+
+    $order = pendingOrder();
+    $order->gateway = Order::GATEWAY_PAGSMILE;
+    $order->save();
+
+    $short = app(ChargeOrder::class)->charge($order, $order->user, '123');
+
+    expect($short->status)->toBe(Payment::STATUS_FAILED)
+        ->and($short->gateway_id)->toBeNull()
+        ->and(json_encode($short->raw_request))->not->toContain('123')
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+
+    $order->total_cents = 5;
+    $order->save();
+
+    $low = app(ChargeOrder::class)->charge($order->fresh(), $order->user, '12345678901');
+
+    expect($low->status)->toBe(Payment::STATUS_FAILED)
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+
+    Http::assertNothingSent();
+});
+
+it('ignora o cpf quando a escolha é o juntos se faz', function () {
+    Http::fake([
+        'https://gateway.test/payments' => Http::response([
+            'id' => 'payments_juntos',
+            'status' => 'pending',
+            'pix_code' => 'SIMULATED_PIX_NOT_PAYABLE_payments_juntos',
+        ], 201),
+    ]);
+
+    $order = pendingOrder();
+    $payment = app(ChargeOrder::class)->charge($order, $order->user, '12345678901');
+
+    expect($payment->gateway)->toBe(Order::GATEWAY_JUNTOS)
+        ->and($payment->gateway_id)->toBe('payments_juntos')
+        ->and(json_encode($payment->raw_request))->not->toContain('12345678901');
+
+    Http::assertSent(fn ($request): bool => $request->url() === 'https://gateway.test/payments'
+        && ! str_contains($request->body(), '12345678901'));
 });
 
 it('recusa pedido de outra pessoa e pedido já pago', function () {

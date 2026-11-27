@@ -51,7 +51,9 @@ Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Dock
 
 O checkout cobra no Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/v1`. O checkout chama `POST /payments` com o total do pedido em reais. Enquanto a cobrança está pendente, a página do pedido consulta `GET /payments/{id}`. O sandbox devolve o id pedido e não guarda a cobrança: a consulta continua `pending`. Também não avisa a loja: o recurso `/webhooks` da documentação é simulado, sem chamada de volta nem assinatura. Quem opera a loja aprova, recusa, cancela ou expira a tentativa pendente em `/admin/pedidos/{pedido}`. Cada ação chama `POST /payments/{id}/approve`, `/decline`, `/cancel` ou `/expire`, e a loja aplica essa resposta. `JUNTOS_SE_FAZ_WEBHOOK_SECRET` permanece no exemplo, sem uso. O token continua só no `.env`.
 
-A Pagsmile é o segundo gateway, também em sandbox (`https://gateway-test.pagsmile.com`). O cliente cria o Pix em `POST /trade/pay` e consulta em `POST /trade/query`, com Basic auth de `app_id` e `security_key`. O valor sai em texto, em reais (`order_amount`). A tela de checkout segue no Juntos Se Faz. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam só no `.env`.
+A Pagsmile é o segundo gateway, também em sandbox (`https://gateway-test.pagsmile.com`). No checkout a pessoa escolhe onde o Pix nasce. Juntos Se Faz vem marcado. Pagsmile pede o CPF de 11 dígitos; o documento vai só na chamada e não fica no pedido. O cliente cria o Pix em `POST /trade/pay` e a consulta fica em `POST /trade/query`, com Basic auth de `app_id` e `security_key`. O valor sai em texto, em reais (`order_amount`). Enquanto a tentativa está pendente, abrir a página ou **Atualizar status** consulta a Pagsmile. `PROCESSING` não fecha o pedido. Se a consulta falhar, o último status permanece.
+
+O aviso chega em `POST {APP_URL}/webhooks/pagsmile`, sem sessão e sem CSRF, no máximo 30 vezes por minuto. O cabeçalho `Pagsmile-Signature` traz `t` e `v2`. `v2` é o HMAC-SHA256 do corpo cru, com a `security_key`, comparado em tempo constante. O horário `t` precisa estar a até 5 minutos. Assinatura inválida responde 401 e não grava. Aviso de pago só fecha o pedido depois que a consulta repete o mesmo valor da tentativa. A resposta aceita é o texto `success`. A repetição não muda `paid_at`. O corpo do aviso não entra no log. **Gerar novo Pix** repete o gateway já gravado no pedido. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam só no `.env`.
 
 ## Funcionalidades
 
@@ -131,19 +133,19 @@ Na página de configurações, o usuário pode enviar fotografias, ajustar o enq
 
 ### 5. Pagamentos via Pix
 
-Ao selecionar **Pagar com Pix**, o sistema cria um pedido com status `pending_payment` e registra uma tentativa de cobrança.
+Ao selecionar **Pagar com Pix**, a pessoa escolhe Juntos Se Faz ou Pagsmile. O sistema cria um pedido com status `pending_payment` e registra uma tentativa de cobrança nesse gateway. Pagsmile só segue com CPF de 11 dígitos. Se a resposta trouxer a imagem do QR, a página do pagamento mostra essa imagem, junto com o copia e cola.
 
 O fluxo de pagamento contempla os seguintes cenários:
 
 - **Falha na criação da cobrança:** a tentativa recebe o status `failed`, mas o pedido permanece aguardando pagamento.
 - **Consulta de pagamento:** em `/pedidos/{order}/pagamento`, o proprietário do pedido pode visualizar o status em português, o valor e a data. Quando a resposta traz um código Pix utilizável, a página mostra o copia e cola.
 - **Atualização do status:** o usuário pode solicitar uma nova consulta ao gateway. Caso ela falhe, o último status conhecido é preservado.
-- **Confirmação do pagamento:** quando a consulta ou a ação do painel retorna o status de pagamento confirmado e o valor recebido corresponde ao valor do pedido, ambos são atualizados para `paid`, garantindo que a confirmação ocorra uma única vez. Valor ausente na resposta da ação também confirma.
+- **Confirmação do pagamento:** quando a consulta, o aviso da Pagsmile ou a ação do painel retorna o pagamento confirmado e o valor corresponde ao do pedido, ambos passam para `paid`, uma única vez. O aviso só confirma depois da consulta. Valor ausente na resposta da ação do painel também confirma.
 - **Ação no painel:** na tentativa pendente mais recente, o administrador aprova, recusa, cancela ou expira. A aprovação fecha o pedido. As outras três deixam o pedido aguardando pagamento.
 
 **Geração de um novo Pix:**
 
-Quando a última tentativa de pagamento foi recusada, encerrada ou expirou, e o pedido ainda está aguardando pagamento, a página apresenta uma explicação sobre o ocorrido e disponibiliza a opção **Gerar novo Pix**.
+Quando a última tentativa de pagamento foi recusada, encerrada ou expirou, e o pedido ainda está aguardando pagamento, a página apresenta uma explicação sobre o ocorrido e disponibiliza a opção **Gerar novo Pix**. A nova tentativa usa o mesmo gateway do pedido. Na Pagsmile, o CPF é pedido de novo e não fica gravado.
 
 O histórico de cobranças fica disponível na página do pedido, com as tentativas organizadas da mais recente para a mais antiga.
 
@@ -252,6 +254,8 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Logo do painel: abre a página inicial da loja. Revisão: pendente de revisão do autor. `yarn types:check` passou.
 - Painel: aprovar, recusar, cancelar e expirar o Pix pendente pela resposta do sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou. `yarn types:check` passou.
 - Textos da loja e do painel: saíram as explicações de sandbox, o identificador e o JSON da cobrança, e os avisos de ambiente de teste. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou. `yarn types:check` passou.
+- Ticket 38: o checkout escolhe Juntos Se Faz ou Pagsmile. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou.
+- Ticket 39: a consulta e o aviso da Pagsmile fecham o pedido pela mesma confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes).
 
 ## Aplicação hospedada
 

@@ -15,7 +15,7 @@ class PlaceOrder
 {
     public function __construct(private Cart $cart) {}
 
-    public function place(User $user): Order
+    public function place(User $user, string $gateway = Order::GATEWAY_JUNTOS): Order
     {
         $products = $this->cart->items();
 
@@ -23,7 +23,11 @@ class PlaceOrder
             throw new RuntimeException('A sacola está vazia.');
         }
 
-        $order = DB::transaction(function () use ($user, $products): Order {
+        if (! in_array($gateway, [Order::GATEWAY_JUNTOS, Order::GATEWAY_PAGSMILE], true)) {
+            $gateway = Order::GATEWAY_JUNTOS;
+        }
+
+        $order = DB::transaction(function () use ($user, $products, $gateway): Order {
             $productIds = array_values(
                 $products->map(fn (Product $product): int => $product->id)->sort()->all(),
             );
@@ -43,6 +47,7 @@ class PlaceOrder
             $order = new Order;
             $order->user_id = $user->id;
             $order->status = Order::STATUS_PENDING_PAYMENT;
+            $order->gateway = $gateway;
             $order->total_cents = $total;
             $order->affiliate_id = $affiliateId;
             $order->affiliate_code = $affiliateCode;

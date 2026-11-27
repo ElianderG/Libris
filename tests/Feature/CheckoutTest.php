@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\User;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -139,6 +140,104 @@ it('remover o único livro no checkout volta para a sacola vazia', function () {
     $this->actingAs($user)
         ->get(route('cart'))
         ->assertInertia(fn ($page) => $page->has('items', 0));
+});
+
+it('escolhe a pagsmile e recusa cpf curto sem chamar o sandbox', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+    Http::fake([
+        'https://pagsmile.test/trade/pay' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-38',
+            'trade_status' => 'PROCESSING',
+            'qr_code' => '00020126580014br.gov.bcb.pix',
+            'qr_code_url' => 'https://pagsmile.test/qr/38',
+        ]),
+    ]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
+
+    $this->actingAs($user)
+        ->from(route('checkout'))
+        ->post(route('checkout.store'), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'gateway' => 'pagsmile',
+            'document' => '123',
+        ])
+        ->assertRedirect(route('checkout'))
+        ->assertSessionHasErrors('document');
+
+    expect(Order::query()->count())->toBe(0);
+    Http::assertNothingSent();
+
+    $this->actingAs($user)
+        ->post(route('checkout.store'), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'gateway' => 'pagsmile',
+            'document' => '123.456.789-01',
+        ])
+        ->assertRedirect();
+
+    $order = Order::query()->first();
+    $payment = Payment::query()->first();
+
+    expect($order)->not->toBeNull()
+        ->and($order->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and($payment->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and($payment->gateway_id)->toBe('trade-38')
+        ->and(json_encode($payment->raw_request))->not->toContain('12345678901');
+
+    $this->actingAs($user)
+        ->get(route('payments.show', $order))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('asksDocument', true)
+            ->where('payment.pix_code', '00020126580014br.gov.bcb.pix')
+            ->where('payment.qr_image', 'https://pagsmile.test/qr/38'));
+});
+
+it('trata gateway desconhecido como juntos e ignora o cpf', function () {
+    config([
+        'services.juntos_se_faz.base_url' => 'https://gateway.test',
+        'services.juntos_se_faz.token' => 'token-secreto-teste',
+    ]);
+    Http::fake([
+        'https://gateway.test/payments' => Http::response([
+            'id' => 'payments_juntos',
+            'status' => 'pending',
+            'pix_code' => 'SIMULATED_PIX_NOT_PAYABLE_payments_juntos',
+        ], 201),
+    ]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
+
+    $this->actingAs($user)
+        ->post(route('checkout.store'), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'gateway' => 'cartao',
+            'document' => '12345678901',
+        ])
+        ->assertRedirect();
+
+    $order = Order::query()->first();
+
+    expect($order->gateway)->toBe(Order::GATEWAY_JUNTOS)
+        ->and(json_encode($order->payments()->first()->raw_request))->not->toContain('12345678901');
+
+    Http::assertSent(fn ($request): bool => str_contains($request->url(), '/payments')
+        && ! str_contains($request->url(), 'trade/pay'));
 });
 
 it('não grava pedido quando o nome está vazio', function () {

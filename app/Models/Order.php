@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $user_id
  * @property string $status
+ * @property string $gateway
  * @property int $total_cents
  * @property int|null $affiliate_id
  * @property string|null $affiliate_code
@@ -26,6 +27,10 @@ class Order extends Model
     public const STATUS_PENDING_PAYMENT = 'pending_payment';
 
     public const STATUS_PAID = 'paid';
+
+    public const GATEWAY_JUNTOS = 'juntos_se_faz';
+
+    public const GATEWAY_PAGSMILE = 'pagsmile';
 
     /**
      * @return array<string, string>

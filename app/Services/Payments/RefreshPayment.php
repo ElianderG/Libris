@@ -4,11 +4,13 @@ namespace App\Services\Payments;
 
 use App\Models\Order;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Log;
 
 class RefreshPayment
 {
     public function __construct(
-        private JuntosSeFazClient $gateway,
+        private JuntosSeFazClient $juntos,
+        private PagsmileClient $pagsmile,
         private ConfirmPayment $confirmPayment,
     ) {}
 
@@ -25,9 +27,24 @@ class RefreshPayment
         }
 
         try {
-            $result = $this->gateway->findPayment($payment->gateway_id);
+            $result = $payment->gateway === Order::GATEWAY_PAGSMILE
+                ? $this->pagsmile->findPayment((string) $payment->id, $payment->gateway_id)
+                : $this->juntos->findPayment($payment->gateway_id);
         } catch (GatewayException) {
             return false;
+        }
+
+        if (
+            $payment->gateway === Order::GATEWAY_PAGSMILE
+            && $result->status === Payment::STATUS_PAID
+            && $result->amountCents !== $payment->amount_cents
+        ) {
+            Log::warning('pagsmile.amount_mismatch', [
+                'trade_no' => mb_substr($result->id, 0, 64),
+                'status' => $result->status,
+            ]);
+
+            return true;
         }
 
         $this->confirmPayment->confirm($payment, $result);

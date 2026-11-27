@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import CartController from '@/actions/App/Http/Controllers/CartController';
 import CheckoutController from '@/actions/App/Http/Controllers/CheckoutController';
 import InputError from '@/components/InputError.vue';
@@ -7,6 +8,8 @@ import CoverSlot from '@/components/store/CoverSlot.vue';
 import type { CatalogBook } from '@/components/store/BookCard.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+const gateway = ref('juntos_se_faz');
 
 defineProps<{
     items: CatalogBook[];
@@ -68,6 +71,17 @@ defineProps<{
             class="mt-8 space-y-4"
             v-slot="{ errors, processing }"
         >
+            <fieldset class="grid gap-2">
+                <legend class="text-sm text-foreground">Onde gerar o Pix</legend>
+                <label class="flex items-center gap-2 text-sm text-foreground">
+                    <input v-model="gateway" type="radio" name="gateway" value="juntos_se_faz" class="size-4 accent-primary" />
+                    Juntos Se Faz
+                </label>
+                <label class="flex items-center gap-2 text-sm text-foreground">
+                    <input v-model="gateway" type="radio" name="gateway" value="pagsmile" class="size-4 accent-primary" />
+                    Pagsmile
+                </label>
+            </fieldset>
             <p class="text-sm text-foreground/80">Confira o nome e o e-mail.</p>
             <div class="grid gap-2">
                 <Label for="name">Nome</Label>
@@ -78,6 +92,11 @@ defineProps<{
                 <Label for="email">E-mail</Label>
                 <Input id="email" name="email" type="email" :default-value="payer.email" autocomplete="username" required />
                 <InputError :message="errors.email" />
+            </div>
+            <div v-if="gateway === 'pagsmile'" class="grid gap-2">
+                <Label for="document">CPF</Label>
+                <Input id="document" name="document" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" />
+                <InputError :message="errors.document" />
             </div>
             <button
                 type="submit"

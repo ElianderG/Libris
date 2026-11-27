@@ -56,7 +56,7 @@ class CheckoutController extends Controller
         }
 
         try {
-            $order = $placeOrder->place($user);
+            $order = $placeOrder->place($user, $request->gatewayChoice());
         } catch (RuntimeException $exception) {
             if ($cart->items()->isEmpty()) {
                 return redirect()->route('cart')->with('error', $exception->getMessage());
@@ -65,7 +65,7 @@ class CheckoutController extends Controller
             return back()->with('error', $exception->getMessage());
         }
 
-        return $this->chargeAndRedirect($chargeOrder, $order, $user);
+        return $this->chargeAndRedirect($chargeOrder, $order, $user, $request->payerDocument());
     }
 
     public function retry(Request $request, Order $order, ChargeOrder $chargeOrder): RedirectResponse
@@ -76,7 +76,19 @@ class CheckoutController extends Controller
             abort(404);
         }
 
-        return $this->chargeAndRedirect($chargeOrder, $order, $user);
+        $document = null;
+
+        if ($order->gateway === Order::GATEWAY_PAGSMILE) {
+            $document = preg_replace('/\D/', '', (string) $request->input('document')) ?? '';
+
+            if (strlen($document) !== 11) {
+                return back()->withErrors([
+                    'document' => 'Informe o CPF com 11 dígitos.',
+                ]);
+            }
+        }
+
+        return $this->chargeAndRedirect($chargeOrder, $order, $user, $document);
     }
 
     public function payment(Request $request, Order $order, RefreshPayment $refreshPayment): Response
@@ -105,10 +117,10 @@ class CheckoutController extends Controller
         return $redirect;
     }
 
-    private function chargeAndRedirect(ChargeOrder $chargeOrder, Order $order, User $user): RedirectResponse
+    private function chargeAndRedirect(ChargeOrder $chargeOrder, Order $order, User $user, ?string $document = null): RedirectResponse
     {
         try {
-            $payment = $chargeOrder->charge($order, $user);
+            $payment = $chargeOrder->charge($order, $user, $document);
         } catch (RuntimeException $exception) {
             return redirect()
                 ->route('payments.show', $order)
@@ -155,6 +167,7 @@ class CheckoutController extends Controller
             'payment' => $this->paymentPayload($latest),
             'explanation' => $this->explanation($latest),
             'canRetry' => $this->canRetry($order, $latest),
+            'asksDocument' => $order->gateway === Order::GATEWAY_PAGSMILE,
             'attempts' => $payments->values()->map(fn (Payment $payment, int $index): array => [
                 'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
                 'label' => $this->statusLabel($payment->status),
@@ -193,7 +206,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @return array{status: string, label: string, pix_code: string|null, created_at: string|null, can_refresh: bool}|null
+     * @return array{status: string, label: string, pix_code: string|null, qr_image: string|null, created_at: string|null, can_refresh: bool}|null
      */
     private function paymentPayload(?Payment $payment): ?array
     {
@@ -201,8 +214,8 @@ class CheckoutController extends Controller
             return null;
         }
 
-        $stored = $payment->raw_response;
-        $pix = is_array($stored) ? ($stored['pix_code'] ?? null) : null;
+        $stored = is_array($payment->raw_response) ? $payment->raw_response : [];
+        $pix = $stored['pix_code'] ?? $stored['qr_code'] ?? null;
         $pixCode = is_string($pix) && $pix !== '' && ! str_starts_with($pix, 'SIMULATED_PIX_NOT_PAYABLE')
             ? $pix
             : null;
@@ -211,11 +224,32 @@ class CheckoutController extends Controller
             'status' => $payment->status,
             'label' => $this->statusLabel($payment->status),
             'pix_code' => $pixCode,
+            'qr_image' => $this->qrImage($stored),
             'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
             'can_refresh' => $payment->status === Payment::STATUS_PENDING
                 && is_string($payment->gateway_id)
                 && $payment->gateway_id !== '',
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $stored
+     */
+    private function qrImage(array $stored): ?string
+    {
+        foreach (['qr_code_img', 'qr_code_url'] as $key) {
+            $value = $stored[$key] ?? null;
+
+            if (! is_string($value) || $value === '') {
+                continue;
+            }
+
+            if (str_starts_with($value, 'data:image/') || str_starts_with($value, 'https://')) {
+                return $value;
+            }
+        }
+
+        return null;
     }
 
     private function statusLabel(string $status): string

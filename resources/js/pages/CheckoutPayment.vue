@@ -2,6 +2,9 @@
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import CheckoutController from '@/actions/App/Http/Controllers/CheckoutController';
+import InputError from '@/components/InputError.vue';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const props = defineProps<{
     total: string;
@@ -13,11 +16,13 @@ const props = defineProps<{
         status: string;
         label: string;
         pix_code: string | null;
+        qr_image: string | null;
         created_at: string | null;
         can_refresh: boolean;
     } | null;
     explanation: string | null;
     canRetry: boolean;
+    asksDocument: boolean;
     attempts: Array<{
         created_at: string | null;
         label: string;
@@ -63,6 +68,13 @@ async function copyPix(): Promise<void> {
             <p>Valor {{ total }}</p>
             <p v-if="payment.created_at">{{ payment.created_at }}</p>
         </div>
+
+        <img
+            v-if="payment?.qr_image"
+            :src="payment.qr_image"
+            alt="QR Code do Pix"
+            class="mt-4 size-48 rounded-md bg-white object-contain ring-1 ring-black/10"
+        />
 
         <div v-if="payment?.pix_code" class="mt-4 rounded-lg border border-border bg-card px-4 py-3">
             <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Pix copia e cola</p>
@@ -110,9 +122,14 @@ async function copyPix(): Promise<void> {
         <Form
             v-if="canRetry"
             v-bind="CheckoutController.retry.form(orderId)"
-            class="mt-6"
-            v-slot="{ processing }"
+            class="mt-6 space-y-4"
+            v-slot="{ errors, processing }"
         >
+            <div v-if="asksDocument" class="grid gap-2">
+                <Label for="document">CPF</Label>
+                <Input id="document" name="document" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" />
+                <InputError :message="errors.document" />
+            </div>
             <button
                 type="submit"
                 :disabled="processing"

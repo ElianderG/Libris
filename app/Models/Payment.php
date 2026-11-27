@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $order_id
+ * @property string $gateway
  * @property string|null $gateway_id
  * @property int $amount_cents
  * @property string $status

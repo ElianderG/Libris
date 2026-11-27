@@ -156,3 +156,106 @@ it('mantém o último status quando a consulta falha', function () {
     expect($order->payments()->first()->status)->toBe(Payment::STATUS_PENDING)
         ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
 });
+
+it('consulta a pagsmile ao abrir e mostra pago', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+
+    Http::fake([
+        'https://pagsmile.test/trade/query' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-39',
+            'trade_status' => 'SUCCESS',
+            'order_amount' => '37.90',
+            'qr_code' => '00020126580014br.gov.bcb.pix',
+        ]),
+    ]);
+
+    $order = pagsmileOrder();
+
+    $this->actingAs($order->user)
+        ->get(route('payments.show', $order))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('payment.status', Payment::STATUS_PAID)
+            ->where('payment.label', 'Pago')
+            ->where('payment.pix_code', '00020126580014br.gov.bcb.pix')
+            ->where('payment.can_refresh', false)
+            ->where('total', 'R$ 37,90'));
+
+    expect($order->payments()->first()->status)->toBe(Payment::STATUS_PAID)
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PAID);
+
+    Http::assertSent(fn ($request): bool => $request->url() === 'https://pagsmile.test/trade/query'
+        && $request['out_trade_no'] === (string) $order->payments()->first()->id
+        && $request['trade_no'] === 'trade-39');
+});
+
+it('não marca pago quando a consulta da pagsmile ainda está processando', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+
+    Http::fake([
+        'https://pagsmile.test/trade/query' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-39',
+            'trade_status' => 'PROCESSING',
+            'order_amount' => '37.90',
+        ]),
+    ]);
+
+    $order = pagsmileOrder();
+
+    $this->actingAs($order->user)
+        ->get(route('payments.show', $order))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('payment.status', Payment::STATUS_PENDING)
+            ->where('payment.label', 'Pendente')
+            ->where('payment.can_refresh', true));
+
+    expect($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+});
+
+it('mantém o status da pagsmile quando a consulta cai', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+
+    Http::fake(function () {
+        throw new ConnectionException('cURL error 28');
+    });
+
+    $order = pagsmileOrder();
+
+    $this->actingAs($order->user)
+        ->get(route('payments.show', $order))
+        ->assertOk()
+        ->assertSessionHas('error', 'Não foi possível falar com o serviço de pagamento.')
+        ->assertInertia(fn ($page) => $page->where('payment.status', Payment::STATUS_PENDING));
+
+    expect($order->payments()->first()->status)->toBe(Payment::STATUS_PENDING)
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+});
+
+function pagsmileOrder(): Order
+{
+    $order = orderWithPendingPayment();
+    $order->gateway = Order::GATEWAY_PAGSMILE;
+    $order->save();
+
+    $payment = $order->payments()->first();
+    $payment->gateway = Order::GATEWAY_PAGSMILE;
+    $payment->gateway_id = 'trade-39';
+    $payment->save();
+
+    return $order->fresh();
+}

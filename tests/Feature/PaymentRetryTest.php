@@ -114,6 +114,58 @@ it('não oferece novo pix quando o pedido já está pago', function () {
         ->and(collect(Http::recorded())->filter(fn (array $pair): bool => str_contains($pair[0]->url(), 'gateway.test'))->count())->toBe(0);
 });
 
+it('repete a pagsmile no mesmo pedido sem apagar a tentativa anterior', function () {
+    config([
+        'services.pagsmile.base_url' => 'https://pagsmile.test',
+        'services.pagsmile.app_id' => 'app-id-teste',
+        'services.pagsmile.security_key' => 'chave-secreta-teste',
+    ]);
+    Http::fake([
+        'https://pagsmile.test/trade/pay' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-novo',
+            'trade_status' => 'PROCESSING',
+            'qr_code' => '00020126580014br.gov.bcb.pix',
+        ]),
+    ]);
+
+    $order = orderReadyForRetry(Payment::STATUS_FAILED);
+    $order->gateway = Order::GATEWAY_PAGSMILE;
+    $order->save();
+    $previous = $order->payments()->first();
+    $previous->gateway = Order::GATEWAY_PAGSMILE;
+    $previous->save();
+
+    $this->actingAs($order->user)
+        ->from(route('payments.show', $order))
+        ->post(route('payments.store', $order), [
+            'gateway' => Order::GATEWAY_JUNTOS,
+            'document' => '12',
+        ])
+        ->assertRedirect(route('payments.show', $order))
+        ->assertSessionHasErrors('document');
+
+    expect(Payment::query()->where('order_id', $order->id)->count())->toBe(1);
+    Http::assertNothingSent();
+
+    $this->actingAs($order->user)
+        ->post(route('payments.store', $order), [
+            'gateway' => Order::GATEWAY_JUNTOS,
+            'document' => '12345678901',
+        ])
+        ->assertRedirect(route('payments.show', $order));
+
+    $fresh = $order->fresh();
+    $latest = $fresh->payments()->latest('id')->first();
+
+    expect($fresh->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and(Payment::query()->where('order_id', $order->id)->count())->toBe(2)
+        ->and($previous->fresh()->status)->toBe(Payment::STATUS_FAILED)
+        ->and($latest->gateway)->toBe(Order::GATEWAY_PAGSMILE)
+        ->and($latest->gateway_id)->toBe('trade-novo')
+        ->and(json_encode($latest->raw_request))->not->toContain('12345678901');
+});
+
 it('explica cobrança encerrada ou expirada', function (string $status, string $phrase) {
     Http::fake();
 

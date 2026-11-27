@@ -484,3 +484,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o logo do cabeçalho do painel abrir a página inicial da loja, como no site
 - Revisão: Pendente de revisão do autor. `yarn types:check` passou. O link do logo usa a rota `/`; o item Início do menu lateral continua em `/admin`
 
+## 2026-11-27 — Ticket 38, cobrança na Pagsmile
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 38
+- Feito com auxílio: escolha de gateway no checkout, coluna `gateway` em pedidos e pagamentos, `ChargeOrder` e a imagem do QR na página do pagamento
+- Finalidade: a pessoa escolher Juntos Se Faz ou Pagsmile; a Pagsmile só cobra com CPF de 11 dígitos, sem gravar o documento, e um novo Pix repete o gateway do pedido
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou. A migration da coluna `gateway` rodou no banco local
+
+## 2026-11-27 — Ticket 39, consulta e aviso da Pagsmile
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 39
+- Feito com auxílio: `RefreshPayment`, `ReceivePagsmileNotice`, `PagsmileWebhookController` e a rota `POST /webhooks/pagsmile`
+- Finalidade: a página consultar a Pagsmile e o aviso assinado confirmar o pedido uma vez, só com o valor igual ao da tentativa
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes)
+

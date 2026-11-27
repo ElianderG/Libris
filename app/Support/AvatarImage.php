@@ -15,10 +15,11 @@ class AvatarImage
 {
     public static function store(UploadedFile $file, User $user): UserAvatar
     {
-        $jpeg = self::squareJpeg($file);
+        $contents = $file->getContent();
+        $jpeg = str_starts_with($contents, "\xFF\xD8") ? $contents : self::squareJpeg($file);
         $path = 'avatars/'.$user->id.'/'.Str::uuid()->toString().'.jpg';
 
-        Storage::disk('avatars')->put($path, $jpeg);
+        Storage::disk('public')->put($path, $jpeg);
 
         return $user->avatars()->create([
             'path' => $path,

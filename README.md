@@ -125,7 +125,7 @@ Usuários autenticados acessam a conta por meio de um avatar no cabeçalho, que 
 
 **Configurações de perfil:**
 
-Na página de configurações, o usuário pode enviar fotografias, ajustar o enquadramento e escolher qual imagem será utilizada como foto de perfil. O arquivo fica em `public/avatars` e a página pede `/avatars/{arquivo}`, no mesmo endereço do site.
+Na página de configurações, o usuário pode enviar fotografias, ajustar o enquadramento e escolher qual imagem será utilizada como foto de perfil. A página pede `/avatars/{id}` no mesmo endereço do site, e a aplicação devolve o JPEG.
 
 ### 5. Pagamentos via Pix
 
@@ -225,7 +225,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Ticket 25: o pedido guarda o afiliado do cookie, não o `ref` do formulário. Revisão: pendente de revisão do autor.
 - Ticket 26: comissão única quando o Pix confirma, listada em Indicar. Revisão: pendente de revisão do autor.
 - Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
-- Foto do perfil: o JPEG fica em `public/avatars` e a página pede `/avatars/{arquivo}`. Revisão: pendente de revisão do autor.
+- Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

@@ -31,11 +31,7 @@ class UserAvatar extends Model
 
     public function url(): string
     {
-        if (preg_match('#^avatars/[1-9][0-9]*/[0-9a-f-]{36}\.jpg$#', $this->path) !== 1) {
-            return '';
-        }
-
-        return '/'.$this->path;
+        return '/avatars/'.$this->id;
     }
 
     protected static function booted(): void
@@ -47,7 +43,7 @@ class UserAvatar extends Model
                 return;
             }
 
-            Storage::disk('avatars')->delete($avatar->path);
+            Storage::disk('public')->delete($avatar->path);
         });
     }
 }

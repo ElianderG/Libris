@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AffiliateController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\Settings\ProfileAvatarController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -11,6 +12,9 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/avatars/{avatar}', [ProfileAvatarController::class, 'show'])
+    ->whereNumber('avatar')
+    ->name('profile.avatars.show');
 Route::get('/', HomeController::class)->name('home');
 Route::get('/catalogo', CatalogController::class)->name('catalog');
 Route::get('/livros/{slug}', BookController::class)

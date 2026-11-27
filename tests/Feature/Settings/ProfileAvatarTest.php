@@ -15,7 +15,7 @@ class ProfileAvatarTest extends TestCase
 
     public function test_a_photo_is_stored_square_and_becomes_the_default(): void
     {
-        Storage::fake('avatars');
+        Storage::fake('public');
         $user = User::factory()->create();
 
         $this->actingAs($user)
@@ -29,14 +29,36 @@ class ProfileAvatarTest extends TestCase
         $this->assertNotNull($avatar);
         $this->assertSame($avatar->id, $user->fresh()->avatar_id);
         $this->assertMatchesRegularExpression('#^avatars/'.$user->id.'/[0-9a-f-]{36}\.jpg$#', $avatar->path);
-        Storage::disk('avatars')->assertExists($avatar->path);
-        $this->assertStringStartsWith("\xFF\xD8", (string) Storage::disk('avatars')->get($avatar->path));
-        $this->assertSame('/'.$avatar->path, $avatar->url());
+        Storage::disk('public')->assertExists($avatar->path);
+        $this->assertStringStartsWith("\xFF\xD8", (string) Storage::disk('public')->get($avatar->path));
+        $this->assertSame('/avatars/'.$avatar->id, $avatar->url());
+
+        $this->get($avatar->url())
+            ->assertOk()
+            ->assertHeader('content-type', 'image/jpeg');
+    }
+
+    public function test_a_jpeg_is_stored_without_reencoding(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+        $jpeg = base64_decode('/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUQEhIVFhUVFRUVFRUVFRUWFxUVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGy0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAQMBIgACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAADAAIEBQYBB//EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AvoAA/9k=', true);
+
+        $this->assertIsString($jpeg);
+
+        $this->actingAs($user)
+            ->post(route('profile.avatars.store'), [
+                'photo' => UploadedFile::fake()->createWithContent('foto.jpg', $jpeg, 'image/jpeg'),
+            ])
+            ->assertRedirect(route('profile.edit'));
+
+        $avatar = UserAvatar::query()->firstOrFail();
+        $this->assertSame($jpeg, Storage::disk('public')->get($avatar->path));
     }
 
     public function test_a_second_photo_does_not_replace_the_default_until_chosen(): void
     {
-        Storage::fake('avatars');
+        Storage::fake('public');
         $user = User::factory()->create();
         $photo = UploadedFile::fake()->image('foto.jpg', 300, 300);
 
@@ -62,7 +84,7 @@ class ProfileAvatarTest extends TestCase
 
     public function test_the_owner_can_delete_a_photo_and_another_user_cannot(): void
     {
-        Storage::fake('avatars');
+        Storage::fake('public');
         $user = User::factory()->create();
         $other = User::factory()->create();
 
@@ -76,7 +98,7 @@ class ProfileAvatarTest extends TestCase
             ->delete(route('profile.avatars.destroy', $avatar))
             ->assertNotFound();
 
-        Storage::disk('avatars')->assertExists($avatar->path);
+        Storage::disk('public')->assertExists($avatar->path);
 
         $this->actingAs($user)
             ->delete(route('profile.avatars.destroy', $avatar))
@@ -84,12 +106,12 @@ class ProfileAvatarTest extends TestCase
 
         $this->assertNull($user->fresh()->avatar_id);
         $this->assertDatabaseMissing('user_avatars', ['id' => $avatar->id]);
-        Storage::disk('avatars')->assertMissing($avatar->path);
+        Storage::disk('public')->assertMissing($avatar->path);
     }
 
     public function test_a_text_file_is_refused_and_the_ninth_photo_is_refused(): void
     {
-        Storage::fake('avatars');
+        Storage::fake('public');
         $user = User::factory()->create();
 
         $this->actingAs($user)
@@ -119,7 +141,7 @@ class ProfileAvatarTest extends TestCase
 
     public function test_deleting_the_account_removes_the_photos(): void
     {
-        Storage::fake('avatars');
+        Storage::fake('public');
         $user = User::factory()->create();
 
         $this->actingAs($user)->post(route('profile.avatars.store'), [
@@ -129,7 +151,7 @@ class ProfileAvatarTest extends TestCase
         $path = UserAvatar::query()->firstOrFail()->path;
         $user->delete();
 
-        Storage::disk('avatars')->assertMissing($path);
+        Storage::disk('public')->assertMissing($path);
         $this->assertDatabaseMissing('user_avatars', ['path' => $path]);
     }
 

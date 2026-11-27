@@ -372,3 +372,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a foto ser pedida em `/avatars/{arquivo}`, no mesmo site, em vez de uma URL absoluta em `/storage`
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A URL ficou `/avatars/{arquivo}`
 
+## 2026-11-27 — Foto do perfil sem GD
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: configurações do perfil
+- Feito com auxílio: `AvatarImage`, `ProfileAvatarController` e a rota `/avatars/{id}`
+- Finalidade: guardar o JPEG que o navegador já cortou e devolvê-lo pela aplicação, porque a produção não tem GD nem ffmpeg e o nginx não entrega `/storage` nem um `.jpg` ausente
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (7 testes). No PHP 8.6, sem GD, `GET /avatars/2` respondeu 200 com JPEG
+

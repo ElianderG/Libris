@@ -90,7 +90,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: execução local com o MySQL do Docker
 - Feito com auxílio: `docker-compose.yaml` e a seção Docker do `README.md`
 - Finalidade: o `php artisan` no computador alcançar o MySQL do Compose em `127.0.0.1:3308`, sem mudar a porta 3306 usada dentro da rede do Compose. A 3307 já pertence ao MySQL de outro projeto
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ticket 05, cadastro
 
@@ -98,7 +98,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 05
 - Feito com auxílio: código de afiliado no usuário, mensagens de validação em português e textos das telas de entrar e criar conta
 - Finalidade: a conta nascer com um código único e o formulário recusar e-mail repetido e senha curta em português
-- Revisão: Pendente de revisão do autor. O teste de cadastro passou, inclusive a mensagem de senha curta
+- Revisão: Revisado pelo autor. O teste de cadastro passou, inclusive a mensagem de senha curta
 
 ## 2026-11-27 — Ticket 06, administrador
 
@@ -106,7 +106,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 06
 - Feito com auxílio: coluna `is_admin`, middleware `admin`, redirecionamento depois do login, seeder condicional e páginas iniciais de biblioteca e painel
 - Finalidade: cliente e administrador caírem em casas diferentes, sem o cliente conseguir se promover
-- Revisão: Pendente de revisão do autor. Os testes cobrem 403 do cliente, entrada do admin, redirecionamento e perfil sem `is_admin`
+- Revisão: Revisado pelo autor. Os testes cobrem 403 do cliente, entrada do admin, redirecionamento e perfil sem `is_admin`
 
 ## 2026-11-27 — Textos em português
 
@@ -114,7 +114,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: interface e mensagens
 - Feito com auxílio: tradução das telas de conta, segurança, autenticação, avisos de validação e páginas de erro HTTP
 - Finalidade: o visitante não encontrar texto em inglês na loja
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ticket 07, categorias e livros
 
@@ -122,7 +122,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 07
 - Feito com auxílio: migrations de `categories` e `products`, models, `ProductRules`, factories, pasta pública `covers` e `tests/Feature/CatalogSchemaTest.php`
 - Finalidade: a prateleira existir no banco, com preço em centavos, slug gerado no servidor e capa restrita a um caminho relativo
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSchemaTest` passou (7 testes). No MySQL local, as migrations subiram; um livro de prova se relacionou com a categoria; apagar a categoria com livro foi recusado; os índices de `products` ficaram em `slug`, `category_id`, `is_published` e `is_featured`. O registro de prova foi apagado em seguida
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CatalogSchemaTest` passou (7 testes). No MySQL local, as migrations subiram; um livro de prova se relacionou com a categoria; apagar a categoria com livro foi recusado; os índices de `products` ficaram em `slug`, `category_id`, `is_published` e `is_featured`. O registro de prova foi apagado em seguida
 
 ## 2026-11-27 — Ticket 08, livros de exemplo
 
@@ -130,7 +130,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 08
 - Feito com auxílio: `CatalogSeeder`, a chamada no `DatabaseSeeder` e `tests/Feature/CatalogSeederTest.php`
 - Finalidade: o `db:seed` deixar 3 categorias e 9 livros originais, oito publicados e um oculto, sem duplicar slug na segunda execução
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. No MySQL local, o seed rodou duas vezes e permaneceu em 3 categorias, 8 publicados, 4 em destaque, 1 oculto e o preço `3790`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. No MySQL local, o seed rodou duas vezes e permaneceu em 3 categorias, 8 publicados, 4 em destaque, 1 oculto e o preço `3790`
 
 ## 2026-11-27 — Menu da conta
 
@@ -138,7 +138,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: cabeçalho e rodapé da loja
 - Feito com auxílio: `StoreAccountMenu.vue`, `StoreHeader.vue` e `StoreFooter.vue`
 - Finalidade: quem está logado abre painel, biblioteca, configurações e sair pelo avatar, e o rodapé deixa de oferecer Entrar
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Hover do cabeçalho
 
@@ -146,7 +146,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: cabeçalho da loja
 - Feito com auxílio: `StoreAccountMenu.vue`, `StoreHeader.vue` e `ThemeToggle.vue`
 - Finalidade: o item Sair ficar vermelho ao passar o mouse, e os botões do cabeçalho terem um realce leve
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Foto do perfil
 
@@ -154,7 +154,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: configurações do perfil
 - Feito com auxílio: fotos da conta em `user_avatars`, `ProfileAvatarController`, `AvatarImage`, `ProfilePhotos.vue` e o teste de upload
 - Finalidade: a pessoa enviar uma foto, cortar e aproximar, guardar até 8, ver a imagem, escolher a padrão e apagar
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A página de perfil autenticada mostrou o botão de enviar foto
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A página de perfil autenticada mostrou o botão de enviar foto
 
 ## 2026-11-27 — Foto no PHP sem GD
 
@@ -162,5 +162,5 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: configurações do perfil
 - Feito com auxílio: `AvatarImage`
 - Finalidade: o envio da foto funcionar no PHP 8.6, que não tem a extensão GD, usando o ffmpeg para cortar e gerar o JPEG
-- Revisão: Pendente de revisão do autor. Um JPEG de 640×400 virou 400×400 no PHP 8.6. Os testes de avatar no PHP 8.3 continuaram passando
+- Revisão: Revisado pelo autor. Um JPEG de 640×400 virou 400×400 no PHP 8.6. Os testes de avatar no PHP 8.3 continuaram passando
 

@@ -65,14 +65,14 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Finalidade: começar o Libris com o starter oficial, sem montar o Inertia à mão.
 - Também houve auxílio no Docker Compose, nas credenciais do gateway e no layout da loja (cabeçalho Libris, páginas vazias de catálogo e sacola, avisos que somem).
 - Revisão: revisado pelo autor.
-- Nesta sessão, o MySQL do Compose passou a ser publicado em `127.0.0.1:3308`. A porta interna do serviço continua 3306. Revisão: pendente de revisão do autor.
-- Ticket 07: categorias e livros no banco, preço em centavos e capa só como caminho relativo. Revisão: pendente de revisão do autor.
-- Ticket 08: seeder idempotente com categorias, livros originais e duas capas geradas. Revisão: pendente de revisão do autor.
-- Menu da conta: avatar no cabeçalho, com painel, minha conta, configurações e sair. O rodapé deixa de mostrar Entrar para quem já está logado. Revisão: pendente de revisão do autor.
-- Hover do menu: Sair fica vermelho, e os botões do cabeçalho ganham um realce leve. Revisão: pendente de revisão do autor.
-- Foto do perfil: envio com corte e zoom, várias fotos guardadas, escolha da padrão e exclusão. Revisão: pendente de revisão do autor.
-- O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: pendente de revisão do autor.
+- Nesta sessão, o MySQL do Compose passou a ser publicado em `127.0.0.1:3308`. A porta interna do serviço continua 3306. Revisão: revisado pelo autor.
+- Ticket 07: categorias e livros no banco, preço em centavos e capa só como caminho relativo. Revisão: revisado pelo autor.
+- Ticket 08: seeder idempotente com categorias, livros originais e duas capas geradas. Revisão: revisado pelo autor.
+- Menu da conta: avatar no cabeçalho, com painel, minha conta, configurações e sair. O rodapé deixa de mostrar Entrar para quem já está logado. Revisão: revisado pelo autor.
+- Hover do menu: Sair fica vermelho, e os botões do cabeçalho ganham um realce leve. Revisão: revisado pelo autor.
+- Foto do perfil: envio com corte e zoom, várias fotos guardadas, escolha da padrão e exclusão. Revisão: revisado pelo autor.
+- O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: revisado pelo autor.
 
 ## Aplicação hospedada
 
-Não há deploy.
+https://libris.elianderg.tech/

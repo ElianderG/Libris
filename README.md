@@ -53,7 +53,135 @@ Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. A sacola fica na sessão: dá para juntar livros publicados, sem repetir o mesmo título, e o total usa o preço atual do banco. Na página do livro, **Adicionar à sacola** inclui o título e permanece ali. **Comprar agora** inclui o título e abre o checkout. Quem está logado copia o link desse livro com o próprio código em `?ref=`. Visitante vê o convite para criar conta. Em `/minha-conta/afiliado` a pessoa vê o código e a frase da comissão. Um `?ref=` válido grava o clique e o cookie `libris_ref` por 7 dias, sem mostrar erro. Código desconhecido ou o próprio código não grava clique. Confirmar essa sacola, com a conta autenticada, abre o checkout. Quem ainda não entrou vai ao login e volta com os mesmos livros. Com o Google configurado, entrar e criar conta também oferecem **Continuar com Google**. A conta nova não vira administradora. Se o e-mail já existe, entra nessa conta. Ao sair, o navegador esquece as páginas da conta. Sem autenticação, checkout, biblioteca, configurações e painel voltam ao login. **Pagar com Pix** grava um pedido `pending_payment` e uma tentativa de cobrança. Se o gateway falha, o pagamento fica `failed` e o pedido continua pendente. Em `/pedidos/{order}/pagamento`, o dono vê o status em português, o valor, a data e o id do gateway, e pode atualizar a consulta. Se a consulta falha, o último status permanece. Quando a consulta volta paga e o valor confere, o pedido e o pagamento ficam `paid` uma única vez. Se a última tentativa foi recusada, encerrada ou expirada e o pedido ainda espera pagamento, a página explica o que houve e oferece **Gerar novo Pix**. O histórico lista as tentativas, da mais nova para a mais antiga. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas em `public/covers`, pedidas em `/covers/{arquivo}`. Um desses livros fica oculto e não entra na vitrine. Em `/minha-conta/compras`, quem está logado vê só os próprios pedidos, do mais novo para o mais antigo. O comprovante mostra o preço da compra e as tentativas de Pix. Pedido que ainda espera Pix volta para a cobrança. Pedido pago aponta para `/biblioteca/{slug}`. Em `/biblioteca`, os pedidos pagos viram uma estante sem título repetido. `/biblioteca/{slug}` abre o texto inteiro só para quem comprou, mesmo se o livro sair da vitrine. A API da conta ainda não existe.
+### 1. Loja e catálogo
+
+A loja utiliza a identidade visual da **Libris te liberant**, com uma estrutura composta por:
+
+- Cabeçalho e busca visual;
+- Catálogo de livros;
+- Sacola de compras;
+- Acesso à conta do usuário;
+- Avisos de sucesso e erro.
+
+A página inicial apresenta os livros em destaque e uma seleção do catálogo.
+
+O catálogo exibe exclusivamente livros publicados e oferece:
+- Filtro por categoria;
+- Busca por título;
+- Ordenação dos resultados, com os parâmetros armazenados na URL.
+
+Cada livro publicado possui uma página individual em `/livros/{slug}`, que apresenta sua sinopse e os dois primeiros parágrafos do conteúdo.
+
+### 2. Sacola de compras e checkout
+
+A sacola é armazenada na sessão do usuário e permite adicionar livros publicados, sem duplicar títulos. O valor total é calculado com base nos preços atuais registrados no banco de dados.
+
+Na página de cada livro, estão disponíveis duas ações:
+
+- **Adicionar à sacola:** adiciona o livro à sacola e mantém o usuário na página atual.
+- **Comprar agora:** adiciona o livro à sacola e redireciona diretamente para o checkout.
+
+Ao confirmar a sacola:
+- Usuários autenticados são direcionados ao checkout.
+- Visitantes são redirecionados para o login e, após a autenticação, retornam ao checkout com os mesmos livros na sacola.
+
+### 3. Sistema de afiliados
+
+O sistema de afiliados permite que usuários autenticados compartilhem links personalizados dos livros.
+
+Na página do livro:
+- Usuários autenticados podem copiar o link de indicação, que contém seu código no parâmetro `?ref=`.
+- Visitantes recebem um convite para criar uma conta.
+
+Em `/minha-conta/afiliado`, o usuário autenticado pode consultar seu código de indicação e a descrição da comissão.
+
+**Rastreamento das indicações:**
+
+- Ao acessar um link com um `?ref=` válido, o sistema registra o clique e armazena o código no cookie `libris_ref`, com validade de 7 dias.
+- Códigos inexistentes ou pertencentes ao próprio usuário não geram registros de clique.
+- No momento da criação do pedido, o sistema atribui o afiliado correspondente ao cookie, desde que ele pertença a outra pessoa e ainda esteja dentro do prazo de validade.
+- Caso não exista um cookie válido, o afiliado permanece nulo.
+- Cliques expirados, autoindicações e códigos enviados diretamente pelo formulário do pedido não são considerados.
+
+### 4. Autenticação e conta do usuário
+
+O cadastro e o login originais do starter foram mantidos e integrados à identidade visual da loja.
+
+Quando o Google está configurado, ambas as páginas também oferecem a opção **Continuar com Google**.
+
+O fluxo de autenticação contempla as seguintes regras:
+
+- Novas contas não recebem permissões administrativas automaticamente.
+- Se o e-mail utilizado no login com Google já estiver cadastrado, o acesso é realizado na conta existente.
+- Ao encerrar a sessão, o navegador deixa de manter o acesso às páginas protegidas da conta.
+- Sem autenticação, as páginas de checkout, biblioteca, configurações e painel redirecionam o visitante para o login.
+
+Usuários autenticados acessam a conta por meio de um avatar no cabeçalho, que disponibiliza os seguintes atalhos:
+- Painel;
+- Biblioteca;
+- Configurações;
+- Sair.
+
+**Configurações de perfil:**
+
+Na página de configurações, o usuário pode enviar fotografias, ajustar o enquadramento e escolher qual imagem será utilizada como foto de perfil.
+
+### 5. Pagamentos via Pix
+
+Ao selecionar **Pagar com Pix**, o sistema cria um pedido com status `pending_payment` e registra uma tentativa de cobrança.
+
+O fluxo de pagamento contempla os seguintes cenários:
+
+- **Falha na criação da cobrança:** a tentativa recebe o status `failed`, mas o pedido permanece aguardando pagamento.
+- **Consulta de pagamento:** em `/pedidos/{order}/pagamento`, o proprietário do pedido pode visualizar o status em português, o valor, a data e o identificador do gateway.
+- **Atualização do status:** o usuário pode solicitar uma nova consulta ao gateway. Caso ela falhe, o último status conhecido é preservado.
+- **Confirmação do pagamento:** quando a consulta retorna o status de pagamento confirmado e o valor recebido corresponde ao valor do pedido, ambos são atualizados para `paid`, garantindo que a confirmação ocorra uma única vez.
+
+**Geração de um novo Pix:**
+
+Quando a última tentativa de pagamento foi recusada, encerrada ou expirou, e o pedido ainda está aguardando pagamento, a página apresenta uma explicação sobre o ocorrido e disponibiliza a opção **Gerar novo Pix**.
+
+O histórico de cobranças fica disponível na página do pedido, com as tentativas organizadas da mais recente para a mais antiga.
+
+### 6. Histórico de compras
+
+Em `/minha-conta/compras`, usuários autenticados podem consultar exclusivamente seus próprios pedidos, organizados do mais recente para o mais antigo.
+
+Cada pedido possui uma página de comprovante que apresenta:
+- Preço registrado no momento da compra;
+- Histórico das tentativas de pagamento via Pix.
+
+O comprovante também direciona o usuário conforme a situação do pedido:
+
+- **Pagamento pendente:** permite retornar à página de cobrança.
+- **Pagamento confirmado:** disponibiliza o acesso ao livro correspondente em `/biblioteca/{slug}`.
+
+### 7. Biblioteca digital
+
+A biblioteca reúne os livros adquiridos pelo usuário.
+
+Em `/biblioteca`, os pedidos com pagamento confirmado são organizados em uma estante digital, sem duplicação de títulos.
+
+Cada livro possui uma página individual em `/biblioteca/{slug}`, que disponibiliza seu conteúdo integral exclusivamente para usuários que realizaram a compra.
+
+O acesso permanece disponível mesmo que o livro deixe de ser publicado ou removido da vitrine da loja.
+
+### 8. Dados iniciais e seeders
+
+O comando `php artisan db:seed` carrega os dados iniciais necessários para demonstrar o funcionamento da loja:
+
+- 3 categorias;
+- 9 livros originais;
+- Preços armazenados em centavos;
+- 2 capas de livros armazenadas em `public/covers`.
+
+As capas são disponibilizadas publicamente por meio da rota `/covers/{arquivo}`.
+
+Um dos livros cadastrados permanece oculto e, portanto, não aparece na vitrine da loja.
+
+### 9. Pendências e limitações
+
+- A API da conta do usuário ainda não foi implementada.
 
 ## Uso de inteligência artificial
 
@@ -93,6 +221,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Ticket 22: leitura na biblioteca, só para quem pagou. Revisão: pendente de revisão do autor.
 - Ticket 23: link de indicação no livro e código na conta. Revisão: pendente de revisão do autor.
 - Ticket 24: clique do afiliado no cookie `libris_ref`. Revisão: pendente de revisão do autor.
+- Ticket 25: o pedido guarda o afiliado do cookie, não o `ref` do formulário. Revisão: pendente de revisão do autor.
 - Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada

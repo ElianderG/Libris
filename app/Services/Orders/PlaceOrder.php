@@ -2,6 +2,7 @@
 
 namespace App\Services\Orders;
 
+use App\Models\AffiliateClick;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -37,12 +38,14 @@ class PlaceOrder
                 $total += $product->price_cents;
             }
 
+            [$affiliateId, $affiliateCode] = $this->affiliateFor($user);
+
             $order = new Order;
             $order->user_id = $user->id;
             $order->status = Order::STATUS_PENDING_PAYMENT;
             $order->total_cents = $total;
-            $order->affiliate_id = null;
-            $order->affiliate_code = null;
+            $order->affiliate_id = $affiliateId;
+            $order->affiliate_code = $affiliateCode;
             $order->save();
 
             foreach ($products as $product) {
@@ -98,5 +101,36 @@ class PlaceOrder
         }
 
         return false;
+    }
+
+    /**
+     * @return array{0: int|null, 1: string|null}
+     */
+    private function affiliateFor(User $buyer): array
+    {
+        $token = request()->cookie('libris_ref');
+
+        if (! is_string($token) || $token === '') {
+            return [null, null];
+        }
+
+        $click = AffiliateClick::query()->where('token', $token)->first();
+        $days = max(1, (int) config('libris.affiliate.cookie_days'));
+
+        if ($click === null || $click->created_at === null || $click->created_at->lt(now()->subDays($days))) {
+            return [null, null];
+        }
+
+        if ($click->affiliate_user_id === $buyer->id) {
+            return [null, null];
+        }
+
+        $affiliate = $click->affiliate;
+
+        if ($affiliate->affiliate_code === '') {
+            return [null, null];
+        }
+
+        return [$affiliate->id, $affiliate->affiliate_code];
     }
 }

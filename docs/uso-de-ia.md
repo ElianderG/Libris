@@ -340,6 +340,14 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: um `?ref=` válido gravar o clique uma vez, guardar o cookie por 7 dias e seguir a página sem o parâmetro
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateClickTest` passou. O livro com `ref` válido criou o clique e o cookie; `ref` inválido não criou linha; o segundo código trocou o afiliado; o próprio código não gravou clique
 
+## 2026-11-27 — Ticket 25, indicação no pedido
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 25
+- Feito com auxílio: `PlaceOrder`
+- Finalidade: copiar para o pedido o afiliado do cookie `libris_ref` quando o clique é de outra pessoa e ainda está dentro de 7 dias
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateOrderTest` passou. Cookie de outra pessoa gravou o código da época; sem cookie, cookie próprio, clique velho e `ref` no formulário deixaram o afiliado nulo
+
 ## 2026-11-27 — Capas da vitrine
 
 - Ferramenta: Cursor, Grok 4.7

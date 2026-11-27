@@ -68,7 +68,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (associar a indicação ao pedido).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência e validação dos dados recebidos).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** média.
 **Depende de:** Ticket 12, Ticket 24.
 

@@ -1,15 +1,29 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import CartController from '@/actions/App/Http/Controllers/CartController';
 import CoverSlot from '@/components/store/CoverSlot.vue';
 import type { CatalogBook } from '@/components/store/BookCard.vue';
+import { register } from '@/routes';
 
-defineProps<{
+const props = defineProps<{
     book: CatalogBook & {
         description: string;
         preview: string;
     };
+    referralUrl: string | null;
 }>();
+
+const copied = ref(false);
+
+async function copyLink(): Promise<void> {
+    if (props.referralUrl === null || !navigator.clipboard) {
+        return;
+    }
+
+    await navigator.clipboard.writeText(props.referralUrl);
+    copied.value = true;
+}
 </script>
 
 <template>
@@ -54,6 +68,17 @@ defineProps<{
                         </button>
                     </Form>
                 </div>
+                <div v-if="referralUrl" class="mt-6 max-w-xl rounded-lg border border-border bg-card px-4 py-3">
+                    <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Indicar</p>
+                    <p class="mt-2 break-all text-sm text-foreground">{{ referralUrl }}</p>
+                    <button type="button" class="mt-3 text-sm text-foreground underline-offset-4 hover:underline" @click="copyLink">
+                        {{ copied ? 'Copiado' : 'Copiar' }}
+                    </button>
+                </div>
+                <p v-else class="mt-6 max-w-xl text-sm leading-6 text-foreground">
+                    Crie uma conta para indicar este livro.
+                    <Link :href="register()" class="underline underline-offset-4">Criar conta</Link>
+                </p>
             </div>
         </div>
 

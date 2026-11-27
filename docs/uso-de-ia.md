@@ -324,3 +324,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: listar uma vez cada livro de pedido pago e abrir o texto inteiro só para quem comprou, sem executar HTML do conteúdo
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=LibraryReadingTest` passou. A estante ficou com um título depois de duas compras; o texto completo abriu mesmo despublicado; visitante e quem não comprou receberam 403; o `<script>` não apareceu como HTML
 
+## 2026-11-27 — Ticket 23, link de indicação
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 23
+- Feito com auxílio: `BookController`, `Book.vue`, `Affiliate.vue` e o item Indicar no menu
+- Finalidade: quem está logado copiar o link do livro com o próprio `affiliate_code`, e a conta mostrar esse código
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateLinkTest` passou. O link do logado levou `?ref=` igual ao código do banco; o visitante não viu código alheio; a página da conta mostrou o código de quem entrou
+
+## 2026-11-27 — Ticket 24, clique do afiliado
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 24
+- Feito com auxílio: migration `affiliate_clicks` e o middleware `RememberAffiliate`
+- Finalidade: um `?ref=` válido gravar o clique uma vez, guardar o cookie por 7 dias e seguir a página sem o parâmetro
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateClickTest` passou. O livro com `ref` válido criou o clique e o cookie; `ref` inválido não criou linha; o segundo código trocou o afiliado; o próprio código não gravou clique
+

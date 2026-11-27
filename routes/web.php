@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/pedidos/{order}/pagamento', [CheckoutController::class, 'retry'])->name('payments.store');
     Route::get('/minha-conta/compras', [PurchaseController::class, 'index'])->name('purchases');
     Route::get('/minha-conta/compras/{order}', [PurchaseController::class, 'show'])->name('purchases.show');
+    Route::inertia('/minha-conta/afiliado', 'Affiliate')->name('affiliate');
 });
 
 Route::get('/biblioteca/{slug}', [LibraryController::class, 'show'])

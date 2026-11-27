@@ -25,6 +25,7 @@ yarn install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+php artisan storage:link
 yarn dev
 php artisan serve
 ```
@@ -51,7 +52,7 @@ Juntos Se Faz, em sandbox. A integração ainda não foi implementada.
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. O cadastro e o login do starter continuam dentro dessa moldura. Checkout, biblioteca e API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. O cadastro e o login do starter continuam dentro dessa moldura. O banco já guarda categoria e livro: preço em centavos, slug gerado no servidor e capa opcional em `storage/app/public/covers`. A vitrine ainda não lista esses livros. Checkout, biblioteca e API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -64,6 +65,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Também houve auxílio no Docker Compose, nas credenciais do gateway e no layout da loja (cabeçalho Libris, páginas vazias de catálogo e sacola, avisos que somem).
 - Revisão: revisado pelo autor.
 - Nesta sessão, o MySQL do Compose passou a ser publicado em `127.0.0.1:3308`. A porta interna do serviço continua 3306. Revisão: pendente de revisão do autor.
+- Ticket 07: categorias e livros no banco, preço em centavos e capa só como caminho relativo. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

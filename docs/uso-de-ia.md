@@ -116,3 +116,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o visitante não encontrar texto em inglês na loja
 - Revisão: Pendente de revisão do autor
 
+## 2026-11-27 — Ticket 07, categorias e livros
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 07
+- Feito com auxílio: migrations de `categories` e `products`, models, `ProductRules`, factories, pasta pública `covers` e `tests/Feature/CatalogSchemaTest.php`
+- Finalidade: a prateleira existir no banco, com preço em centavos, slug gerado no servidor e capa restrita a um caminho relativo
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSchemaTest` passou (7 testes). No MySQL local, as migrations subiram; um livro de prova se relacionou com a categoria; apagar a categoria com livro foi recusado; os índices de `products` ficaram em `slug`, `category_id`, `is_published` e `is_featured`. O registro de prova foi apagado em seguida
+

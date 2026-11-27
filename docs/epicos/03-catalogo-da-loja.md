@@ -11,7 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (Products e Categories).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência em banco de dados e validação).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 

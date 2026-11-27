@@ -66,7 +66,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (acessar os livros na plataforma, sem download manual).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência) e seção 7 (experiência do usuário).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** alta.
 **Depende de:** Ticket 10, Ticket 19.
 

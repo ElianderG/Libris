@@ -316,3 +316,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: o dono ver o preço congelado, todas as tentativas de Pix e, se o pedido estiver pago, o caminho para ler o livro
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseDetailTest` passou. O preço ficou em `R$ 37,90` depois de o produto mudar; as duas tentativas apareceram; o JSON cru não veio na resposta; outra conta recebeu 404; livro despublicado manteve o caminho `/biblioteca/{slug}`
 
+## 2026-11-27 — Ticket 22, leitura na biblioteca
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 22
+- Feito com auxílio: `LibraryController`, `Library.vue` e `LibraryBook.vue`
+- Finalidade: listar uma vez cada livro de pedido pago e abrir o texto inteiro só para quem comprou, sem executar HTML do conteúdo
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=LibraryReadingTest` passou. A estante ficou com um título depois de duas compras; o texto completo abriu mesmo despublicado; visitante e quem não comprou receberam 403; o `<script>` não apareceu como HTML
+

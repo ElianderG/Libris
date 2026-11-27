@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Env;
 
 uses(RefreshDatabase::class);
 
@@ -56,23 +57,38 @@ it('não deixa o perfil promover o cliente', function () {
 });
 
 it('cria o administrador só quando o e-mail e a senha existem', function () {
-    putenv('ADMIN_EMAIL=admin@libris.test');
-    putenv('ADMIN_PASSWORD');
+    $repository = Env::getRepository();
+    $originalEmail = $repository->get('ADMIN_EMAIL');
+    $originalPassword = $repository->get('ADMIN_PASSWORD');
 
-    $this->seed();
+    $restore = function () use ($repository, $originalEmail, $originalPassword): void {
+        is_string($originalEmail)
+            ? $repository->set('ADMIN_EMAIL', $originalEmail)
+            : $repository->clear('ADMIN_EMAIL');
 
-    expect(User::query()->where('is_admin', true)->exists())->toBeFalse();
+        is_string($originalPassword)
+            ? $repository->set('ADMIN_PASSWORD', $originalPassword)
+            : $repository->clear('ADMIN_PASSWORD');
+    };
 
-    putenv('ADMIN_PASSWORD=senha-segura');
+    try {
+        $repository->set('ADMIN_EMAIL', 'admin@libris.test');
+        $repository->clear('ADMIN_PASSWORD');
 
-    $this->seed();
+        $this->seed();
 
-    $admin = User::query()->where('email', 'admin@libris.test')->first();
+        expect(User::query()->where('is_admin', true)->exists())->toBeFalse();
 
-    expect($admin)->not->toBeNull()
-        ->and($admin->is_admin)->toBeTrue()
-        ->and($admin->affiliate_code)->not->toBeEmpty();
+        $repository->set('ADMIN_PASSWORD', 'senha-segura');
 
-    putenv('ADMIN_EMAIL');
-    putenv('ADMIN_PASSWORD');
+        $this->seed();
+
+        $admin = User::query()->where('email', 'admin@libris.test')->first();
+
+        expect($admin)->not->toBeNull()
+            ->and($admin->is_admin)->toBeTrue()
+            ->and($admin->affiliate_code)->not->toBeEmpty();
+    } finally {
+        $restore();
+    }
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +36,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/minha-conta/compras/{order}', [PurchaseController::class, 'show'])->name('purchases.show');
 });
 
+Route::get('/biblioteca/{slug}', [LibraryController::class, 'show'])
+    ->where('slug', '[a-z0-9\-]+')
+    ->name('library.show');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('/biblioteca', 'Library')->name('library');
+    Route::get('/biblioteca', [LibraryController::class, 'index'])->name('library');
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 

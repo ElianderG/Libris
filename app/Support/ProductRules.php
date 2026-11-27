@@ -66,6 +66,31 @@ class ProductRules
         return $cents >= 1 && $cents <= self::MAX_CENTS;
     }
 
+    public static function reaisToCents(string $value): ?int
+    {
+        $value = trim($value);
+
+        if (preg_match('/^\d{1,7}([.,]\d{1,2})?$/', $value) !== 1) {
+            return null;
+        }
+
+        $parts = explode('.', str_replace(',', '.', $value), 2);
+        $cents = ((int) $parts[0] * 100) + (int) str_pad($parts[1] ?? '', 2, '0');
+
+        if ($cents < 1 || $cents > self::MAX_CENTS) {
+            return null;
+        }
+
+        return $cents;
+    }
+
+    public static function centsToReais(int $cents): string
+    {
+        $cents = abs($cents);
+
+        return intdiv($cents, 100).','.str_pad((string) ($cents % 100), 2, '0', STR_PAD_LEFT);
+    }
+
     public static function parseCents(mixed $value): int
     {
         if (! self::isPositiveCents($value)) {

@@ -145,3 +145,26 @@
         @apply bg-background text-foreground;
     }
 }
+
+@media (max-width: 767px) {
+    .admin-sheet {
+        position: fixed;
+        top: var(--admin-header, 4.5rem);
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 30;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        background: var(--background);
+        transform: translateX(100%);
+    }
+
+    .admin-layout.is-open .admin-sheet {
+        transform: translateX(0);
+    }
+}
+
+body.admin-panel-open {
+    overflow: hidden;
+}

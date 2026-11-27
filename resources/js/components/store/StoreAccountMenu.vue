@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link, router, usePage } from '@inertiajs/vue3';
+import { CircleUser, LayoutDashboard, LogOut, Receipt, Settings, Share2 } from '@lucide/vue';
 import { computed } from 'vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -35,21 +36,36 @@ function clearSession(): void {
                 </AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-52">
+        <DropdownMenuContent align="end" class="w-56">
             <DropdownMenuItem v-if="user.is_admin" :as-child="true">
-                <Link class="w-full cursor-pointer" :href="adminHome()">Painel</Link>
+                <Link class="w-full cursor-pointer" :href="adminHome()">
+                    <LayoutDashboard />
+                    Painel
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
-                <Link class="w-full cursor-pointer" :href="library()">Minha conta</Link>
+                <Link class="w-full cursor-pointer" :href="library()">
+                    <CircleUser />
+                    Minha conta
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
-                <Link class="w-full cursor-pointer" :href="purchases()">Compras</Link>
+                <Link class="w-full cursor-pointer" :href="purchases()">
+                    <Receipt />
+                    Compras
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
-                <Link class="w-full cursor-pointer" :href="affiliate()">Indicar</Link>
+                <Link class="w-full cursor-pointer" :href="affiliate()">
+                    <Share2 />
+                    Indicar
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
-                <Link class="w-full cursor-pointer" :href="edit()">Configurações</Link>
+                <Link class="w-full cursor-pointer" :href="edit()">
+                    <Settings />
+                    Configurações
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -63,6 +79,7 @@ function clearSession(): void {
                     data-test="logout-button"
                     @click="clearSession"
                 >
+                    <LogOut class="text-current" />
                     Sair
                 </Link>
             </DropdownMenuItem>

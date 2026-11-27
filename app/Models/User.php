@@ -87,6 +87,30 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
+     * @return HasMany<AffiliateClick, $this>
+     */
+    public function affiliateClicks(): HasMany
+    {
+        return $this->hasMany(AffiliateClick::class, 'affiliate_user_id');
+    }
+
+    /**
+     * @return HasMany<Commission, $this>
+     */
+    public function commissions(): HasMany
+    {
+        return $this->hasMany(Commission::class, 'affiliate_user_id');
+    }
+
+    /**
+     * @return HasMany<Order, $this>
+     */
+    public function referredOrders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'affiliate_id');
+    }
+
+    /**
      * @return HasMany<UserAvatar, $this>
      */
     public function avatars(): HasMany

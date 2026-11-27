@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pedidos/{order}/pagamento', [CheckoutController::class, 'refresh'])->name('payments.refresh');
     Route::post('/checkout/pedidos/{order}/pagamento', [CheckoutController::class, 'retry'])->name('payments.store');
     Route::get('/minha-conta/compras', [PurchaseController::class, 'index'])->name('purchases');
+    Route::get('/minha-conta/compras/{order}', [PurchaseController::class, 'show'])->name('purchases.show');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -13,6 +13,7 @@ defineProps<{
         payment_status: string | null;
         payment_label: string | null;
         pix_url: string | null;
+        detail_url: string;
     }>;
 }>();
 
@@ -48,9 +49,9 @@ const statusClass: Record<string, string> = {
         <ul v-else class="mt-8 divide-y divide-border">
             <li v-for="order in orders" :key="order.id" class="py-5">
                 <p v-if="order.created_at" class="text-sm text-foreground/70">{{ order.created_at }}</p>
-                <p class="mt-1 font-serif text-2xl break-words text-foreground">
+                <Link :href="order.detail_url" class="mt-1 block font-serif text-2xl break-words text-foreground hover:text-primary">
                     {{ order.titles.join(', ') }}
-                </p>
+                </Link>
                 <p class="mt-2 text-sm font-medium text-foreground">{{ order.total }}</p>
                 <p class="mt-2 text-sm" :class="statusClass[order.status] ?? 'text-foreground'">
                     Pedido {{ order.status_label }}

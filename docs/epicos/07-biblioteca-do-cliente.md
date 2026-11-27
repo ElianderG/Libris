@@ -39,7 +39,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (detalhes de cada transação).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (exibição do status e consulta de pagamentos).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** alta.
 **Depende de:** Ticket 20.
 

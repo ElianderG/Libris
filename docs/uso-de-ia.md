@@ -308,3 +308,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a pessoa logada ver só os próprios pedidos, do mais novo para o mais antigo, e voltar ao Pix quando o pedido ainda espera pagamento
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseHistoryTest` passou. Cada conta viu só os próprios pedidos; o pendente apontou para o Pix; lista vazia abriu a página; visitante foi ao login
 
+## 2026-11-27 — Ticket 21, comprovante da compra
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 21
+- Feito com auxílio: `PurchaseController::show` e `Purchase.vue`
+- Finalidade: o dono ver o preço congelado, todas as tentativas de Pix e, se o pedido estiver pago, o caminho para ler o livro
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseDetailTest` passou. O preço ficou em `R$ 37,90` depois de o produto mudar; as duas tentativas apareceram; o JSON cru não veio na resposta; outra conta recebeu 404; livro despublicado manteve o caminho `/biblioteca/{slug}`
+

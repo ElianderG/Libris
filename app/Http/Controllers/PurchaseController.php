@@ -32,7 +32,7 @@ class PurchaseController extends Controller
     }
 
     /**
-     * @return array{id: int, created_at: string|null, titles: array<int, string>, total: string, status: string, status_label: string, payment_status: string|null, payment_label: string|null, pix_url: string|null}
+     * @return array{id: int, created_at: string|null, titles: array<int, string>, total: string, status: string, status_label: string, payment_status: string|null, payment_label: string|null, pix_url: string|null, detail_url: string}
      */
     private function row(Order $order): array
     {
@@ -50,7 +50,55 @@ class PurchaseController extends Controller
             'pix_url' => $order->status === Order::STATUS_PENDING_PAYMENT
                 ? route('payments.show', $order)
                 : null,
+            'detail_url' => route('purchases.show', $order),
         ];
+    }
+
+    public function show(Request $request, Order $order): Response
+    {
+        $user = $request->user();
+
+        if ($user === null || $order->user_id !== $user->id) {
+            abort(404);
+        }
+
+        $order->load(['items.product', 'payments']);
+
+        return Inertia::render('Purchase', [
+            'order' => [
+                'id' => $order->id,
+                'created_at' => $order->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
+                'status' => $order->status,
+                'status_label' => $this->orderLabel($order->status),
+                'total' => Money::format($order->total_cents),
+                'items' => $order->items->map(fn (OrderItem $item): array => [
+                    'title' => $item->title,
+                    'price' => Money::format($item->unit_price_cents),
+                    'read_url' => $this->readUrl($order, $item),
+                ])->values(),
+                'payments' => $order->payments->sortByDesc('id')->values()->map(fn (Payment $payment): array => [
+                    'created_at' => $payment->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y H:i'),
+                    'status' => $payment->status,
+                    'label' => $this->paymentLabel($payment->status),
+                    'gateway_id' => $payment->gateway_id,
+                ]),
+            ],
+        ]);
+    }
+
+    private function readUrl(Order $order, OrderItem $item): ?string
+    {
+        if ($order->status !== Order::STATUS_PAID) {
+            return null;
+        }
+
+        $slug = $item->product->slug;
+
+        if ($slug === '') {
+            return null;
+        }
+
+        return '/biblioteca/'.$slug;
     }
 
     private function orderLabel(string $status): string

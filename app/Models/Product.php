@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
@@ -88,15 +87,15 @@ class Product extends Model
      */
     public function toCatalogCard(): array
     {
+        $cover = is_string($this->cover_path) ? ProductRules::safeCoverPath($this->cover_path) : null;
+
         return [
             'slug' => $this->slug,
             'title' => $this->title,
             'author' => $this->author,
             'category' => $this->category->name,
             'price' => Money::format($this->price_cents),
-            'cover_url' => is_string($this->cover_path)
-                ? Storage::disk('public')->url($this->cover_path)
-                : null,
+            'cover_url' => $cover !== null ? '/'.$cover : null,
         ];
     }
 

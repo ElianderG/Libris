@@ -3,13 +3,10 @@
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
 it('semeia o catálogo e não duplica na segunda execução', function () {
-    Storage::fake('public');
-
     $this->seed();
 
     $ids = Product::query()->orderBy('id')->pluck('id');
@@ -39,8 +36,11 @@ it('semeia o catálogo e não duplica na segunda execução', function () {
     expect($covers)->toHaveCount(2);
 
     foreach ($covers as $product) {
-        Storage::disk('public')->assertExists((string) $product->cover_path);
-        expect(Storage::disk('public')->get((string) $product->cover_path))
+        $file = public_path((string) $product->cover_path);
+
+        expect($product->toCatalogCard()['cover_url'])->toBe('/'.$product->cover_path)
+            ->and(is_file($file))->toBeTrue()
+            ->and(file_get_contents($file))
             ->toContain('<svg')
             ->toContain($product->title);
     }

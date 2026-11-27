@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
 
 class CatalogSeeder extends Seeder
@@ -75,7 +75,8 @@ class CatalogSeeder extends Seeder
         SVG;
 
         $path = 'covers/'.$slug.'.svg';
-        Storage::disk('public')->put($path, trim($svg));
+        File::ensureDirectoryExists(public_path('covers'));
+        File::put(public_path($path), trim($svg));
 
         return $path;
     }

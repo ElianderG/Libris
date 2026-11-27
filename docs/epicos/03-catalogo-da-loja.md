@@ -29,7 +29,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 
 - Preço em centavos. R$ 49,90 vira `4990`. Nada de `decimal` ou `float` para dinheiro.
 - `content` é o material de leitura. Pode ser texto simples ou Markdown. Não é um arquivo para download.
-- Capa fica em `storage` público (`storage/app/public/covers`), servida por link. Sem capa, a tela usa um bloco com o título.
+- Capa fica em `public/covers` e a página pede `/covers/{arquivo}`. Sem capa, a tela usa um bloco com o título.
 - Índices em `slug`, `category_id`, `is_published` e `is_featured`.
 - Apagar categoria que ainda tem livro é proibido. A regra completa de cadastro fica no Ticket 28; o banco já impede o órfão com chave estrangeira `restrict`.
 

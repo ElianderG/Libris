@@ -340,3 +340,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: um `?ref=` válido gravar o clique uma vez, guardar o cookie por 7 dias e seguir a página sem o parâmetro
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateClickTest` passou. O livro com `ref` válido criou o clique e o cookie; `ref` inválido não criou linha; o segundo código trocou o afiliado; o próprio código não gravou clique
 
+## 2026-11-27 — Capas da vitrine
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: catálogo, capa na produção
+- Feito com auxílio: `CatalogSeeder`, `Product::toCatalogCard` e os SVG em `public/covers`
+- Finalidade: a capa deixar de passar por `/storage`, caminho que o nginx da produção recusa com 403
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. As duas capas foram gravadas em `public/covers` e a URL do card ficou `/covers/{arquivo}`
+

@@ -11,6 +11,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import GoogleLoginLink from '@/components/GoogleLoginLink.vue';
 import PasskeyVerify from '@/components/PasskeyVerify.vue';
 
 defineOptions({
@@ -37,6 +38,8 @@ defineProps<{
     </div>
 
     <PasskeyVerify />
+
+    <GoogleLoginLink class="mb-6" />
 
     <Form
         v-bind="store.form()"

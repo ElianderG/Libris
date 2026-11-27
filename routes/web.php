@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -17,6 +18,11 @@ Route::post('/carrinho', [CartController::class, 'store'])->name('cart.store');
 Route::delete('/carrinho/{slug}', [CartController::class, 'destroy'])
     ->where('slug', '[a-z0-9\-]+')
     ->name('cart.destroy');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');

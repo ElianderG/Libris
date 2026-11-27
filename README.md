@@ -45,7 +45,7 @@ A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8.
 
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Juntos Se Faz e o afiliado. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
+Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Google, o Juntos Se Faz e o afiliado. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `GOOGLE_REDIRECT_URI` ficam vazios no exemplo, exceto o redirect, que aponta para `/auth/google/callback`. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
 
 ## Gateway
 
@@ -53,7 +53,7 @@ Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. A sacola fica na sessão: dá para juntar livros publicados, sem repetir o mesmo título, e o total usa o preço atual do banco. Na página do livro, **Adicionar à sacola** inclui o título e permanece ali. **Comprar agora** inclui o título e abre o checkout. Confirmar essa sacola, com a conta autenticada, abre o checkout. Quem ainda não entrou vai ao login e volta com os mesmos livros. **Pagar com Pix** grava um pedido `pending_payment` e uma tentativa de cobrança. Se o gateway falha, o pagamento fica `failed` e o pedido continua pendente. Em `/pedidos/{order}/pagamento`, o dono vê o status em português, o valor, a data e o id do gateway, e pode atualizar a consulta. Se a consulta falha, o último status permanece. O pedido só fecha como pago no passo seguinte. Se a última tentativa foi recusada, encerrada ou expirada e o pedido ainda espera pagamento, a página explica o que houve e oferece **Gerar novo Pix**. O histórico lista as tentativas, da mais nova para a mais antiga. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto e não entra na vitrine. A biblioteca e a API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola, conta e avisos de sucesso e erro. A home mostra os livros em destaque e um recorte do catálogo. O catálogo lista só os publicados, com filtro por categoria, busca e ordenação na URL. Cada livro publicado abre em `/livros/{slug}`, com a sinopse e só os dois primeiros parágrafos. A sacola fica na sessão: dá para juntar livros publicados, sem repetir o mesmo título, e o total usa o preço atual do banco. Na página do livro, **Adicionar à sacola** inclui o título e permanece ali. **Comprar agora** inclui o título e abre o checkout. Confirmar essa sacola, com a conta autenticada, abre o checkout. Quem ainda não entrou vai ao login e volta com os mesmos livros. Com o Google configurado, entrar e criar conta também oferecem **Continuar com Google**. A conta nova não vira administradora. Se o e-mail já existe, entra nessa conta. Ao sair, o navegador esquece as páginas da conta. Sem autenticação, checkout, biblioteca, configurações e painel voltam ao login. **Pagar com Pix** grava um pedido `pending_payment` e uma tentativa de cobrança. Se o gateway falha, o pagamento fica `failed` e o pedido continua pendente. Em `/pedidos/{order}/pagamento`, o dono vê o status em português, o valor, a data e o id do gateway, e pode atualizar a consulta. Se a consulta falha, o último status permanece. O pedido só fecha como pago no passo seguinte. Se a última tentativa foi recusada, encerrada ou expirada e o pedido ainda espera pagamento, a página explica o que houve e oferece **Gerar novo Pix**. O histórico lista as tentativas, da mais nova para a mais antiga. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto e não entra na vitrine. A biblioteca e a API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -72,17 +72,19 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Hover do menu: Sair fica vermelho, e os botões do cabeçalho ganham um realce leve. Revisão: revisado pelo autor.
 - Foto do perfil: envio com corte e zoom, várias fotos guardadas, escolha da padrão e exclusão. Revisão: revisado pelo autor.
 - O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: revisado pelo autor.
-- Ticket 09: vitrine com destaques e catálogo filtrado na URL. Revisão: pendente de revisão do autor.
-- Ticket 10: página do livro em `/livros/{slug}`, com prévia cortada no servidor. Revisão: pendente de revisão do autor.
-- Ticket 11: sacola na sessão, com total lido do banco. Revisão: pendente de revisão do autor.
-- Ticket 12: pedido e itens com preço congelado, sem chamar o gateway. Revisão: pendente de revisão do autor.
-- Ticket 13: tela de checkout, com volta ao login e um único pedido em cliques repetidos. Revisão: pendente de revisão do autor.
-- Ticket 14: cliente HTTP do Juntos Se Faz. Revisão: pendente de revisão do autor.
-- Ticket 15: cobrança Pix do pedido, com nova tentativa se a anterior falhar. Revisão: pendente de revisão do autor.
-- Ticket 16: página do pagamento com consulta ao gateway e status em português. Revisão: pendente de revisão do autor.
-- Ticket 17: nova tentativa de Pix na mesma página, com a frase do erro e o histórico. Revisão: pendente de revisão do autor.
-- Página do livro: **Adicionar à sacola** permanece na página e **Comprar agora** abre o checkout. Revisão: pendente de revisão do autor.
-- Épico 12: plano da Pagsmile no mesmo checkout, ainda sem código. Revisão: pendente de revisão do autor.
+- Ticket 09: vitrine com destaques e catálogo filtrado na URL. Revisão: revisado pelo autor.
+- Ticket 10: página do livro em `/livros/{slug}`, com prévia cortada no servidor. Revisão: revisado pelo autor.
+- Ticket 11: sacola na sessão, com total lido do banco. Revisão: revisado pelo autor.
+- Ticket 12: pedido e itens com preço congelado, sem chamar o gateway. Revisão: revisado pelo autor.
+- Ticket 13: tela de checkout, com volta ao login e um único pedido em cliques repetidos. Revisão: revisado pelo autor.
+- Ticket 14: cliente HTTP do Juntos Se Faz. Revisão: revisado pelo autor.
+- Ticket 15: cobrança Pix do pedido, com nova tentativa se a anterior falhar. Revisão: revisado pelo autor.
+- Ticket 16: página do pagamento com consulta ao gateway e status em português. Revisão: revisado pelo autor.
+- Ticket 17: nova tentativa de Pix na mesma página, com a frase do erro e o histórico. Revisão: revisado pelo autor.
+- Página do livro: **Adicionar à sacola** permanece na página e **Comprar agora** abre o checkout. Revisão: revisado pelo autor.
+- Épico 12: plano da Pagsmile no mesmo checkout, ainda sem código. Revisão: revisado pelo autor.
+- Sair esquece o histórico do navegador, e página autenticada não fica em cache. Revisão: revisado pelo autor.
+- Login com Google: cria a conta ou entra na que já tem o mesmo e-mail, sem promover administrador. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

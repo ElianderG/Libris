@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'appearance' => $request->cookie('appearance') ?? 'system',
+            'googleLogin' => filled(config('services.google.client_id')) && filled(config('services.google.client_secret')),
         ];
     }
 }

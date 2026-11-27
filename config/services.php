@@ -35,6 +35,12 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
+
     'juntos_se_faz' => [
         'base_url' => env('JUNTOS_SE_FAZ_BASE_URL'),
         'token' => env('JUNTOS_SE_FAZ_TOKEN'),

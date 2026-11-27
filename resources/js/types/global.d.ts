@@ -25,6 +25,7 @@ declare module '@inertiajs/core' {
                 error: string | null;
             };
             appearance: 'light' | 'dark' | 'system';
+            googleLogin: boolean;
             [key: string]: unknown;
         };
     }

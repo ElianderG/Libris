@@ -67,4 +67,19 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | History
+    |--------------------------------------------------------------------------
+    |
+    | Encrypted history keeps authenticated pages out of the browser's back
+    | stack after logout. clearHistory drops the key, so the back button has
+    | to ask the server again.
+    |
+    */
+
+    'history' => [
+        'encrypt' => true,
+    ],
+
 ];

@@ -170,7 +170,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 09
 - Feito com auxílio: `Money`, a listagem pública em `Product`, home, catálogo e `BookCard`
 - Finalidade: a home mostrar só destaques publicados e o catálogo filtrar por categoria, texto e preço, sem enviar o texto do livro
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogListingTest` passou. A home no ar mostrou *A janela do terceiro andar* a `R$ 37,90` e escondeu o livro não publicado. `/catalogo?categoria=ensaios&q=mesa` mostrou só *Notas sobre mesas vazias* a `R$ 9,90`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CatalogListingTest` passou. A home no ar mostrou *A janela do terceiro andar* a `R$ 37,90` e escondeu o livro não publicado. `/catalogo?categoria=ensaios&q=mesa` mostrou só *Notas sobre mesas vazias* a `R$ 9,90`
 
 ## 2026-11-27 — Ticket 10, página do livro
 
@@ -178,7 +178,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 10
 - Feito com auxílio: rota `books.show`, `BookController`, `readingPreview` em `Product`, `Book.vue` e o link no `BookCard`
 - Finalidade: abrir o livro publicado pela slug, com capa ou fallback, e enviar só os dois primeiros parágrafos
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=BookPageTest` passou. O livro do seed abre a `R$ 37,90`; a resposta não traz o terceiro parágrafo; slug inválida e o livro oculto respondem 404
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=BookPageTest` passou. O livro do seed abre a `R$ 37,90`; a resposta não traz o terceiro parágrafo; slug inválida e o livro oculto respondem 404
 
 ## 2026-11-27 — Ticket 11, sacola
 
@@ -186,7 +186,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 11
 - Feito com auxílio: `Cart`, `CartController`, a página da sacola e o botão em `Book.vue`
 - Finalidade: guardar livros publicados na sessão, sem repetir título, e mostrar o total com o preço atual do banco
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CartTest` passou. Dois livros somam `R$ 62,90`; o mesmo título não duplica; o não publicado não entra; mudar o preço no banco muda o total
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CartTest` passou. Dois livros somam `R$ 62,90`; o mesmo título não duplica; o não publicado não entra; mudar o preço no banco muda o total
 
 ## 2026-11-27 — Ticket 12, pedido
 
@@ -194,7 +194,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 12
 - Feito com auxílio: migrations de `orders` e `order_items`, models e `PlaceOrder`
 - Finalidade: gravar a sacola autenticada como pedido `pending_payment`, com título e preço copiados, e esvaziar a sessão só depois do commit
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PlaceOrderTest` passou. O total ficou `6290` depois de o livro mudar para `1000`; sacola vazia e falha no meio não deixaram pedido
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PlaceOrderTest` passou. O total ficou `6290` depois de o livro mudar para `1000`; sacola vazia e falha no meio não deixaram pedido
 
 ## 2026-11-27 — Ticket 13, checkout
 
@@ -202,7 +202,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 13
 - Feito com auxílio: página de checkout, volta do login para a URL pretendida e a trava de pedido repetido em `PlaceOrder`
 - Finalidade: quem tem conta e sacola rever o total, confirmar nome e e-mail e gravar um único pedido de teste
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CheckoutTest` passou. O visitante voltou ao checkout com o mesmo livro; o segundo envio não criou outro pedido; nome vazio não gravou pedido
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CheckoutTest` passou. O visitante voltou ao checkout com o mesmo livro; o segundo envio não criou outro pedido; nome vazio não gravou pedido
 
 ## 2026-11-27 — Ticket 14, cliente do gateway
 
@@ -210,7 +210,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 14
 - Feito com auxílio: `JuntosSeFazClient`, `GatewayException` e `GatewayPayment`
 - Finalidade: concentrar a chamada HTTP do Juntos Se Faz, com timeout, status traduzido e o valor em reais num método só, sem vazar o token
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou. Criação, consulta, timeout, HTTP 422 e status desconhecido foram cobertos com `Http::fake`; o token não apareceu na exceção nem no log
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou. Criação, consulta, timeout, HTTP 422 e status desconhecido foram cobertos com `Http::fake`; o token não apareceu na exceção nem no log
 
 ## 2026-11-27 — Cliente alinhado à documentação do gateway
 
@@ -218,7 +218,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 14
 - Feito com auxílio: `JuntosSeFazClient`, `GatewayPayment` e `.env.example`
 - Finalidade: seguir a referência oficial em `https://www.juntosefaz.com.br/gateway/docs`: base `/gateway/api/v1`, `POST /payments` com `amount` numérico em reais, `reference` e `pix_code`, e status `approved`/`declined` traduzidos
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou de novo, agora contra `POST /payments`, `amount` 49.9 e status `approved` traduzido para `paid`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=JuntosSeFazClientTest` passou de novo, agora contra `POST /payments`, `amount` 49.9 e status `approved` traduzido para `paid`
 
 ## 2026-11-27 — Ticket 15, cobrança Pix
 
@@ -226,7 +226,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 15
 - Feito com auxílio: migration `payments`, `ChargeOrder` e a página do pedido depois do checkout
 - Finalidade: gravar a tentativa de Pix com o total do pedido, cancelar a pendência anterior e marcar `failed` se o gateway não responder
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ChargeOrderTest` passou. Sucesso preenche `gateway_id`; falha mantém o pedido pendente; a segunda chamada abre outra linha; pedido alheio ou pago é recusado
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ChargeOrderTest` passou. Sucesso preenche `gateway_id`; falha mantém o pedido pendente; a segunda chamada abre outra linha; pedido alheio ou pago é recusado
 
 ## 2026-11-27 — Ticket 16, status do Pix
 
@@ -234,7 +234,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 16
 - Feito com auxílio: `RefreshPayment`, a rota `/pedidos/{order}/pagamento` e `CheckoutPayment.vue`
 - Finalidade: consultar o gateway ao abrir e no botão, mostrar o status em português e manter o último status se a rede falhar
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PaymentStatusTest` passou. A consulta paga não fecha o pedido; o botão consulta de novo e o redirect seguinte não consulta; outra conta recebe 404; timeout mantém o status pendente
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PaymentStatusTest` passou. A consulta paga não fecha o pedido; o botão consulta de novo e o redirect seguinte não consulta; outra conta recebe 404; timeout mantém o status pendente
 
 ## 2026-11-27 — Ticket 17, nova tentativa de Pix
 
@@ -242,7 +242,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 17
 - Feito com auxílio: `CheckoutController`, `CheckoutPayment.vue` e `PaymentRetryTest`
 - Finalidade: explicar Pix recusado, encerrado ou expirado, gerar outra cobrança no mesmo pedido e listar as tentativas sem apagar as antigas
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PaymentRetryTest` passou. O Pix recusado abre outra linha e o histórico marca a nova como ativa; pedido pago não mostra o botão e o POST não cria pagamento; encerrado e expirado mostram a frase correspondente
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PaymentRetryTest` passou. O Pix recusado abre outra linha e o histórico marca a nova como ativa; pedido pago não mostra o botão e o POST não cria pagamento; encerrado e expirado mostram a frase correspondente
 
 ## 2026-11-27 — Sacola e comprar agora
 
@@ -250,7 +250,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: página do livro
 - Feito com auxílio: `CartController` e `Book.vue`
 - Finalidade: **Adicionar à sacola** incluir o livro e permanecer na página; **Comprar agora** incluir o livro e abrir o checkout
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CartTest` passou. Adicionar volta para a página do livro; comprar agora redireciona ao checkout com o livro na sacola
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CartTest` passou. Adicionar volta para a página do livro; comprar agora redireciona ao checkout com o livro na sacola
 
 ## 2026-11-27 — Épico 12, Pagsmile
 
@@ -258,5 +258,21 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: planejamento do épico 12
 - Feito com auxílio: `docs/epicos/12-pagsmile.md` e a ordem no índice
 - Finalidade: descrever a segunda cobrança Pix, no sandbox da Pagsmile, reusando o checkout e a confirmação que já existem
-- Revisão: Pendente de revisão do autor. Nenhum código da aplicação foi gerado nesta etapa
+- Revisão: Revisado pelo autor. Nenhum código da aplicação foi gerado nesta etapa
+
+## 2026-11-27 — Voltar depois de sair
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: autenticação
+- Feito com auxílio: histórico criptografado do Inertia, `LogoutResponse` e `PreventCachingAuthenticatedResponses`
+- Finalidade: o botão voltar, depois de sair, não reabrir uma página da conta; visitante sem sessão cai no login
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AuthenticationTest` passou. A biblioteca autenticada veio com `Cache-Control: no-store, private`; depois de sair, a home pediu para limpar o histórico e biblioteca, checkout, configurações e painel redirecionaram ao login
+
+## 2026-11-27 — Login com Google
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: autenticação
+- Feito com auxílio: `GoogleAuthController`, coluna `google_id`, botão nas telas de entrar e criar conta
+- Finalidade: entrar com a conta do Google, criar a conta se o e-mail for novo e reaproveitar a conta se o e-mail já existir, sem tornar a pessoa administradora
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=GoogleLoginTest` passou. Conta nova fica verificada e sem `is_admin`; e-mail existente não duplica; e-mail não confirmado pelo Google não entra; conta com segundo fator para no desafio
 

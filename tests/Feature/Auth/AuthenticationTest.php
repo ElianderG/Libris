@@ -69,11 +69,25 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $this->actingAs($user)
+            ->get(route('library'))
+            ->assertOk()
+            ->assertHeader('Cache-Control', 'no-store, private');
+
         $response = $this->actingAs($user)->post(route('logout'));
 
         $response->assertRedirect(route('home'));
 
         $this->assertGuest();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('"clearHistory":true', false);
+
+        $this->get(route('library'))->assertRedirect(route('login'));
+        $this->get(route('checkout'))->assertRedirect(route('login'));
+        $this->get(route('profile.edit'))->assertRedirect(route('login'));
+        $this->get(route('admin.home'))->assertRedirect(route('login'));
     }
 
     public function test_users_are_rate_limited()

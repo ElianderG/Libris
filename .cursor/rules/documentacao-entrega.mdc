@@ -1,0 +1,55 @@
+---
+description: Mantém o README de entrega, o registro de uso de IA e o .env.example alinhados ao desafio
+alwaysApply: true
+---
+
+# Documentação de entrega
+
+O `README.md` da raiz é o documento que o avaliador lê. Ao mudar comportamento, execução, variável de ambiente, gateway, API ou funcionalidade, atualize a documentação no mesmo turno.
+
+Se o README ainda não existir, registre o trabalho em `docs/uso-de-ia.md`. Crie o README no momento em que o projeto Laravel passar a existir e mantenha a seção de IA igual ao registro.
+
+## O README contém
+
+- Nome e descrição do projeto.
+- Objetivo da aplicação.
+- Tecnologias utilizadas.
+- Instruções de execução local, com Yarn no front (`yarn`, `yarn dev`). Sem comando npm.
+- Variáveis de ambiente, apontando para o `.env.example`.
+- Gateway escolhido: Juntos Se Faz, em sandbox.
+- Explicação da integração com o gateway.
+- Funcionalidades principais, só as que existem.
+- Uso de inteligência artificial.
+- Link da aplicação hospedada, ou a frase de que não há deploy.
+
+Credencial, token e senha não entram no Git. Variável nova ganha uma chave vazia no `.env.example`.
+
+## Uso de IA
+
+Quando o agente criar ou alterar código, teste ou documentação de comportamento, acrescente um item em `docs/uso-de-ia.md` e atualize a seção correspondente do README.
+
+Cada item leva somente o que aconteceu:
+
+- Ferramenta e modelo desta sessão.
+- Etapa (épico, ticket ou área).
+- Arquivos ou funcionalidade feitos com auxílio.
+- Finalidade.
+- Revisão: comando de teste ou checagem realmente feita. Se o autor ainda não revisou, escrever `Pendente de revisão do autor`. Não inventar teste, revisão nem domínio do código.
+
+Sem uso de IA no projeto, o README diz isso numa frase. Não usar um parágrafo genérico copiado para o repositório inteiro.
+
+Exemplo:
+
+```markdown
+## 2026-11-27 — Catálogo
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 09
+- Feito com auxílio: `ProductController`, `Catalogo.vue`
+- Finalidade: listar só livros publicados e filtrar por categoria
+- Revisão: Pendente de revisão do autor
+```
+
+## API da conta
+
+Mudou `/api/v1` ou o fluxo da chave nas configurações: atualize `docs/api.md` no mesmo turno. O README segue apontando para esse arquivo.

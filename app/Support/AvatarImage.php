@@ -18,7 +18,7 @@ class AvatarImage
         $jpeg = self::squareJpeg($file);
         $path = 'avatars/'.$user->id.'/'.Str::uuid()->toString().'.jpg';
 
-        Storage::disk('public')->put($path, $jpeg);
+        Storage::disk('avatars')->put($path, $jpeg);
 
         return $user->avatars()->create([
             'path' => $path,

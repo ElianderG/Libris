@@ -5,6 +5,8 @@
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage
+/public/avatars/*
+!/public/avatars/.gitignore
 /storage/*.key
 /storage/pail
 /resources/js/actions

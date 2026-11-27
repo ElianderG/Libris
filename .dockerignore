@@ -6,6 +6,8 @@ vendor
 public/build
 public/hot
 public/storage
+public/avatars
+storage/app/public/avatars
 storage/logs
 storage/framework/cache/data
 storage/framework/sessions

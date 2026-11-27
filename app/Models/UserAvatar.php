@@ -31,19 +31,23 @@ class UserAvatar extends Model
 
     public function url(): string
     {
-        return Storage::disk('public')->url($this->path);
+        if (preg_match('#^avatars/[1-9][0-9]*/[0-9a-f-]{36}\.jpg$#', $this->path) !== 1) {
+            return '';
+        }
+
+        return '/'.$this->path;
     }
 
     protected static function booted(): void
     {
         static::deleting(function (UserAvatar $avatar): void {
-            $prefix = 'avatars/'.$avatar->user_id.'/';
+            $prefix = 'avatars/'.(int) $avatar->user_id.'/';
 
             if (! str_starts_with($avatar->path, $prefix) || str_contains($avatar->path, '..')) {
                 return;
             }
 
-            Storage::disk('public')->delete($avatar->path);
+            Storage::disk('avatars')->delete($avatar->path);
         });
     }
 }

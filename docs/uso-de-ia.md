@@ -356,3 +356,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a capa deixar de passar por `/storage`, caminho que o nginx da produção recusa com 403
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. As duas capas foram gravadas em `public/covers` e a URL do card ficou `/covers/{arquivo}`
 
+## 2026-11-27 — Foto do perfil na produção
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: configurações do perfil
+- Feito com auxílio: disco `avatars`, `AvatarImage`, `UserAvatar` e o teste de upload
+- Finalidade: a foto ser pedida em `/avatars/{arquivo}`, no mesmo site, em vez de uma URL absoluta em `/storage`
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A URL ficou `/avatars/{arquivo}`
+

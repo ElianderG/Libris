@@ -11,4 +11,9 @@ if [ ! -e public/storage ]; then
     php artisan storage:link --no-interaction
 fi
 
+if [ -d storage/app/public/avatars ]; then
+    mkdir -p public/avatars
+    cp -an storage/app/public/avatars/. public/avatars/
+fi
+
 exec php artisan serve --host=0.0.0.0 --port=8000 --no-reload

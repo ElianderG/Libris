@@ -2,6 +2,15 @@
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
+defineProps<{
+    commissions: Array<{
+        created_at: string | null;
+        order_id: number;
+        base: string;
+        amount: string;
+    }>;
+}>();
+
 const page = usePage();
 const code = computed(() => {
     const value = page.props.auth.user?.affiliate_code;
@@ -37,5 +46,18 @@ async function copyCode(): Promise<void> {
         >
             {{ copied ? 'Copiado' : 'Copiar código' }}
         </button>
+
+        <h2 class="mt-10 font-serif text-2xl text-foreground">Comissões</h2>
+        <p v-if="commissions.length === 0" class="mt-3 text-sm text-foreground">
+            Nenhuma comissão confirmada ainda.
+        </p>
+        <ul v-else class="mt-4 divide-y divide-border">
+            <li v-for="commission in commissions" :key="commission.order_id" class="py-4 text-sm text-foreground">
+                <p v-if="commission.created_at">{{ commission.created_at }}</p>
+                <p class="mt-1">Pedido {{ commission.order_id }}</p>
+                <p class="mt-1">Base {{ commission.base }}</p>
+                <p class="mt-1 font-medium">Comissão {{ commission.amount }}</p>
+            </li>
+        </ul>
     </section>
 </template>

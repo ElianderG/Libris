@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (Products e Categories).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência em banco de dados e validação).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 
@@ -45,6 +46,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (catálogo de livros digitais).
 **Menções na documentação:** `Desafio Técnico`, seção 11 (aplicação simples e funcional) e seção 10 (execução local).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 07.
 
@@ -72,6 +74,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (home, catálogo, categorias e filtros).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface funcional e responsiva).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 04, Ticket 08.
 
@@ -101,6 +104,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (página individual: descrição, capa, autor e preço).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (formulário para iniciar uma transação entra no épico seguinte; a página do produto é o ponto de partida).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 09.
 

@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (compra de produtos digitais).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface para iniciar uma transação e feedback visual).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 10.
 
@@ -39,6 +40,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (Orders separados de Payments; OrderItems).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência, validação e criação de pagamentos — o pagamento em si é o épico 05).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 05, Ticket 11.
 
@@ -74,6 +76,7 @@ Serviço `PlaceOrder` que, dentro de uma transação de banco, cria o pedido `pe
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (checkout com Pix).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (formulário para iniciar a transação, validação, tratamento de erros e feedback visual).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 06, Ticket 12.
 

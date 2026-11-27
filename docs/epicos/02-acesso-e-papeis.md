@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (área do cliente).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (autenticação de usuários).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 01, Ticket 04.
 
@@ -40,6 +41,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (área do cliente e painel administrativo).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (autenticação) e seção 4 (validação dos dados).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 05.
 

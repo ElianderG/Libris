@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (arquitetura).
 **Menções na documentação:** `Desafio Técnico`, seção 5 (liberdade tecnológica) e seção 10 (execução local).
 
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** nenhum.
 
@@ -41,6 +42,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 4 (Docker como prioridade média).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (Docker e Docker Compose) e seção 10 (instruções de execução local).
 
+**Status:** Pendente
 **Prioridade:** média.
 **Depende de:** Ticket 01.
 
@@ -68,6 +70,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (gateway).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (armazenamento seguro das credenciais) e seção 10 (`.env.example`, sem segredos no repositório).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 
@@ -95,6 +98,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, abertura (identidade ligada a livros; nomes Libris, Lumi, Folium, Letria).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface funcional e responsiva) e seção 7 (criatividade e experiência do usuário, 10%).
 
+**Status:** Pendente
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 01.
 

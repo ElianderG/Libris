@@ -27,3 +27,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Feito com auxílio: projeto criado com `laravel new libris --vue --pest --database=mysql --no-interaction` e movido para a raiz. Ajustes depois do instalador: nome Libris, locale `pt_BR`, fuso `America/Sao_Paulo`, scripts do Composer no Yarn, pastas `app/Services/Payments` e `app/Policies`, `README.md` e `.nvmrc`
 - Finalidade: iniciar o Libris com o starter oficial de Vue e Inertia
 - Revisão: Pendente de revisão do autor. O `pest --drift` do instalador falhou e o plugin temporário foi removido. O instalador gravou SQLite mesmo com `--database=mysql`
+
+## 2026-11-27 — Status dos tickets
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: planejamento
+- Feito com auxílio: campo **Status** em todos os tickets de `docs/epicos/`
+- Finalidade: distinguir o que já foi feito do que ainda está pendente. O Ticket 01 ficou `Concluído`; os demais, `Pendente`
+- Revisão: Pendente de revisão do autor

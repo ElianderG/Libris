@@ -13,6 +13,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (painel administrativo).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (interface funcional) e seção 6 (autenticação).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 06, Ticket 04.
 
@@ -39,6 +40,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (cadastro e edição de produtos e categorias).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (validação dos dados recebidos e persistência).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 07, Ticket 27.
 
@@ -70,6 +72,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (usuários, pedidos e histórico de pagamentos).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (consulta de pagamentos) e seção 6 (histórico de transações).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 19, Ticket 27.
 
@@ -98,6 +101,7 @@ Todas as rotas deste épico ficam atrás do middleware do Ticket 06.
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (indicadores de vendas e gerenciamento de afiliados) e seção 2 (histórico do afiliado).
 **Menções na documentação:** `Desafio Técnico`, seção 7 (funcionalidade) e seção 6 (histórico).
 
+**Status:** Pendente
 **Prioridade:** média. Primeiro candidato a corte se o prazo apertar.
 **Depende de:** Ticket 26, Ticket 27.
 

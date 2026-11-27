@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (histórico de compras e status dos pagamentos).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (histórico de transações) e seção 4 (consulta de pagamentos e exibição de status).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 19.
 
@@ -38,6 +39,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (detalhes de cada transação).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (exibição do status e consulta de pagamentos).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 20.
 
@@ -64,6 +66,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (acessar os livros na plataforma, sem download manual).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência) e seção 7 (experiência do usuário).
 
+**Status:** Pendente
 **Prioridade:** alta.
 **Depende de:** Ticket 10, Ticket 19.
 

@@ -11,6 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (link exclusivo com `?ref=`).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (diferenciais; autenticação já usada aqui) e seção 5 (regras de negócio a critério do candidato).
 
+**Status:** Pendente
 **Prioridade:** média.
 **Depende de:** Ticket 05, Ticket 10.
 
@@ -37,6 +38,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (identificar o afiliado e registrar a origem) e seção 3 (`AffiliateClicks`).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência e validação).
 
+**Status:** Pendente
 **Prioridade:** média.
 **Depende de:** Ticket 23.
 
@@ -66,6 +68,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (associar a indicação ao pedido).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência e validação dos dados recebidos).
 
+**Status:** Pendente
 **Prioridade:** média.
 **Depende de:** Ticket 12, Ticket 24.
 
@@ -93,6 +96,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (calcular e registrar a comissão depois da confirmação; sem saque).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência) e seção 6 (histórico de transações, aplicado também ao afiliado).
 
+**Status:** Pendente
 **Prioridade:** média.
 **Depende de:** Ticket 19, Ticket 25.
 

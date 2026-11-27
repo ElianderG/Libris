@@ -7,6 +7,8 @@ alwaysApply: true
 
 O `README.md` da raiz é o documento que o avaliador lê. Ao mudar comportamento, execução, variável de ambiente, gateway, API ou funcionalidade, atualize a documentação no mesmo turno.
 
+Ao concluir um ticket de `docs/epicos/`, troque o **Status** dele de `Pendente` para `Concluído`.
+
 Se o README ainda não existir, registre o trabalho em `docs/uso-de-ia.md`. Crie o README no momento em que o projeto Laravel passar a existir e mantenha a seção de IA igual ao registro.
 
 ## O README contém

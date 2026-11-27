@@ -6,6 +6,8 @@ Stack fechada: Laravel (starter oficial com Inertia e Vue 3), MySQL 8, gateway J
 
 Não há transcrição de reunião. Cada ticket aponta a seção do arquivo `Desafio Técnico` e o trecho da proposta de produto que justificam a tarefa.
 
+Cada ticket tem **Status:** `Pendente` ou `Concluído`. Ao encerrar a implementação, o status do ticket muda no mesmo turno.
+
 ## Ordem de implementação
 
 Faça um épico por vez, na ordem abaixo. Dentro do épico, siga o número do ticket.

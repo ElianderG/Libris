@@ -256,6 +256,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Textos da loja e do painel: saíram as explicações de sandbox, o identificador e o JSON da cobrança, e os avisos de ambiente de teste. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou. `yarn types:check` passou.
 - Ticket 38: o checkout escolhe Juntos Se Faz ou Pagsmile. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou.
 - Ticket 39: a consulta e o aviso da Pagsmile fecham o pedido pela mesma confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes).
+- Mapa de autorização em `docs/autorizacao.md`: onde usar middleware, gate e policy. Revisão: pendente de revisão do autor. Nenhum código de acesso foi alterado.
 
 ## Aplicação hospedada
 

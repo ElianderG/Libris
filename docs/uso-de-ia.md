@@ -500,3 +500,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a página consultar a Pagsmile e o aviso assinado confirmar o pedido uma vez, só com o valor igual ao da tentativa
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes)
 
+## 2026-11-27 — Mapa de autorização
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: definição de Gate e Policy, antes de implementar
+- Feito com auxílio: `docs/autorizacao.md`
+- Finalidade: definir onde entra middleware, o gate `access-admin` e as policies de livro, pedido, categoria, usuário, avatar e chave da API
+- Revisão: Pendente de revisão do autor
+

@@ -348,6 +348,14 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: copiar para o pedido o afiliado do cookie `libris_ref` quando o clique é de outra pessoa e ainda está dentro de 7 dias
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateOrderTest` passou. Cookie de outra pessoa gravou o código da época; sem cookie, cookie próprio, clique velho e `ref` no formulário deixaram o afiliado nulo
 
+## 2026-11-27 — Ticket 26, comissão
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 26
+- Feito com auxílio: migration `commissions`, `RecordCommission` e a lista em `Affiliate.vue`
+- Finalidade: gravar uma comissão única quando o Pix confirma um pedido com afiliado, arredondada para baixo, e mostrá-la em Indicar
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CommissionTest` passou. R$ 37,90 a 10% virou 379 centavos; confirmar de novo não criou outra linha; pedido sem afiliado não gerou comissão; a página do afiliado mostrou a linha
+
 ## 2026-11-27 — Capas da vitrine
 
 - Ferramenta: Cursor, Grok 4.7

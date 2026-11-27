@@ -96,7 +96,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 2 (calcular e registrar a comissão depois da confirmação; sem saque).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (persistência) e seção 6 (histórico de transações, aplicado também ao afiliado).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** média.
 **Depende de:** Ticket 19, Ticket 25.
 

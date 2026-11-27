@@ -102,6 +102,7 @@ Em `/minha-conta/afiliado`, o usuário autenticado pode consultar seu código de
 - No momento da criação do pedido, o sistema atribui o afiliado correspondente ao cookie, desde que ele pertença a outra pessoa e ainda esteja dentro do prazo de validade.
 - Caso não exista um cookie válido, o afiliado permanece nulo.
 - Cliques expirados, autoindicações e códigos enviados diretamente pelo formulário do pedido não são considerados.
+- Quando o Pix confirma um pedido com afiliado, nasce uma comissão única: o percentual configurado sobre o total, arredondado para baixo em centavos. Ela aparece em `/minha-conta/afiliado`. Não há saque.
 
 ### 4. Autenticação e conta do usuário
 
@@ -222,6 +223,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Ticket 23: link de indicação no livro e código na conta. Revisão: pendente de revisão do autor.
 - Ticket 24: clique do afiliado no cookie `libris_ref`. Revisão: pendente de revisão do autor.
 - Ticket 25: o pedido guarda o afiliado do cookie, não o `ref` do formulário. Revisão: pendente de revisão do autor.
+- Ticket 26: comissão única quando o Pix confirma, listada em Indicar. Revisão: pendente de revisão do autor.
 - Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
 - Foto do perfil: o JPEG fica em `public/avatars` e a página pede `/avatars/{arquivo}`. Revisão: pendente de revisão do autor.
 

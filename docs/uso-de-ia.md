@@ -436,3 +436,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: colocar um ícone antes de Painel, Minha conta, Compras, Indicar, Configurações e Sair
 - Revisão: Pendente de revisão do autor
 
+## 2026-11-27 — Ticket 37, cliente da Pagsmile
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 37
+- Feito com auxílio: `PagsmileClient`, entrada `pagsmile` em `config/services.php`, campos de QR em `GatewayPayment` e as chaves vazias no `.env.example`
+- Finalidade: criar e consultar Pix no sandbox da Pagsmile, com valor em texto, Basic auth e status traduzido, sem vazar a security_key nem o CPF
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou (9 testes). Criação, consulta, timeout, HTTP 400, code diferente de 10000, credencial vazia, valor fora da faixa e status desconhecido foram cobertos com `Http::fake`; a chave e o CPF não apareceram na exceção nem no log
+

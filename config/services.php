@@ -47,4 +47,10 @@ return [
         'webhook_secret' => env('JUNTOS_SE_FAZ_WEBHOOK_SECRET'),
     ],
 
+    'pagsmile' => [
+        'base_url' => env('PAGSMILE_BASE_URL'),
+        'app_id' => env('PAGSMILE_APP_ID'),
+        'security_key' => env('PAGSMILE_SECURITY_KEY'),
+    ],
+
 ];

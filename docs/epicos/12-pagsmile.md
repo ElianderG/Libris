@@ -15,7 +15,7 @@ Não usar a URL de produção. Não gravar `app_id`, `security_key` nem o exempl
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 3 (Payments como tentativa de liquidação).
 **Menções na documentação:** `Desafio Técnico`, seção 3 (gateway Pagsmile, sandbox) e seção 6 (integração com ambos os gateways).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** diferencial.
 **Depende de:** Ticket 14.
 

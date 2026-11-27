@@ -45,11 +45,13 @@ A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8.
 
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Google, o Juntos Se Faz e o afiliado. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `GOOGLE_REDIRECT_URI` ficam vazios no exemplo, exceto o redirect, que aponta para `/auth/google/callback`. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
+Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Google, o Juntos Se Faz, a Pagsmile e o afiliado. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `GOOGLE_REDIRECT_URI` ficam vazios no exemplo, exceto o redirect, que aponta para `/auth/google/callback`. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. `PAGSMILE_BASE_URL` aponta para `https://gateway-test.pagsmile.com`. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
 
 ## Gateway
 
-Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/v1`. O checkout chama `POST /payments` com o total do pedido em reais. Enquanto a cobrança está pendente, a página do pedido consulta `GET /payments/{id}`. O sandbox devolve o id pedido e não guarda a cobrança. Também não avisa a loja: o recurso `/webhooks` da documentação é simulado, sem chamada de volta nem assinatura. O status muda quando a pessoa abre `/pedidos/{order}/pagamento` ou aperta **Atualizar status**. `JUNTOS_SE_FAZ_WEBHOOK_SECRET` permanece no exemplo, sem uso. O token continua só no `.env`.
+O checkout cobra no Juntos Se Faz, em sandbox. A base é `https://www.juntosefaz.com.br/gateway/api/v1`. O checkout chama `POST /payments` com o total do pedido em reais. Enquanto a cobrança está pendente, a página do pedido consulta `GET /payments/{id}`. O sandbox devolve o id pedido e não guarda a cobrança. Também não avisa a loja: o recurso `/webhooks` da documentação é simulado, sem chamada de volta nem assinatura. O status muda quando a pessoa abre `/pedidos/{order}/pagamento` ou aperta **Atualizar status**. `JUNTOS_SE_FAZ_WEBHOOK_SECRET` permanece no exemplo, sem uso. O token continua só no `.env`.
+
+A Pagsmile é o segundo gateway, também em sandbox (`https://gateway-test.pagsmile.com`). O cliente cria o Pix em `POST /trade/pay` e consulta em `POST /trade/query`, com Basic auth de `app_id` e `security_key`. O valor sai em texto, em reais (`order_amount`). A tela de checkout segue no Juntos Se Faz. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam só no `.env`.
 
 ## Funcionalidades
 
@@ -243,6 +245,7 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Menu da conta: ícone antes de cada item. Revisão: pendente de revisão do autor.
 - Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
 - Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: pendente de revisão do autor.
+- Ticket 37: cliente HTTP da Pagsmile, com criação e consulta de Pix no sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou.
 
 ## Aplicação hospedada
 

@@ -18,7 +18,7 @@ class UserController extends Controller
         $currentId = $request->user()?->id;
 
         $users = User::query()
-            ->select(['id', 'name', 'email', 'is_admin', 'created_at'])
+            ->withCount(['orders', 'commissions', 'referredOrders'])
             ->orderBy('name')
             ->paginate(self::PER_PAGE)
             ->withQueryString()
@@ -28,7 +28,11 @@ class UserController extends Controller
                 'email' => $user->email,
                 'is_admin' => $user->is_admin,
                 'created_at' => $user->created_at?->timezone((string) config('app.timezone'))->format('d/m/Y'),
+                'orders_count' => $user->orders_count,
                 'self' => $user->id === $currentId,
+                'can_delete' => $user->orders_count === 0
+                    && $user->commissions_count === 0
+                    && $user->referred_orders_count === 0,
             ]);
 
         return Inertia::render('admin/users/Index', [
@@ -48,5 +52,27 @@ class UserController extends Controller
         return back()->with('success', $user->is_admin
             ? 'Administrador promovido.'
             : 'Acesso ao painel removido.');
+    }
+
+    public function destroy(Request $request, User $user): RedirectResponse
+    {
+        if ($request->user()?->id === $user->id) {
+            return back()->with('error', 'Você não pode apagar a própria conta.');
+        }
+
+        if ($this->hasStoreHistory($user)) {
+            return back()->with('error', 'Essa conta tem pedidos ou comissões e não pode ser apagada.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Conta apagada.');
+    }
+
+    private function hasStoreHistory(User $user): bool
+    {
+        return $user->orders()->exists()
+            || $user->commissions()->exists()
+            || $user->referredOrders()->exists();
     }
 }

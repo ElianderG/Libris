@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import FlashBanner from '@/components/store/FlashBanner.vue';
 import StoreAccountMenu from '@/components/store/StoreAccountMenu.vue';
 import ThemeToggle from '@/components/store/ThemeToggle.vue';
+import { home as storeHome } from '@/routes';
 import { affiliates, books, categories, home, orders, users } from '@/routes/admin';
 
 defineOptions({
@@ -146,7 +147,7 @@ onUnmounted(() => {
     <div class="flex min-h-screen flex-col bg-background text-foreground">
         <header ref="header" class="sticky top-0 z-40 border-b border-border bg-background">
             <div class="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-                <Link :href="home()" class="flex shrink-0 items-center gap-2 text-foreground">
+                <Link :href="storeHome()" class="flex shrink-0 items-center gap-2 text-foreground">
                     <span class="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
                         <AppLogoIcon class="size-5" />
                     </span>

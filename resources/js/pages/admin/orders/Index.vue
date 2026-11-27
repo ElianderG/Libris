@@ -10,6 +10,10 @@ type PageLink = {
 
 defineProps<{
     status: string;
+    buyer: {
+        id: number;
+        name: string;
+    } | null;
     orders: {
         data: Array<{
             id: number;
@@ -42,7 +46,13 @@ const statusClass: Record<string, string> = {
         <p class="text-xs font-medium tracking-[0.16em] text-primary uppercase">Administração</p>
         <h1 class="mt-2 font-serif text-4xl text-foreground">Pedidos</h1>
 
+        <p v-if="buyer" class="mt-4 text-sm text-foreground">
+            Pedidos de {{ buyer.name }}.
+            <Link :href="OrderController.index.url()" class="underline underline-offset-4">Ver todos</Link>
+        </p>
+
         <form :action="OrderController.index.url()" method="get" class="mt-8 flex flex-wrap items-center gap-3">
+            <input v-if="buyer" type="hidden" name="user" :value="buyer.id" />
             <label class="grid gap-1 text-sm text-foreground">
                 Status
                 <select
@@ -61,7 +71,7 @@ const statusClass: Record<string, string> = {
         </form>
 
         <p v-if="orders.data.length === 0" class="mt-8 text-base leading-7 text-foreground">
-            Nenhum pedido com esse status.
+            {{ buyer ? 'Nenhum pedido dessa conta.' : 'Nenhum pedido com esse status.' }}
         </p>
         <ul v-else class="mt-6 divide-y divide-border">
             <li v-for="order in orders.data" :key="order.id" class="py-4">

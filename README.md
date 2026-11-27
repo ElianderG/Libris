@@ -184,13 +184,13 @@ Um dos livros cadastrados permanece oculto e, portanto, não aparece na vitrine 
 
 ### 9. Painel administrativo
 
-Em `/admin`, o administrador vê o painel sem o cabeçalho da vitrine. As áreas ficam num menu à esquerda: início, livros, categorias, pedidos, usuários e afiliados. No celular, a tela mostra só esse menu; a área abre ao toque e o botão Voltar retorna à lista. A página inicial mostra quatro números, mesmo zerados: livros publicados, pedidos pagos, total vendido e comissões confirmadas. O total vendido soma só pedidos `paid` e usa a mesma formatação de dinheiro da loja. O link do painel no menu da conta aparece só para `is_admin`. Cliente autenticado recebe 403 nessas rotas.
+Em `/admin`, o administrador vê o painel sem o cabeçalho da vitrine. O logo Libris no topo abre a página inicial da loja, a mesma do site. As áreas ficam num menu à esquerda: início, livros, categorias, pedidos, usuários e afiliados. O item Início desse menu continua em `/admin`. No celular, a tela mostra só esse menu; a área abre ao toque e o botão Voltar retorna à lista. A página inicial mostra quatro números, mesmo zerados: livros publicados, pedidos pagos, total vendido e comissões confirmadas. O total vendido soma só pedidos `paid` e usa a mesma formatação de dinheiro da loja. O link do painel no menu da conta aparece só para `is_admin`. Cliente autenticado recebe 403 nessas rotas.
 
 Em `/admin/categorias`, o administrador cadastra e edita o nome. A categoria não é apagada enquanto tiver livros. Em `/admin/livros`, a lista busca por título. O formulário pede categoria, título, autor, descrição, preço em reais (`37,90` ou `37.90`), conteúdo, destaque, publicação e capa opcional de até 2 MB. A capa fica em `public/covers`. Trocar a capa apaga o arquivo anterior. O preço vira centavos no banco. Mudar o título não troca o slug. Livro que já está em algum pedido não é apagado: a tela oferece despublicar. Despublicado, ele sai da vitrine e continua na biblioteca de quem pagou.
 
 A página inicial abre com atalhos para livros, categorias, pedidos, usuários e afiliados. Abaixo ficam os quatro números e os gráficos do Chart.js: vendas pagas dos últimos 14 dias, pedidos por status e livros publicados por categoria. Pedido antigo não entra no gráfico de vendas, e livro não publicado não entra no de categorias. Em seguida, a home lista os cinco pedidos pagos mais recentes. Em `/admin/afiliados`, cada linha é alguém que já teve clique ou comissão: código, cliques, pedidos pagos atribuídos e a soma das comissões confirmadas. Quem nunca indicou fica de fora. Não há saque nem alteração de percentual; o percentual segue o da configuração.
 
-Em `/admin/pedidos`, a lista filtra por status e abre o pedido com os itens e as tentativas de Pix. O administrador vê o identificador do gateway e o status. O JSON da cobrança fica num bloco recolhido. Não há como marcar um pedido como pago por essa tela. Em `/admin/usuarios`, a lista mostra nome, e-mail, se a conta é admin e a data de cadastro. A única ação é promover ou remover o acesso de outra pessoa. A própria conta não muda por essa tela. As duas listas são paginadas. Senha e token não aparecem.
+Em `/admin/pedidos`, a lista filtra por status e abre o pedido com os itens e as tentativas de Pix. O administrador vê o identificador do gateway e o status. O JSON da cobrança fica num bloco recolhido. Não há como marcar um pedido como pago por essa tela. A lista também abre só os pedidos de uma conta, a partir do menu de usuários. Em `/admin/usuarios`, cada conta tem um menu flutuante: ver pedidos, tornar ou remover administrador e apagar a conta. Promover, remover o acesso e apagar pedem confirmação. A própria conta não muda por essa tela. Conta com pedido ou comissão não é apagada, para o histórico da loja continuar. As duas listas são paginadas. Senha e token não aparecem.
 
 ### 10. Pendências e limitações
 
@@ -247,6 +247,8 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: pendente de revisão do autor.
 - Ticket 37: cliente HTTP da Pagsmile, com criação e consulta de Pix no sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou.
 - Checkout: **Comprar agora** passa a remover um livro ou esvaziar a sacola antes do Pix. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou.
+- Usuários do painel: menu flutuante com pedidos, acesso de administrador e exclusão, sempre com confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
+- Logo do painel: abre a página inicial da loja. Revisão: pendente de revisão do autor. `yarn types:check` passou.
 
 ## Aplicação hospedada
 

@@ -105,6 +105,14 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     /**
      * @return HasMany<Order, $this>
      */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return HasMany<Order, $this>
+     */
     public function referredOrders(): HasMany
     {
         return $this->hasMany(Order::class, 'affiliate_id');

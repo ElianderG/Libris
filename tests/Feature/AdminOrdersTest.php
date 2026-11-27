@@ -149,12 +149,78 @@ it('promove outro usuário e recusa a própria conta', function () {
         ->assertForbidden();
 });
 
+it('lista só os pedidos da conta escolhida', function () {
+    $admin = ordersAdmin();
+    $ana = User::factory()->create(['name' => 'Ana']);
+    $bia = User::factory()->create(['name' => 'Bia']);
+    placeOrder($ana, Order::STATUS_PAID, 2500);
+    placeOrder($bia, Order::STATUS_PENDING_PAYMENT);
+
+    $this->actingAs($admin)
+        ->get(route('admin.orders', ['user' => $ana->id]))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->has('orders.data', 1)
+            ->where('orders.data.0.buyer', 'Ana')
+            ->where('buyer.name', 'Ana'));
+});
+
+it('apaga conta sem histórico e recusa a própria e quem já comprou', function () {
+    $admin = ordersAdmin();
+    $empty = User::factory()->create(['name' => 'Sem compra']);
+    $buyer = User::factory()->create(['name' => 'Compradora']);
+    $affiliate = User::factory()->create(['name' => 'Afiliada']);
+    $order = placeOrder($buyer, Order::STATUS_PAID);
+    $order->affiliate_id = $affiliate->id;
+    $order->save();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('users.data', fn ($rows): bool => collect($rows)->contains(
+                fn (array $row): bool => $row['name'] === 'Sem compra' && $row['can_delete'] === true && $row['orders_count'] === 0,
+            ) && collect($rows)->contains(
+                fn (array $row): bool => $row['name'] === 'Compradora' && $row['can_delete'] === false && $row['orders_count'] === 1,
+            ))
+            ->missing('users.data.0.password'));
+
+    $this->actingAs($admin)
+        ->from(route('admin.users'))
+        ->delete(route('admin.users.destroy', $empty))
+        ->assertRedirect(route('admin.users'))
+        ->assertSessionHas('success', 'Conta apagada.');
+
+    expect(User::query()->whereKey($empty->id)->exists())->toBeFalse();
+
+    $this->actingAs($admin)
+        ->from(route('admin.users'))
+        ->delete(route('admin.users.destroy', $admin))
+        ->assertSessionHas('error', 'Você não pode apagar a própria conta.');
+
+    expect($admin->fresh())->not->toBeNull();
+
+    $this->actingAs($admin)
+        ->from(route('admin.users'))
+        ->delete(route('admin.users.destroy', $buyer))
+        ->assertSessionHas('error', 'Essa conta tem pedidos ou comissões e não pode ser apagada.');
+
+    $this->actingAs($admin)
+        ->delete(route('admin.users.destroy', $affiliate))
+        ->assertSessionHas('error', 'Essa conta tem pedidos ou comissões e não pode ser apagada.');
+
+    expect(User::query()->whereKey($buyer->id)->exists())->toBeTrue()
+        ->and(User::query()->whereKey($affiliate->id)->exists())->toBeTrue()
+        ->and(Order::query()->whereKey($order->id)->exists())->toBeTrue();
+});
+
 it('recusa pedidos e usuários para um cliente', function () {
     $customer = User::factory()->create();
     $order = placeOrder($customer, Order::STATUS_PENDING_PAYMENT);
 
     $this->actingAs($customer)->get(route('admin.orders.show', $order))->assertForbidden();
     $this->actingAs($customer)->post(route('admin.users.update', $customer))->assertForbidden();
+    $this->actingAs($customer)->delete(route('admin.users.destroy', $customer))->assertForbidden();
 
     expect($customer->fresh()->is_admin)->toBeFalse();
 });

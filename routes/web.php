@@ -77,6 +77,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/pedidos/{order}', [AdminOrderController::class, 'show'])->whereNumber('order')->name('admin.orders.show');
     Route::get('/admin/usuarios', [AdminUserController::class, 'index'])->name('admin.users');
     Route::post('/admin/usuarios/{user}', [AdminUserController::class, 'update'])->whereNumber('user')->name('admin.users.update');
+    Route::delete('/admin/usuarios/{user}', [AdminUserController::class, 'destroy'])->whereNumber('user')->name('admin.users.destroy');
     Route::get('/admin/afiliados', [AdminAffiliateController::class, 'index'])->name('admin.affiliates');
 });
 

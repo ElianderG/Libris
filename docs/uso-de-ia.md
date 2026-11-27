@@ -452,3 +452,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: quem entra por **Comprar agora** consegue remover um livro ou esvaziar a sacola antes do Pix
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou (11 testes). Remover no checkout deixou o outro livro e o total em `R$ 37,90`; remover o único livro e esvaziar levaram à sacola vazia
 
+## 2026-11-27 — Menu de usuários no painel
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: painel administrativo
+- Feito com auxílio: `admin/users/Index.vue`, `Admin\UserController` e o filtro de pedidos por conta
+- Finalidade: cada conta ganha um menu flutuante para ver pedidos, mudar o acesso de administrador ou apagar, com confirmação; conta com pedido ou comissão não é apagada
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (6 testes). Conta sem histórico foi apagada; a própria conta, quem comprou e quem indicou um pedido ficaram; a lista de pedidos abriu só os da Ana. `yarn types:check` passou
+
+## 2026-11-27 — Logo do painel
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: painel administrativo
+- Feito com auxílio: `AdminLayout.vue`
+- Finalidade: o logo do cabeçalho do painel abrir a página inicial da loja, como no site
+- Revisão: Pendente de revisão do autor. `yarn types:check` passou. O link do logo usa a rota `/`; o item Início do menu lateral continua em `/admin`
+

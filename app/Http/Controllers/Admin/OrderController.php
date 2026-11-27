@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\User;
 use App\Support\Money;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,8 +24,11 @@ class OrderController extends Controller
             $status = '';
         }
 
+        $buyer = User::query()->find($request->integer('user'));
+
         $orders = Order::query()
             ->with(['user:id,name', 'items:id,order_id,title'])
+            ->when($buyer instanceof User, fn ($query) => $query->where('user_id', $buyer->id))
             ->when($status !== '', fn ($query) => $query->where('status', $status))
             ->latest('id')
             ->paginate(self::PER_PAGE)
@@ -42,6 +46,10 @@ class OrderController extends Controller
 
         return Inertia::render('admin/orders/Index', [
             'status' => $status,
+            'buyer' => $buyer instanceof User ? [
+                'id' => $buyer->id,
+                'name' => $buyer->name,
+            ] : null,
             'orders' => $orders,
         ]);
     }

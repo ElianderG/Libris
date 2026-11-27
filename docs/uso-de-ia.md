@@ -244,3 +244,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: explicar Pix recusado, encerrado ou expirado, gerar outra cobrança no mesmo pedido e listar as tentativas sem apagar as antigas
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PaymentRetryTest` passou. O Pix recusado abre outra linha e o histórico marca a nova como ativa; pedido pago não mostra o botão e o POST não cria pagamento; encerrado e expirado mostram a frase correspondente
 
+## 2026-11-27 — Sacola e comprar agora
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: página do livro
+- Feito com auxílio: `CartController` e `Book.vue`
+- Finalidade: **Adicionar à sacola** incluir o livro e permanecer na página; **Comprar agora** incluir o livro e abrir o checkout
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CartTest` passou. Adicionar volta para a página do livro; comprar agora redireciona ao checkout com o livro na sacola
+
+## 2026-11-27 — Épico 12, Pagsmile
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: planejamento do épico 12
+- Feito com auxílio: `docs/epicos/12-pagsmile.md` e a ordem no índice
+- Finalidade: descrever a segunda cobrança Pix, no sandbox da Pagsmile, reusando o checkout e a confirmação que já existem
+- Revisão: Pendente de revisão do autor. Nenhum código da aplicação foi gerado nesta etapa
+

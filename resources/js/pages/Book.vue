@@ -31,15 +31,29 @@ defineProps<{
                 <p class="mt-3 text-base break-words text-foreground">{{ book.author }}</p>
                 <p class="mt-4 text-lg font-medium text-foreground">{{ book.price }}</p>
                 <p class="mt-4 max-w-xl text-base leading-7 break-words text-foreground">{{ book.description }}</p>
-                <Form v-bind="CartController.store.form()" class="mt-6">
-                    <input type="hidden" name="slug" :value="book.slug" />
-                    <button
-                        type="submit"
-                        class="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground"
-                    >
-                        Adicionar à biblioteca
-                    </button>
-                </Form>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <Form v-bind="CartController.store.form()" v-slot="{ processing }">
+                        <input type="hidden" name="slug" :value="book.slug" />
+                        <button
+                            type="submit"
+                            :disabled="processing"
+                            class="inline-flex h-11 items-center rounded-full border border-border px-5 text-sm font-medium text-foreground disabled:opacity-60"
+                        >
+                            Adicionar à sacola
+                        </button>
+                    </Form>
+                    <Form v-bind="CartController.store.form()" v-slot="{ processing }">
+                        <input type="hidden" name="slug" :value="book.slug" />
+                        <input type="hidden" name="checkout" value="1" />
+                        <button
+                            type="submit"
+                            :disabled="processing"
+                            class="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+                        >
+                            Comprar agora
+                        </button>
+                    </Form>
+                </div>
             </div>
         </div>
 

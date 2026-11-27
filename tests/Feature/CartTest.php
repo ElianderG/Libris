@@ -15,14 +15,18 @@ beforeEach(function () {
 });
 
 it('soma dois livros diferentes e não duplica o mesmo', function () {
-    $this->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar'])
-        ->assertRedirect(route('cart'));
+    $this->from(route('books.show', 'a-janela-do-terceiro-andar'))
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar'])
+        ->assertRedirect(route('books.show', 'a-janela-do-terceiro-andar'))
+        ->assertSessionHas('success');
 
-    $this->post(route('cart.store'), ['slug' => 'o-mapa-que-cabia-no-bolso'])
-        ->assertRedirect(route('cart'));
+    $this->from(route('books.show', 'o-mapa-que-cabia-no-bolso'))
+        ->post(route('cart.store'), ['slug' => 'o-mapa-que-cabia-no-bolso'])
+        ->assertRedirect(route('books.show', 'o-mapa-que-cabia-no-bolso'));
 
-    $this->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar'])
-        ->assertRedirect(route('cart'));
+    $this->from(route('books.show', 'a-janela-do-terceiro-andar'))
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar'])
+        ->assertRedirect(route('books.show', 'a-janela-do-terceiro-andar'));
 
     $this->get(route('cart'))
         ->assertOk()
@@ -65,6 +69,20 @@ it('remove um livro e acompanha o preço vivo do banco', function () {
 
     $this->get(route('cart'))
         ->assertInertia(fn ($page) => $page->where('total', 'R$ 10,00'));
+});
+
+it('comprar agora leva ao checkout com o livro na sacola', function () {
+    $this->from(route('books.show', 'a-janela-do-terceiro-andar'))
+        ->post(route('cart.store'), [
+            'slug' => 'a-janela-do-terceiro-andar',
+            'checkout' => '1',
+        ])
+        ->assertRedirect(route('checkout'));
+
+    $this->get(route('cart'))
+        ->assertInertia(fn ($page) => $page
+            ->has('items', 1)
+            ->where('items.0.slug', 'a-janela-do-terceiro-andar'));
 });
 
 it('leva o visitante ao login sem esvaziar a sacola', function () {

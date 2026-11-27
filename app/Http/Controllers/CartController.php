@@ -32,7 +32,11 @@ class CartController extends Controller
             return back()->with('error', 'Esse livro não está disponível.');
         }
 
-        return redirect()->route('cart');
+        if ($request->boolean('checkout')) {
+            return redirect()->route('checkout');
+        }
+
+        return back()->with('success', 'Livro adicionado à sacola.');
     }
 
     public function destroy(string $slug, Cart $cart): RedirectResponse

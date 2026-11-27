@@ -25,8 +25,9 @@ Faça um épico por vez, na ordem abaixo. Dentro do épico, siga o número do ti
 | 9 | `11-api-da-aplicacao.md` | Chave nas configurações e consulta dos próprios dados de compra e venda |
 | 10 | `09-painel-administrativo.md` | Operação da loja |
 | 11 | `10-qualidade-e-entrega.md` | Testes, segurança e README do edital |
+| 12 | `12-pagsmile.md` | O mesmo Pix também no sandbox da Pagsmile |
 
-Os épicos 01 a 07, o 10 e o 11 fecham o desafio. Os épicos 08 e 09 são o diferencial ligado à vaga (afiliados e painel). Não comece por eles.
+Os épicos 01 a 07, o 10 e o 11 fecham o desafio. Os épicos 08 e 09 são o diferencial ligado à vaga (afiliados e painel). O épico 12 é o diferencial do edital: os dois gateways. Ele entra depois do Ticket 19 e não bloqueia biblioteca, afiliados, API nem README. Não comece por eles.
 
 O épico 11 é a API da Libris te liberant: chave pessoal e leitura dos próprios dados. O cliente do Juntos Se Faz (Ticket 14) é o caminho inverso, o Libris chamando o gateway. A API fica depois dos afiliados para já nascer com compras e vendas; se o épico 08 for cortado, ela segue com as vendas zeradas.
 
@@ -48,7 +49,7 @@ Estas escolhas valem para todos os tickets. Não reabrir durante a implementaç�
 1. Checkout exige conta. Visitante navega e monta o carrinho; para pagar, entra ou cria conta. A biblioteca precisa de um dono.
 2. Pedido e pagamento são tabelas diferentes. O pedido é a intenção de compra. O pagamento é uma tentativa de liquidar esse pedido. Um pedido pode ter várias tentativas; só uma fica pendente por vez.
 3. Dinheiro é inteiro em centavos no banco (`price_cents`, `total_cents`). A conversão para o formato que o gateway espera acontece só na borda da integração, depois de ler a documentação oficial. O exemplo público do gateway mostra `149.90` em reais, então a conversão não pode ser chutada.
-4. Método de pagamento deste projeto: Pix, ambiente staging, sem dinheiro real.
+4. Método de pagamento deste projeto: Pix, ambiente staging, sem dinheiro real. O gateway padrão é o Juntos Se Faz. A Pagsmile é a segunda opção do mesmo checkout, no épico 12.
 5. Acesso à biblioteca não tem tabela própria. Um livro está liberado quando existe item de pedido pago daquele produto para aquele usuário.
 6. Todo usuário autenticado pode indicar. O código de afiliado nasce no cadastro. Não há aprovação nem saque de comissão.
 7. Atribuição pelo último clique, cookie de 7 dias. Compra do próprio afiliado não gera comissão.
@@ -56,7 +57,7 @@ Estas escolhas valem para todos os tickets. Não reabrir durante a implementaç�
 9. Administrador é `users.is_admin`. Sem pacote de permissões.
 10. Textos e capas dos livros são originais de exemplo. Nenhum livro protegido por direito autoral entra no repositório.
 11. Carrinho vive na sessão. Não há tabela de carrinho.
-12. Status do gateway são traduzidos num único mapa, no serviço de pagamento. Controller não interpreta string do gateway.
+12. Cada cliente traduz o vocabulário do próprio gateway para os status internos. Controller não interpreta string do gateway.
 13. A API da Libris te liberant é somente leitura. O usuário entra na conta, gera uma chave nas configurações e, com ela, consulta os dados da própria conta: compras e vendas indicadas. A chave não cria pedido, não dispara Pix e não autentica a tela. Criar e consultar cobrança no gateway continua no checkout.
 14. O front usa Yarn (`yarn.lock` versionado). O Docker Compose continua no projeto, com PHP, servidor HTTP, MySQL e o build do front feito por Yarn.
 

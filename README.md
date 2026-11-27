@@ -25,6 +25,7 @@ yarn install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan storage:link
 yarn dev
 php artisan serve
@@ -52,7 +53,7 @@ Juntos Se Faz, em sandbox. A integração ainda não foi implementada.
 
 ## Funcionalidades
 
-Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. O cadastro e o login do starter continuam dentro dessa moldura. O banco já guarda categoria e livro: preço em centavos, slug gerado no servidor e capa opcional em `storage/app/public/covers`. A vitrine ainda não lista esses livros. Checkout, biblioteca e API da conta ainda não existem.
+Nesta etapa a loja tem a moldura da Libris te liberant: cabeçalho, busca visual, catálogo e sacola ainda vazios, conta e avisos de sucesso e erro. Quem está logado abre a conta por um avatar no cabeçalho, com painel, biblioteca, configurações e sair. Em Configurações, a pessoa envia fotos, ajusta o corte e escolhe qual fica no perfil. O cadastro e o login do starter continuam dentro dessa moldura. `php artisan db:seed` carrega 3 categorias e 9 livros originais, com preço em centavos e duas capas geradas em `storage/app/public/covers`. Um desses livros fica oculto. A vitrine ainda não lista os publicados. Checkout, biblioteca e API da conta ainda não existem.
 
 ## Uso de inteligência artificial
 
@@ -66,6 +67,11 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Revisão: revisado pelo autor.
 - Nesta sessão, o MySQL do Compose passou a ser publicado em `127.0.0.1:3308`. A porta interna do serviço continua 3306. Revisão: pendente de revisão do autor.
 - Ticket 07: categorias e livros no banco, preço em centavos e capa só como caminho relativo. Revisão: pendente de revisão do autor.
+- Ticket 08: seeder idempotente com categorias, livros originais e duas capas geradas. Revisão: pendente de revisão do autor.
+- Menu da conta: avatar no cabeçalho, com painel, minha conta, configurações e sair. O rodapé deixa de mostrar Entrar para quem já está logado. Revisão: pendente de revisão do autor.
+- Hover do menu: Sair fica vermelho, e os botões do cabeçalho ganham um realce leve. Revisão: pendente de revisão do autor.
+- Foto do perfil: envio com corte e zoom, várias fotos guardadas, escolha da padrão e exclusão. Revisão: pendente de revisão do autor.
+- O envio da foto também funciona no PHP 8.6, sem a extensão GD, pelo ffmpeg. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

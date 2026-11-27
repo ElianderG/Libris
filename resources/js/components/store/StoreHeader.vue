@@ -3,9 +3,9 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { Menu, Search, ShoppingBag, X } from '@lucide/vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { ref } from 'vue';
+import StoreAccountMenu from '@/components/store/StoreAccountMenu.vue';
 import ThemeToggle from '@/components/store/ThemeToggle.vue';
-import { catalog, cart, home, library, login } from '@/routes';
-import { home as adminHome } from '@/routes/admin';
+import { catalog, cart, home, login } from '@/routes';
 
 const page = usePage();
 const menuOpen = ref(false);
@@ -39,7 +39,7 @@ function closeMenu(): void {
             </Link>
 
             <nav class="ml-4 hidden items-center gap-6 md:flex">
-                <Link :href="catalog()" class="text-sm font-medium text-foreground hover:text-primary">
+                <Link :href="catalog()" class="text-sm font-medium text-foreground transition-colors hover:text-primary">
                     Catálogo
                 </Link>
             </nav>
@@ -63,30 +63,17 @@ function closeMenu(): void {
 
             <div class="ml-auto hidden items-center gap-2 md:flex">
                 <ThemeToggle />
-                <Link
-                    v-if="page.props.auth.user?.is_admin"
-                    :href="adminHome()"
-                    class="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-                >
-                    Painel
-                </Link>
-                <Link
-                    v-if="page.props.auth.user"
-                    :href="library()"
-                    class="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
-                >
-                    Minha conta
-                </Link>
+                <StoreAccountMenu v-if="page.props.auth.user" />
                 <Link
                     v-else
                     :href="login()"
-                    class="rounded-full px-3 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                    class="rounded-full px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
                 >
                     Entrar
                 </Link>
                 <Link
                     :href="cart()"
-                    class="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+                    class="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
                 >
                     <ShoppingBag class="size-4" />
                     Sacola
@@ -94,9 +81,12 @@ function closeMenu(): void {
             </div>
 
             <ThemeToggle class="ml-auto md:hidden" />
+            <span v-if="page.props.auth.user" class="md:hidden">
+                <StoreAccountMenu />
+            </span>
             <button
                 type="button"
-                class="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground md:hidden"
+                class="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-foreground/10 md:hidden"
                 :aria-expanded="menuOpen"
                 aria-controls="menu-da-loja"
                 @click="menuOpen = !menuOpen"
@@ -120,34 +110,18 @@ function closeMenu(): void {
                 />
             </form>
             <nav class="mt-4 grid gap-1">
-                <Link :href="catalog()" class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary" @click="closeMenu">
+                <Link :href="catalog()" class="rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10" @click="closeMenu">
                     Catálogo
                 </Link>
                 <Link
-                    v-if="page.props.auth.user?.is_admin"
-                    :href="adminHome()"
-                    class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary"
-                    @click="closeMenu"
-                >
-                    Painel
-                </Link>
-                <Link
-                    v-if="page.props.auth.user"
-                    :href="library()"
-                    class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary"
-                    @click="closeMenu"
-                >
-                    Minha conta
-                </Link>
-                <Link
-                    v-else
+                    v-if="!page.props.auth.user"
                     :href="login()"
-                    class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary"
+                    class="rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10"
                     @click="closeMenu"
                 >
                     Entrar
                 </Link>
-                <Link :href="cart()" class="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-secondary" @click="closeMenu">
+                <Link :href="cart()" class="rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10" @click="closeMenu">
                     Sacola
                 </Link>
             </nav>

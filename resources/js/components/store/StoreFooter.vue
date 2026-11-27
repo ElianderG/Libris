@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { catalog, cart, home, login } from '@/routes';
+import { Link, usePage } from '@inertiajs/vue3';
+import { catalog, cart, home, library, login } from '@/routes';
+
+const page = usePage();
 </script>
 
 <template>
@@ -23,7 +25,14 @@ import { catalog, cart, home, login } from '@/routes';
             <div>
                 <p class="text-xs font-medium tracking-[0.16em] text-foreground uppercase">Conta</p>
                 <nav class="mt-3 grid gap-2 text-sm">
-                    <Link :href="login()" class="text-foreground hover:text-primary">Entrar</Link>
+                    <Link
+                        v-if="page.props.auth.user"
+                        :href="library()"
+                        class="text-foreground hover:text-primary"
+                    >
+                        Minha conta
+                    </Link>
+                    <Link v-else :href="login()" class="text-foreground hover:text-primary">Entrar</Link>
                 </nav>
             </div>
         </div>

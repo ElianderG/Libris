@@ -6,7 +6,10 @@ use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -22,6 +25,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $email_verified_at
  * @property string $password
  * @property bool $is_admin
+ * @property int|null $avatar_id
+ * @property string|null $avatar
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
  * @property Carbon|null $two_factor_confirmed_at
@@ -37,10 +42,12 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * @var list<string>
      */
+    protected $appends = [
+        'avatar',
+    ];
+
     protected static function booted(): void
     {
         static::creating(function (User $user): void {
@@ -49,6 +56,16 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             }
 
             $user->affiliate_code = static::newAffiliateCode();
+        });
+
+        static::deleting(function (User $user): void {
+            if ($user->avatar_id !== null) {
+                static::query()->whereKey($user->id)->update(['avatar_id' => null]);
+            }
+
+            $user->avatars()->get()->each(static function (UserAvatar $avatar): void {
+                $avatar->delete();
+            });
         });
     }
 
@@ -68,6 +85,37 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         return $code;
     }
 
+    /**
+     * @return HasMany<UserAvatar, $this>
+     */
+    public function avatars(): HasMany
+    {
+        return $this->hasMany(UserAvatar::class);
+    }
+
+    /**
+     * @return BelongsTo<UserAvatar, $this>
+     */
+    public function currentAvatar(): BelongsTo
+    {
+        return $this->belongsTo(UserAvatar::class, 'avatar_id');
+    }
+
+    /**
+     * @return Attribute<string|null, never>
+     */
+    protected function avatar(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            $this->loadMissing('currentAvatar');
+
+            return $this->currentAvatar?->url();
+        });
+    }
+
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

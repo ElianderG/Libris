@@ -46,7 +46,7 @@ Relação: categoria tem muitos produtos; produto pertence a uma categoria. Slug
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (catálogo de livros digitais).
 **Menções na documentação:** `Desafio Técnico`, seção 11 (aplicação simples e funcional) e seção 10 (execução local).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 07.
 

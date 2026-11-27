@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileDeleteRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\UserAvatar;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,9 +20,24 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+
+        if ($user === null) {
+            abort(403);
+        }
+
         return Inertia::render('settings/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'avatars' => $user->avatars()
+                ->latest()
+                ->get()
+                ->map(fn (UserAvatar $avatar): array => [
+                    'id' => $avatar->id,
+                    'url' => $avatar->url(),
+                    'selected' => $avatar->id === $user->avatar_id,
+                ])
+                ->values(),
         ]);
     }
 

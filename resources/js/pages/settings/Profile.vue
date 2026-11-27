@@ -6,6 +6,7 @@ import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileCo
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
+import ProfilePhotos from '@/components/ProfilePhotos.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,6 +26,10 @@ defineOptions({
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+
+defineProps<{
+    avatars?: { id: number; url: string; selected: boolean }[];
+}>();
 </script>
 
 <template>
@@ -36,8 +41,10 @@ const user = computed(() => page.props.auth.user);
         <Heading
             variant="small"
             title="Perfil"
-            description="Atualize seu nome e seu e-mail"
+            description="Atualize seu nome, seu e-mail e a foto da conta"
         />
+
+        <ProfilePhotos :avatars="avatars ?? []" />
 
         <Form
             v-bind="ProfileController.update.form()"

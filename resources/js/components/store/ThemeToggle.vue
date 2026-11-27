@@ -29,7 +29,7 @@ function toggle(): void {
 <template>
     <button
         type="button"
-        class="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground hover:bg-secondary"
+        class="inline-flex size-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-foreground/10"
         :aria-label="isDark ? 'Ativar modo claro' : 'Ativar modo escuro'"
         :title="isDark ? 'Modo claro' : 'Modo escuro'"
         @click="toggle"

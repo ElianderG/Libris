@@ -1,0 +1,28 @@
+---
+description: Cria migrations pelo Artisan, sem arquivo escrito à mão
+alwaysApply: true
+---
+
+# Migrations
+
+Não crie arquivo em `database/migrations/` à mão. O Artisan gera o nome, a data e o esqueleto. Depois edite só o `up` e o `down` dentro do arquivo criado.
+
+Tabela nova:
+
+```bash
+php artisan make:migration create_products_table
+```
+
+Coluna em tabela que já existe:
+
+```bash
+php artisan make:migration add_price_cents_to_products_table --table=products
+```
+
+Model junto com a migration:
+
+```bash
+php artisan make:model Product --migration
+```
+
+O nome do comando descreve a mudança (`create_…_table`, `add_…_to_…_table`, `drop_…_from_…_table`). Não invente o timestamp do arquivo.

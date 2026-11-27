@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pedidos/{order}/pagamento', [CheckoutController::class, 'payment'])->name('payments.show');
     Route::post('/pedidos/{order}/pagamento', [CheckoutController::class, 'refresh'])->name('payments.refresh');
     Route::post('/checkout/pedidos/{order}/pagamento', [CheckoutController::class, 'retry'])->name('payments.store');
+    Route::get('/minha-conta/compras', [PurchaseController::class, 'index'])->name('purchases');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

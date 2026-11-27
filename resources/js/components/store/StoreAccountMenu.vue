@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { getInitials } from '@/composables/useInitials';
-import { library, logout } from '@/routes';
+import { library, logout, purchases } from '@/routes';
 import { home as adminHome } from '@/routes/admin';
 import { edit } from '@/routes/profile';
 
@@ -41,6 +41,9 @@ function clearSession(): void {
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
                 <Link class="w-full cursor-pointer" :href="library()">Minha conta</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem :as-child="true">
+                <Link class="w-full cursor-pointer" :href="purchases()">Compras</Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">
                 <Link class="w-full cursor-pointer" :href="edit()">Configurações</Link>

@@ -300,3 +300,11 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a consulta paga fechar pedido e pagamento uma única vez, sem marcar pago se o valor do gateway divergir
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ConfirmPaymentTest` passou. A segunda chamada conserva `paid_at` e dispara o evento uma vez; valor divergente deixa os dois pendentes; falha terminal muda só o pagamento
 
+## 2026-11-27 — Ticket 20, histórico de compras
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 20
+- Feito com auxílio: `PurchaseController`, `Purchases.vue` e o item Compras no menu da conta
+- Finalidade: a pessoa logada ver só os próprios pedidos, do mais novo para o mais antigo, e voltar ao Pix quando o pedido ainda espera pagamento
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseHistoryTest` passou. Cada conta viu só os próprios pedidos; o pendente apontou para o Pix; lista vazia abriu a página; visitante foi ao login
+

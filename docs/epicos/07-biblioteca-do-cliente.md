@@ -11,7 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (histórico de compras e status dos pagamentos).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (histórico de transações) e seção 4 (consulta de pagamentos e exibição de status).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** alta.
 **Depende de:** Ticket 19.
 

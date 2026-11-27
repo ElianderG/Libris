@@ -284,3 +284,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: a entrada deixar de parecer o formulário padrão e seguir a moldura da livraria, com o Google separado do e-mail
 - Revisão: Pendente de revisão do autor. `yarn types:check` passou
 
+## 2026-11-27 — Ticket 18, sem webhook
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 18
+- Feito com auxílio: seção do gateway no `README.md`
+- Finalidade: registrar que o sandbox do Juntos Se Faz não avisa a loja, em vez de inventar uma rota de webhook
+- Revisão: Pendente de revisão do autor. Nenhum código da aplicação foi gerado. A referência oficial trata `POST /webhooks` como recurso simulado, sem chamada de volta nem assinatura
+
+## 2026-11-27 — Ticket 19, confirmar o pedido
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 19
+- Feito com auxílio: `ConfirmPayment`, o evento `PaymentConfirmed` e a consulta em `RefreshPayment`
+- Finalidade: a consulta paga fechar pedido e pagamento uma única vez, sem marcar pago se o valor do gateway divergir
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ConfirmPaymentTest` passou. A segunda chamada conserva `paid_at` e dispara o evento uma vez; valor divergente deixa os dois pendentes; falha terminal muda só o pagamento
+

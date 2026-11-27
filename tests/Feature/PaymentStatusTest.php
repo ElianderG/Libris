@@ -45,7 +45,7 @@ function orderWithPendingPayment(): Order
     return $order->fresh();
 }
 
-it('consulta ao abrir e mostra o status pago sem fechar o pedido', function () {
+it('consulta ao abrir e fecha o pedido quando o gateway responde pago', function () {
     Http::fake([
         'https://gateway.test/payments/payments_abc' => Http::response([
             'id' => 'payments_abc',
@@ -72,9 +72,9 @@ it('consulta ao abrir e mostra o status pago sem fechar o pedido', function () {
     $payment = $order->payments()->first();
 
     expect($payment->status)->toBe(Payment::STATUS_PAID)
-        ->and($payment->paid_at)->toBeNull()
+        ->and($payment->paid_at)->not->toBeNull()
         ->and($payment->raw_response['pix_code'] ?? null)->toBe('00020126580014br.gov.bcb.pix')
-        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PAID);
 
     Http::assertSent(fn ($request): bool => $request->method() === 'GET'
         && $request->url() === 'https://gateway.test/payments/payments_abc');
@@ -107,7 +107,7 @@ it('atualiza de novo pelo botão e não consulta no redirect', function () {
         ->assertInertia(fn ($page) => $page->where('payment.label', 'Pago'));
 
     expect($order->payments()->first()->status)->toBe(Payment::STATUS_PAID)
-        ->and($order->fresh()->status)->toBe(Order::STATUS_PENDING_PAYMENT);
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PAID);
 
     $consultas = collect(Http::recorded())
         ->filter(fn (array $pair): bool => $pair[0]->url() === 'https://gateway.test/payments/payments_abc')

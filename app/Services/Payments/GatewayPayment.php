@@ -8,5 +8,6 @@ final class GatewayPayment
         public readonly string $id,
         public readonly string $status,
         public readonly ?string $pixCode = null,
+        public readonly ?int $amountCents = null,
     ) {}
 }

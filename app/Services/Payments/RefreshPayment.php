@@ -7,7 +7,10 @@ use App\Models\Payment;
 
 class RefreshPayment
 {
-    public function __construct(private JuntosSeFazClient $gateway) {}
+    public function __construct(
+        private JuntosSeFazClient $gateway,
+        private ConfirmPayment $confirmPayment,
+    ) {}
 
     public function refresh(Order $order): bool
     {
@@ -27,19 +30,7 @@ class RefreshPayment
             return false;
         }
 
-        $payment->status = $result->status;
-        $raw = is_array($payment->raw_response) ? $payment->raw_response : [];
-        $raw['id'] = $result->id;
-        $raw['status'] = $result->status;
-
-        if (is_string($result->pixCode) && $result->pixCode !== '') {
-            $raw['pix_code'] = $result->pixCode;
-        }
-
-        $payment->raw_response = $raw;
-        $payment->save();
-
-        // Ticket 19 confirma o pedido aqui, uma única vez.
+        $this->confirmPayment->confirm($payment, $result);
 
         return true;
     }

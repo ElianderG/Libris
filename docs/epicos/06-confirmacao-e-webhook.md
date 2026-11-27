@@ -11,7 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 4 (webhook com prioridade alta).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (integração com webhooks, se o gateway disponibilizar) e seção 4 (tratamento de erros).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** alta.
 **Depende de:** Ticket 14, Ticket 15.
 
@@ -44,7 +44,7 @@ Se a documentação do sandbox não tiver webhook, o ticket muda de forma, não 
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 1 (acesso aos produtos depois da compra) e seção 2 (comissão só após confirmação).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (consulta de pagamentos e persistência) e seção 6 (histórico de transações).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 16. O Ticket 18 chama esta mesma rotina.
 

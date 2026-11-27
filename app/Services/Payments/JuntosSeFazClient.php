@@ -129,7 +129,38 @@ class JuntosSeFazClient
             throw new GatewayException;
         }
 
-        return new GatewayPayment($id, $this->mapStatus($status), $pixCode);
+        return new GatewayPayment(
+            $id,
+            $this->mapStatus($status),
+            $pixCode,
+            $this->amountCentsFrom($payload),
+        );
+    }
+
+    /**
+     * @param  array<mixed>  $payload
+     */
+    private function amountCentsFrom(array $payload): ?int
+    {
+        if (! array_key_exists('amount', $payload)) {
+            return null;
+        }
+
+        $amount = $payload['amount'];
+
+        if (is_string($amount) && is_numeric($amount)) {
+            $amount = (float) $amount;
+        }
+
+        if (! is_int($amount) && ! is_float($amount)) {
+            return 0;
+        }
+
+        if (! is_finite($amount) || $amount <= 0) {
+            return 0;
+        }
+
+        return (int) round($amount * 100);
     }
 
     private function request(string $baseUrl): PendingRequest

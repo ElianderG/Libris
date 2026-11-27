@@ -22,6 +22,10 @@ it('mostra zero quando a loja ainda não vendeu', function () {
             ->where('stats.paid_orders', 0)
             ->where('stats.sold_total', 'R$ 0,00')
             ->where('stats.confirmed_commissions', 0)
+            ->has('charts.sales.labels', 14)
+            ->where('charts.sales.values', array_fill(0, 14, 0))
+            ->where('charts.orders.values', [0, 0])
+            ->where('charts.books.labels', [])
             ->has('recent', 0));
 });
 
@@ -100,6 +104,47 @@ it('soma só pedidos pagos e comissões confirmadas', function () {
             ->where('recent.0.total', 'R$ 25,00')
             ->where('recent.1.id', $first->id)
             ->where('recent.1.buyer', $buyer->name));
+});
+
+it('monta os gráficos com vendas recentes, status e categorias', function () {
+    $admin = User::factory()->create();
+    $admin->forceFill(['is_admin' => true])->save();
+    $buyer = User::factory()->create();
+
+    $published = Product::factory()->create();
+    $published->is_published = true;
+    $published->save();
+    $published->load('category');
+    Product::factory()->create();
+
+    $today = new Order;
+    $today->user_id = $buyer->id;
+    $today->status = Order::STATUS_PAID;
+    $today->total_cents = 3790;
+    $today->save();
+
+    $pending = new Order;
+    $pending->user_id = $buyer->id;
+    $pending->status = Order::STATUS_PENDING_PAYMENT;
+    $pending->total_cents = 10000;
+    $pending->save();
+
+    $old = new Order;
+    $old->user_id = $buyer->id;
+    $old->status = Order::STATUS_PAID;
+    $old->total_cents = 5000;
+    $old->created_at = now()->subDays(40);
+    $old->save();
+
+    $this->actingAs($admin)
+        ->get(route('admin.home'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('charts.sales.values.13', 3790)
+            ->where('charts.sales.values.0', 0)
+            ->where('charts.orders.values', [2, 1])
+            ->where('charts.books.labels', [$published->category->name])
+            ->where('charts.books.values', [1]));
 });
 
 it('recusa as páginas do menu para um cliente', function (string $name) {

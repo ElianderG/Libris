@@ -412,6 +412,14 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: mostrar os cinco pedidos pagos mais recentes e, em afiliados, cliques, vendas pagas e comissão confirmada de quem indicou
 - Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou (15 testes). A home trouxe os cinco pagos mais novos e deixou o pendente de fora; Ana apareceu com 2 cliques, 1 venda paga e R$ 3,79; Caio só com clique; Bruno e Davi ficaram de fora
 
+## 2026-11-27 — Início do painel com gráficos
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: painel administrativo
+- Feito com auxílio: `Admin\HomeController`, `admin/Home.vue` e `AdminChart.vue`
+- Finalidade: colocar atalhos das áreas no início e, abaixo, os índices e os gráficos de vendas, pedidos e livros publicados
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou. A venda de hoje ficou no último dia do gráfico; o pedido de 40 dias atrás e o pendente ficaram fora das vendas; só a categoria do livro publicado entrou no gráfico. `yarn types:check` passou
+
 ## 2026-11-27 — Menu lateral do painel
 
 - Ferramenta: Cursor, Grok 4.7

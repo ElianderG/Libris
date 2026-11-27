@@ -19,7 +19,7 @@ function closeMenu(): void {
     <header class="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-md">
         <div class="hidden border-b border-border/70 bg-primary text-primary-foreground sm:block">
             <p class="mx-auto max-w-6xl px-4 py-1.5 text-center text-xs tracking-wide">
-                Livros digitais · pagamento Pix somente no ambiente de testes
+                Livros digitais · pagamento Pix · comissões de afiliados
             </p>
         </div>
 

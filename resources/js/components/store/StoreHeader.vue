@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Menu, Search, ShoppingBag, X } from '@lucide/vue';
+import { Menu, Search, ShoppingBag, X } from '@lucide/vue';
+import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { ref } from 'vue';
 import ThemeToggle from '@/components/store/ThemeToggle.vue';
 import { catalog, cart, home, library, login } from '@/routes';
@@ -29,7 +30,7 @@ function closeMenu(): void {
                 @click="closeMenu"
             >
                 <span class="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                    <BookOpen class="size-4" />
+                    <AppLogoIcon class="size-5" />
                 </span>
                 <span class="leading-none">
                     <span class="block font-serif text-xl tracking-tight sm:text-2xl">Libris</span>

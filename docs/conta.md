@@ -29,6 +29,8 @@ A biblioteca exige as duas coisas: e-mail verificado e pedido `paid` daquele liv
 
 ## Menu da loja
 
+A aba **Meus Livros** no cabeçalho da vitrine abre `/biblioteca`, a estante dos livros já pagos. No celular ela fica no menu. Quem não entrou vai para o login.
+
 O avatar no cabeçalho da vitrine abre:
 
 | Item | Quem vê | Endereço |

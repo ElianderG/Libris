@@ -572,3 +572,19 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: registrar o que o código faz sobre pedido e pagamento, a conta (e-mail verificado, as duas áreas de configuração e o administrador do seeder) e como rodar a suíte, sem alterar o README
 - Revisão: Revisado pelo autor
 
+## 2026-11-28 — Home da loja
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: página inicial
+- Feito com auxílio: `resources/js/pages/Welcome.vue`
+- Finalidade: recompor a home no visual da livraria, sem mudar cabeçalho, dados nem fluxo
+- Revisão: Pendente de revisão do autor. `yarn types:check` passou. A página foi vista em claro e escuro, no desktop e no celular.
+
+## 2026-11-28 — Aba Meus Livros
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: cabeçalho da loja
+- Feito com auxílio: `StoreHeader.vue`, `docs/conta.md` e o README
+- Finalidade: abrir a biblioteca dos livros pagos a partir do cabeçalho, no desktop e no menu do celular
+- Revisão: Pendente de revisão do autor. `yarn types:check` passou. A aba foi vista no desktop e no menu do celular; sem login, ela abre a entrada.
+

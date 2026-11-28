@@ -2,13 +2,19 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import { Menu, Search, ShoppingBag, X } from '@lucide/vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import StoreAccountMenu from '@/components/store/StoreAccountMenu.vue';
 import ThemeToggle from '@/components/store/ThemeToggle.vue';
-import { catalog, cart, home, login } from '@/routes';
+import { catalog, cart, home, library, login } from '@/routes';
 
 const page = usePage();
 const menuOpen = ref(false);
+
+const onLibrary = computed(() => {
+    const path = page.url.split('?')[0];
+
+    return path === '/biblioteca' || path.startsWith('/biblioteca/');
+});
 
 function closeMenu(): void {
     menuOpen.value = false;
@@ -41,6 +47,13 @@ function closeMenu(): void {
             <nav class="ml-4 hidden items-center gap-6 md:flex">
                 <Link :href="catalog()" class="text-sm font-medium text-foreground transition-colors hover:text-primary">
                     Catálogo
+                </Link>
+                <Link
+                    :href="library()"
+                    class="text-sm font-medium transition-colors hover:text-primary"
+                    :class="onLibrary ? 'text-primary' : 'text-foreground'"
+                >
+                    Meus Livros
                 </Link>
             </nav>
 
@@ -112,6 +125,14 @@ function closeMenu(): void {
             <nav class="mt-4 grid gap-1">
                 <Link :href="catalog()" class="rounded-lg px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-foreground/10" @click="closeMenu">
                     Catálogo
+                </Link>
+                <Link
+                    :href="library()"
+                    class="rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-foreground/10"
+                    :class="onLibrary ? 'text-primary' : 'text-foreground'"
+                    @click="closeMenu"
+                >
+                    Meus Livros
                 </Link>
                 <Link
                     v-if="!page.props.auth.user"

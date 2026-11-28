@@ -61,7 +61,7 @@ O aviso chega em `POST {APP_URL}/webhooks/pagsmile`, sem sessão e sem CSRF, no 
 
 A loja utiliza a identidade visual da **Libris te liberant**, com uma estrutura composta por:
 
-- Cabeçalho e busca visual;
+- Cabeçalho, com Catálogo e Meus Livros, e busca;
 - Catálogo de livros;
 - Sacola de compras;
 - Acesso à conta do usuário;
@@ -172,7 +172,7 @@ O comprovante também direciona o usuário conforme a situação do pedido:
 
 A biblioteca reúne os livros adquiridos pelo usuário.
 
-Em `/biblioteca`, os pedidos com pagamento confirmado são organizados em uma estante digital, sem duplicação de títulos.
+O cabeçalho da loja tem a aba **Meus Livros**, que abre `/biblioteca`. Quem não entrou vai para o login e, depois, volta para essa estante. Em `/biblioteca`, os pedidos com pagamento confirmado são organizados sem duplicação de títulos.
 
 Cada livro possui uma página individual em `/biblioteca/{slug}`, que disponibiliza seu conteúdo integral exclusivamente para usuários que realizaram a compra.
 
@@ -270,6 +270,8 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Ticket 31: a suíte cobre o fluxo do dinheiro, da biblioteca e da API, sem token real e sem internet. Revisão: revisado pelo autor. `php8.3 artisan test` passou (215 testes).
 - Ticket 32: pedido, livro, categoria, usuário e avatar passam por policy; o painel entra pelo gate `access-admin`. O POST do checkout ignora preço enviado. Revisão: revisado pelo autor. `php8.3 artisan test` passou (217 testes).
 - Manuais da API: o caminho da chave ficou **Chave da API**, o clique fora do livro tem `product_title` nulo, e a tabela passou a citar `405` e `429`. Revisão: revisado pelo autor.
+- Home da loja: abertura editorial, estantes e o fecho em vinho, com o cabeçalho como estava. Revisão: pendente de revisão do autor. `yarn types:check` passou.
+- Cabeçalho: aba **Meus Livros** abre `/biblioteca`, no desktop e no menu do celular. Revisão: pendente de revisão do autor. `yarn types:check` passou.
 
 ## Aplicação hospedada
 

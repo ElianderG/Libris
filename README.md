@@ -234,42 +234,42 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Página do livro: **Adicionar à sacola** permanece na página e **Comprar agora** abre o checkout. Revisão: revisado pelo autor.
 - Épico 12: plano da Pagsmile no mesmo checkout, ainda sem código. Revisão: revisado pelo autor.
 - Sair esquece o histórico do navegador, e página autenticada não fica em cache. Revisão: revisado pelo autor.
-- Login com Google: cria a conta ou entra na que já tem o mesmo e-mail, sem promover administrador. Revisão: pendente de revisão do autor.
-- Tela de entrar alinhada à livraria, com o Google separado do e-mail. Revisão: pendente de revisão do autor.
-- Ticket 18: o sandbox do Juntos Se Faz não envia webhook. Revisão: pendente de revisão do autor.
-- Ticket 19: a consulta paga fecha o pedido uma única vez. Revisão: pendente de revisão do autor.
-- Ticket 20: histórico de compras em `/minha-conta/compras`. Revisão: pendente de revisão do autor.
-- Ticket 21: comprovante da compra, com preço congelado e tentativas de Pix. Revisão: pendente de revisão do autor.
-- Ticket 22: leitura na biblioteca, só para quem pagou. Revisão: pendente de revisão do autor.
-- Ticket 23: link de indicação no livro e código na conta. Revisão: pendente de revisão do autor.
-- Ticket 24: clique do afiliado no cookie `libris_ref`. Revisão: pendente de revisão do autor.
-- Ticket 25: o pedido guarda o afiliado do cookie, não o `ref` do formulário. Revisão: pendente de revisão do autor.
-- Ticket 26: comissão única quando o Pix confirma, listada em Indicar. Revisão: pendente de revisão do autor.
-- Ticket 27: casca do painel em `/admin`, com menu e quatro números. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou.
-- Ticket 28: cadastro de categorias e livros no painel. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminCatalogTest` passou.
-- Ticket 29: pedidos, tentativas de Pix e promoção de administrador. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
-- Ticket 30: cinco pedidos pagos na home e a lista de afiliados. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou.
-- Início do painel: atalhos das áreas, índices e gráficos com Chart.js. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou.
-- Menu do painel: coluna à esquerda no desktop e lista em tela cheia no celular, com Voltar. Revisão: pendente de revisão do autor.
-- Menu da conta: ícone antes de cada item. Revisão: pendente de revisão do autor.
-- Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: pendente de revisão do autor.
-- Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: pendente de revisão do autor.
-- Ticket 37: cliente HTTP da Pagsmile, com criação e consulta de Pix no sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou.
-- Checkout: **Comprar agora** passa a remover um livro ou esvaziar a sacola antes do Pix. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou.
-- Usuários do painel: menu flutuante com pedidos, acesso de administrador e exclusão, sempre com confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
-- Logo do painel: abre a página inicial da loja. Revisão: pendente de revisão do autor. `yarn types:check` passou.
-- Painel: aprovar, recusar, cancelar e expirar o Pix pendente pela resposta do sandbox. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou. `yarn types:check` passou.
-- Textos da loja e do painel: saíram as explicações de sandbox, o identificador e o JSON da cobrança, e os avisos de ambiente de teste. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou. `yarn types:check` passou.
-- Ticket 38: o checkout escolhe Juntos Se Faz ou Pagsmile. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou.
-- Ticket 39: a consulta e o aviso da Pagsmile fecham o pedido pela mesma confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes).
-- Mapa de autorização em `docs/autorizacao.md`: onde usar middleware, gate e policy. Revisão: pendente de revisão do autor. Nenhum código de acesso foi alterado.
-- Ticket 34: chave da conta em `/minha-conta/configuracoes`, com hash SHA-256 e prefixo mascarado. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou.
-- Ticket 35 e Ticket 36: consulta da própria conta em `/api/v1`, autenticada pela chave, e o passo a passo em `docs/api.md`. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes).
-- Manual da API: `docs/api.md` ficou só com o uso, sem armazenamento da chave, regra de administrador nem nomes de colunas. Revisão: pendente de revisão do autor.
-- Documentação da API separada: `docs/api.md` para quem chama e `docs/api-interna.md` para quem mantém. Revisão: pendente de revisão do autor.
-- Ticket 31: a suíte cobre o fluxo do dinheiro, da biblioteca e da API, sem token real e sem internet. Revisão: pendente de revisão do autor. `php8.3 artisan test` passou (215 testes).
-- Ticket 32: pedido, livro, categoria, usuário e avatar passam por policy; o painel entra pelo gate `access-admin`. O POST do checkout ignora preço enviado. Revisão: pendente de revisão do autor. `php8.3 artisan test` passou (217 testes).
-- Manuais da API: o caminho da chave ficou **Chave da API**, o clique fora do livro tem `product_title` nulo, e a tabela passou a citar `405` e `429`. Revisão: pendente de revisão do autor.
+- Login com Google: cria a conta ou entra na que já tem o mesmo e-mail, sem promover administrador. Revisão: revisado pelo autor.
+- Tela de entrar alinhada à livraria, com o Google separado do e-mail. Revisão: revisado pelo autor.
+- Ticket 18: o sandbox do Juntos Se Faz não envia webhook. Revisão: revisado pelo autor.
+- Ticket 19: a consulta paga fecha o pedido uma única vez. Revisão: revisado pelo autor.
+- Ticket 20: histórico de compras em `/minha-conta/compras`. Revisão: revisado pelo autor.
+- Ticket 21: comprovante da compra, com preço congelado e tentativas de Pix. Revisão: revisado pelo autor.
+- Ticket 22: leitura na biblioteca, só para quem pagou. Revisão: revisado pelo autor.
+- Ticket 23: link de indicação no livro e código na conta. Revisão: revisado pelo autor.
+- Ticket 24: clique do afiliado no cookie `libris_ref`. Revisão: revisado pelo autor.
+- Ticket 25: o pedido guarda o afiliado do cookie, não o `ref` do formulário. Revisão: revisado pelo autor.
+- Ticket 26: comissão única quando o Pix confirma, listada em Indicar. Revisão: revisado pelo autor.
+- Ticket 27: casca do painel em `/admin`, com menu e quatro números. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AdminHomeTest` passou.
+- Ticket 28: cadastro de categorias e livros no painel. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AdminCatalogTest` passou.
+- Ticket 29: pedidos, tentativas de Pix e promoção de administrador. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
+- Ticket 30: cinco pedidos pagos na home e a lista de afiliados. Revisão: revisado pelo autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou.
+- Início do painel: atalhos das áreas, índices e gráficos com Chart.js. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AdminHomeTest` passou.
+- Menu do painel: coluna à esquerda no desktop e lista em tela cheia no celular, com Voltar. Revisão: revisado pelo autor.
+- Menu da conta: ícone antes de cada item. Revisão: revisado pelo autor.
+- Capas da vitrine: os dois SVGs ficam em `public/covers` e a página pede `/covers/{arquivo}`. Revisão: revisado pelo autor.
+- Foto do perfil: a página pede `/avatars/{id}` e a aplicação devolve o JPEG, inclusive quando o servidor não tem GD nem ffmpeg. Revisão: revisado pelo autor.
+- Ticket 37: cliente HTTP da Pagsmile, com criação e consulta de Pix no sandbox. Revisão: revisado pelo autor. `php8.3 artisan test --filter=PagsmileClientTest` passou.
+- Checkout: **Comprar agora** passa a remover um livro ou esvaziar a sacola antes do Pix. Revisão: revisado pelo autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou.
+- Usuários do painel: menu flutuante com pedidos, acesso de administrador e exclusão, sempre com confirmação. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AdminOrdersTest` passou.
+- Logo do painel: abre a página inicial da loja. Revisão: revisado pelo autor. `yarn types:check` passou.
+- Painel: aprovar, recusar, cancelar e expirar o Pix pendente pela resposta do sandbox. Revisão: revisado pelo autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou. `yarn types:check` passou.
+- Textos da loja e do painel: saíram as explicações de sandbox, o identificador e o JSON da cobrança, e os avisos de ambiente de teste. Revisão: revisado pelo autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou. `yarn types:check` passou.
+- Ticket 38: o checkout escolhe Juntos Se Faz ou Pagsmile. Revisão: revisado pelo autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou.
+- Ticket 39: a consulta e o aviso da Pagsmile fecham o pedido pela mesma confirmação. Revisão: revisado pelo autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes).
+- Mapa de autorização em `docs/autorizacao.md`: onde usar middleware, gate e policy. Revisão: revisado pelo autor. Nenhum código de acesso foi alterado.
+- Ticket 34: chave da conta em `/minha-conta/configuracoes`, com hash SHA-256 e prefixo mascarado. Revisão: revisado pelo autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou.
+- Ticket 35 e Ticket 36: consulta da própria conta em `/api/v1`, autenticada pela chave, e o passo a passo em `docs/api.md`. Revisão: revisado pelo autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes).
+- Manual da API: `docs/api.md` ficou só com o uso, sem armazenamento da chave, regra de administrador nem nomes de colunas. Revisão: revisado pelo autor.
+- Documentação da API separada: `docs/api.md` para quem chama e `docs/api-interna.md` para quem mantém. Revisão: revisado pelo autor.
+- Ticket 31: a suíte cobre o fluxo do dinheiro, da biblioteca e da API, sem token real e sem internet. Revisão: revisado pelo autor. `php8.3 artisan test` passou (215 testes).
+- Ticket 32: pedido, livro, categoria, usuário e avatar passam por policy; o painel entra pelo gate `access-admin`. O POST do checkout ignora preço enviado. Revisão: revisado pelo autor. `php8.3 artisan test` passou (217 testes).
+- Manuais da API: o caminho da chave ficou **Chave da API**, o clique fora do livro tem `product_title` nulo, e a tabela passou a citar `405` e `429`. Revisão: revisado pelo autor.
 
 ## Aplicação hospedada
 

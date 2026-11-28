@@ -274,7 +274,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: autenticação
 - Feito com auxílio: `GoogleAuthController`, coluna `google_id`, botão nas telas de entrar e criar conta
 - Finalidade: entrar com a conta do Google, criar a conta se o e-mail for novo e reaproveitar a conta se o e-mail já existir, sem tornar a pessoa administradora
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=GoogleLoginTest` passou. Conta nova fica verificada e sem `is_admin`; e-mail existente não duplica; e-mail não confirmado pelo Google não entra; conta com segundo fator para no desafio
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=GoogleLoginTest` passou. Conta nova fica verificada e sem `is_admin`; e-mail existente não duplica; e-mail não confirmado pelo Google não entra; conta com segundo fator para no desafio
 
 ## 2026-11-27 — Tela de entrar
 
@@ -282,7 +282,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: autenticação
 - Feito com auxílio: `Login.vue`, `AuthSimpleLayout.vue` e `GoogleLoginLink.vue`
 - Finalidade: a entrada deixar de parecer o formulário padrão e seguir a moldura da livraria, com o Google separado do e-mail
-- Revisão: Pendente de revisão do autor. `yarn types:check` passou
+- Revisão: Revisado pelo autor. `yarn types:check` passou
 
 ## 2026-11-27 — Ticket 18, sem webhook
 
@@ -290,7 +290,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 18
 - Feito com auxílio: seção do gateway no `README.md`
 - Finalidade: registrar que o sandbox do Juntos Se Faz não avisa a loja, em vez de inventar uma rota de webhook
-- Revisão: Pendente de revisão do autor. Nenhum código da aplicação foi gerado. A referência oficial trata `POST /webhooks` como recurso simulado, sem chamada de volta nem assinatura
+- Revisão: Revisado pelo autor. Nenhum código da aplicação foi gerado. A referência oficial trata `POST /webhooks` como recurso simulado, sem chamada de volta nem assinatura
 
 ## 2026-11-27 — Ticket 19, confirmar o pedido
 
@@ -298,7 +298,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 19
 - Feito com auxílio: `ConfirmPayment`, o evento `PaymentConfirmed` e a consulta em `RefreshPayment`
 - Finalidade: a consulta paga fechar pedido e pagamento uma única vez, sem marcar pago se o valor do gateway divergir
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ConfirmPaymentTest` passou. A segunda chamada conserva `paid_at` e dispara o evento uma vez; valor divergente deixa os dois pendentes; falha terminal muda só o pagamento
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ConfirmPaymentTest` passou. A segunda chamada conserva `paid_at` e dispara o evento uma vez; valor divergente deixa os dois pendentes; falha terminal muda só o pagamento
 
 ## 2026-11-27 — Ticket 20, histórico de compras
 
@@ -306,7 +306,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 20
 - Feito com auxílio: `PurchaseController`, `Purchases.vue` e o item Compras no menu da conta
 - Finalidade: a pessoa logada ver só os próprios pedidos, do mais novo para o mais antigo, e voltar ao Pix quando o pedido ainda espera pagamento
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseHistoryTest` passou. Cada conta viu só os próprios pedidos; o pendente apontou para o Pix; lista vazia abriu a página; visitante foi ao login
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PurchaseHistoryTest` passou. Cada conta viu só os próprios pedidos; o pendente apontou para o Pix; lista vazia abriu a página; visitante foi ao login
 
 ## 2026-11-27 — Ticket 21, comprovante da compra
 
@@ -314,7 +314,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 21
 - Feito com auxílio: `PurchaseController::show` e `Purchase.vue`
 - Finalidade: o dono ver o preço congelado, todas as tentativas de Pix e, se o pedido estiver pago, o caminho para ler o livro
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PurchaseDetailTest` passou. O preço ficou em `R$ 37,90` depois de o produto mudar; as duas tentativas apareceram; o JSON cru não veio na resposta; outra conta recebeu 404; livro despublicado manteve o caminho `/biblioteca/{slug}`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PurchaseDetailTest` passou. O preço ficou em `R$ 37,90` depois de o produto mudar; as duas tentativas apareceram; o JSON cru não veio na resposta; outra conta recebeu 404; livro despublicado manteve o caminho `/biblioteca/{slug}`
 
 ## 2026-11-27 — Ticket 22, leitura na biblioteca
 
@@ -322,7 +322,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 22
 - Feito com auxílio: `LibraryController`, `Library.vue` e `LibraryBook.vue`
 - Finalidade: listar uma vez cada livro de pedido pago e abrir o texto inteiro só para quem comprou, sem executar HTML do conteúdo
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=LibraryReadingTest` passou. A estante ficou com um título depois de duas compras; o texto completo abriu mesmo despublicado; visitante e quem não comprou receberam 403; o `<script>` não apareceu como HTML
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=LibraryReadingTest` passou. A estante ficou com um título depois de duas compras; o texto completo abriu mesmo despublicado; visitante e quem não comprou receberam 403; o `<script>` não apareceu como HTML
 
 ## 2026-11-27 — Ticket 23, link de indicação
 
@@ -330,7 +330,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 23
 - Feito com auxílio: `BookController`, `Book.vue`, `Affiliate.vue` e o item Indicar no menu
 - Finalidade: quem está logado copiar o link do livro com o próprio `affiliate_code`, e a conta mostrar esse código
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateLinkTest` passou. O link do logado levou `?ref=` igual ao código do banco; o visitante não viu código alheio; a página da conta mostrou o código de quem entrou
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AffiliateLinkTest` passou. O link do logado levou `?ref=` igual ao código do banco; o visitante não viu código alheio; a página da conta mostrou o código de quem entrou
 
 ## 2026-11-27 — Ticket 24, clique do afiliado
 
@@ -338,7 +338,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 24
 - Feito com auxílio: migration `affiliate_clicks` e o middleware `RememberAffiliate`
 - Finalidade: um `?ref=` válido gravar o clique uma vez, guardar o cookie por 7 dias e seguir a página sem o parâmetro
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateClickTest` passou. O livro com `ref` válido criou o clique e o cookie; `ref` inválido não criou linha; o segundo código trocou o afiliado; o próprio código não gravou clique
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AffiliateClickTest` passou. O livro com `ref` válido criou o clique e o cookie; `ref` inválido não criou linha; o segundo código trocou o afiliado; o próprio código não gravou clique
 
 ## 2026-11-27 — Ticket 25, indicação no pedido
 
@@ -346,7 +346,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 25
 - Feito com auxílio: `PlaceOrder`
 - Finalidade: copiar para o pedido o afiliado do cookie `libris_ref` quando o clique é de outra pessoa e ainda está dentro de 7 dias
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AffiliateOrderTest` passou. Cookie de outra pessoa gravou o código da época; sem cookie, cookie próprio, clique velho e `ref` no formulário deixaram o afiliado nulo
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AffiliateOrderTest` passou. Cookie de outra pessoa gravou o código da época; sem cookie, cookie próprio, clique velho e `ref` no formulário deixaram o afiliado nulo
 
 ## 2026-11-27 — Ticket 26, comissão
 
@@ -354,7 +354,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 26
 - Feito com auxílio: migration `commissions`, `RecordCommission` e a lista em `Affiliate.vue`
 - Finalidade: gravar uma comissão única quando o Pix confirma um pedido com afiliado, arredondada para baixo, e mostrá-la em Indicar
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CommissionTest` passou. R$ 37,90 a 10% virou 379 centavos; confirmar de novo não criou outra linha; pedido sem afiliado não gerou comissão; a página do afiliado mostrou a linha
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CommissionTest` passou. R$ 37,90 a 10% virou 379 centavos; confirmar de novo não criou outra linha; pedido sem afiliado não gerou comissão; a página do afiliado mostrou a linha
 
 ## 2026-11-27 — Capas da vitrine
 
@@ -362,7 +362,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: catálogo, capa na produção
 - Feito com auxílio: `CatalogSeeder`, `Product::toCatalogCard` e os SVG em `public/covers`
 - Finalidade: a capa deixar de passar por `/storage`, caminho que o nginx da produção recusa com 403
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. As duas capas foram gravadas em `public/covers` e a URL do card ficou `/covers/{arquivo}`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=CatalogSeederTest` passou. As duas capas foram gravadas em `public/covers` e a URL do card ficou `/covers/{arquivo}`
 
 ## 2026-11-27 — Foto do perfil na produção
 
@@ -370,7 +370,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: configurações do perfil
 - Feito com auxílio: disco `avatars`, `AvatarImage`, `UserAvatar` e o teste de upload
 - Finalidade: a foto ser pedida em `/avatars/{arquivo}`, no mesmo site, em vez de uma URL absoluta em `/storage`
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A URL ficou `/avatars/{arquivo}`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (6 testes). A URL ficou `/avatars/{arquivo}`
 
 ## 2026-11-27 — Foto do perfil sem GD
 
@@ -378,7 +378,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: configurações do perfil
 - Feito com auxílio: `AvatarImage`, `ProfileAvatarController` e a rota `/avatars/{id}`
 - Finalidade: guardar o JPEG que o navegador já cortou e devolvê-lo pela aplicação, porque a produção não tem GD nem ffmpeg e o nginx não entrega `/storage` nem um `.jpg` ausente
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (7 testes). No PHP 8.6, sem GD, `GET /avatars/2` respondeu 200 com JPEG
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ProfileAvatarTest` passou (7 testes). No PHP 8.6, sem GD, `GET /avatars/2` respondeu 200 com JPEG
 
 ## 2026-11-27 — Ticket 27, casca do painel
 
@@ -386,7 +386,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 27
 - Feito com auxílio: `Admin\HomeController`, `AdminLayout`, `admin/Home.vue` e `admin/Section.vue`
 - Finalidade: o administrador entrar em `/admin` num menu próprio e ver livros publicados, pedidos pagos, total vendido e comissões confirmadas
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou (11 testes). Zerado mostra 0 e R$ 0,00; dois pedidos pagos somam R$ 62,90 e o pendente de R$ 100,00 fica de fora; comissão `pending` não entra na contagem; cliente recebe 403 nas cinco rotas do menu
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AdminHomeTest` passou (11 testes). Zerado mostra 0 e R$ 0,00; dois pedidos pagos somam R$ 62,90 e o pendente de R$ 100,00 fica de fora; comissão `pending` não entra na contagem; cliente recebe 403 nas cinco rotas do menu
 
 ## 2026-11-27 — Ticket 28, categorias e livros
 
@@ -394,7 +394,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 28
 - Feito com auxílio: `Admin\CategoryController`, `Admin\BookController`, `BookRequest`, `BookCover` e as páginas `admin/categories` e `admin/books`
 - Finalidade: o administrador cadastrar categorias e livros, com preço em reais, capa em `public/covers` e bloqueio de exclusão quando o livro já foi comprado
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminCatalogTest` passou (9 testes). `37,90` e `37.90` viraram 3790; o título novo manteve o slug; livro comprado não foi apagado e, despublicado, saiu do catálogo e continuou na biblioteca; capa nova apagou a anterior; capa acima de 2 MB foi recusada; categoria com livro não foi apagada; cliente recebeu 403
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AdminCatalogTest` passou (9 testes). `37,90` e `37.90` viraram 3790; o título novo manteve o slug; livro comprado não foi apagado e, despublicado, saiu do catálogo e continuou na biblioteca; capa nova apagou a anterior; capa acima de 2 MB foi recusada; categoria com livro não foi apagada; cliente recebeu 403
 
 ## 2026-11-27 — Ticket 29, pedidos e usuários
 
@@ -402,7 +402,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 29
 - Feito com auxílio: `Admin\OrderController`, `Admin\UserController`, `admin/orders` e `admin/users/Index.vue`
 - Finalidade: o administrador filtrar pedidos, ver as tentativas de Pix e promover ou remover o acesso de outra conta
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (4 testes). O filtro de pendentes abriu o detalhe com as duas cobranças e o `gateway_id`; promover liberou `/admin` e remover fechou de novo; a própria conta recusou a alteração; cliente recebeu 403
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (4 testes). O filtro de pendentes abriu o detalhe com as duas cobranças e o `gateway_id`; promover liberou `/admin` e remover fechou de novo; a própria conta recusou a alteração; cliente recebeu 403
 
 ## 2026-11-27 — Ticket 30, vendas e afiliados
 
@@ -410,7 +410,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 30
 - Feito com auxílio: `Admin\HomeController`, `Admin\AffiliateController`, `admin/Home.vue` e `admin/affiliates/Index.vue`
 - Finalidade: mostrar os cinco pedidos pagos mais recentes e, em afiliados, cliques, vendas pagas e comissão confirmada de quem indicou
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou (15 testes). A home trouxe os cinco pagos mais novos e deixou o pendente de fora; Ana apareceu com 2 cliques, 1 venda paga e R$ 3,79; Caio só com clique; Bruno e Davi ficaram de fora
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='AdminHomeTest|AdminAffiliatesTest'` passou (15 testes). A home trouxe os cinco pagos mais novos e deixou o pendente de fora; Ana apareceu com 2 cliques, 1 venda paga e R$ 3,79; Caio só com clique; Bruno e Davi ficaram de fora
 
 ## 2026-11-27 — Início do painel com gráficos
 
@@ -418,7 +418,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: painel administrativo
 - Feito com auxílio: `Admin\HomeController`, `admin/Home.vue` e `AdminChart.vue`
 - Finalidade: colocar atalhos das áreas no início e, abaixo, os índices e os gráficos de vendas, pedidos e livros publicados
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminHomeTest` passou. A venda de hoje ficou no último dia do gráfico; o pedido de 40 dias atrás e o pendente ficaram fora das vendas; só a categoria do livro publicado entrou no gráfico. `yarn types:check` passou
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AdminHomeTest` passou. A venda de hoje ficou no último dia do gráfico; o pedido de 40 dias atrás e o pendente ficaram fora das vendas; só a categoria do livro publicado entrou no gráfico. `yarn types:check` passou
 
 ## 2026-11-27 — Menu lateral do painel
 
@@ -426,7 +426,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: painel administrativo
 - Feito com auxílio: `AdminLayout.vue` e o CSS de `.admin-sheet`
 - Finalidade: tirar as áreas do cabeçalho e colocá-las numa coluna à esquerda; no celular, a lista ocupa a tela e o conteúdo abre com um botão Voltar
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ícones no menu da conta
 
@@ -434,7 +434,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: menu da conta no cabeçalho
 - Feito com auxílio: `StoreAccountMenu.vue`
 - Finalidade: colocar um ícone antes de Painel, Minha conta, Compras, Indicar, Configurações e Sair
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-27 — Ticket 37, cliente da Pagsmile
 
@@ -442,7 +442,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 37
 - Feito com auxílio: `PagsmileClient`, entrada `pagsmile` em `config/services.php`, campos de QR em `GatewayPayment` e as chaves vazias no `.env.example`
 - Finalidade: criar e consultar Pix no sandbox da Pagsmile, com valor em texto, Basic auth e status traduzido, sem vazar a security_key nem o CPF
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=PagsmileClientTest` passou (9 testes). Criação, consulta, timeout, HTTP 400, code diferente de 10000, credencial vazia, valor fora da faixa e status desconhecido foram cobertos com `Http::fake`; a chave e o CPF não apareceram na exceção nem no log
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=PagsmileClientTest` passou (9 testes). Criação, consulta, timeout, HTTP 400, code diferente de 10000, credencial vazia, valor fora da faixa e status desconhecido foram cobertos com `Http::fake`; a chave e o CPF não apareceram na exceção nem no log
 
 ## 2026-11-27 — Remover no checkout
 
@@ -450,7 +450,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: sacola e checkout
 - Feito com auxílio: `Checkout.vue`, `Cart.vue` e `CartController`
 - Finalidade: quem entra por **Comprar agora** consegue remover um livro ou esvaziar a sacola antes do Pix
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou (11 testes). Remover no checkout deixou o outro livro e o total em `R$ 37,90`; remover o único livro e esvaziar levaram à sacola vazia
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='CheckoutTest|CartTest'` passou (11 testes). Remover no checkout deixou o outro livro e o total em `R$ 37,90`; remover o único livro e esvaziar levaram à sacola vazia
 
 ## 2026-11-27 — Menu de usuários no painel
 
@@ -458,7 +458,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: painel administrativo
 - Feito com auxílio: `admin/users/Index.vue`, `Admin\UserController` e o filtro de pedidos por conta
 - Finalidade: cada conta ganha um menu flutuante para ver pedidos, mudar o acesso de administrador ou apagar, com confirmação; conta com pedido ou comissão não é apagada
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (6 testes). Conta sem histórico foi apagada; a própria conta, quem comprou e quem indicou um pedido ficaram; a lista de pedidos abriu só os da Ana. `yarn types:check` passou
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AdminOrdersTest` passou (6 testes). Conta sem histórico foi apagada; a própria conta, quem comprou e quem indicou um pedido ficaram; a lista de pedidos abriu só os da Ana. `yarn types:check` passou
 
 ## 2026-11-27 — Ações do Pix no painel
 
@@ -466,7 +466,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: painel administrativo, pagamentos
 - Feito com auxílio: `SettlePayment`, `JuntosSeFazClient::simulate`, `Admin\OrderController` e `admin/orders/Show.vue`
 - Finalidade: o administrador aprova, recusa, cancela ou expira a tentativa pendente chamando a ação do sandbox e aplicando a resposta no pedido
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou (21 testes). Aprovar fechou o pedido; recusar, cancelar e expirar mudaram só a tentativa; valor divergente e HTTP 500 mantiveram pendente; cliente recebeu 403. `yarn types:check` passou
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='AdminOrdersTest|JuntosSeFazClientTest'` passou (21 testes). Aprovar fechou o pedido; recusar, cancelar e expirar mudaram só a tentativa; valor divergente e HTTP 500 mantiveram pendente; cliente recebeu 403. `yarn types:check` passou
 
 ## 2026-11-27 — Textos da interface
 
@@ -474,7 +474,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: loja, checkout e painel de pedidos
 - Feito com auxílio: páginas Vue do pedido, do pagamento, da vitrine e do rodapé; `CheckoutController`, `PurchaseController`, `Admin\OrderController` e `SettlePayment`
 - Finalidade: tirar da tela explicações de sandbox, identificador e JSON da cobrança, e avisos de ambiente de teste
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou (33 testes). `yarn types:check` passou
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='AdminOrdersTest|CheckoutTest|PaymentStatusTest|PaymentRetryTest|PurchaseDetailTest|CartTest'` passou (33 testes). `yarn types:check` passou
 
 ## 2026-11-27 — Logo do painel
 
@@ -482,7 +482,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: painel administrativo
 - Feito com auxílio: `AdminLayout.vue`
 - Finalidade: o logo do cabeçalho do painel abrir a página inicial da loja, como no site
-- Revisão: Pendente de revisão do autor. `yarn types:check` passou. O link do logo usa a rota `/`; o item Início do menu lateral continua em `/admin`
+- Revisão: Revisado pelo autor. `yarn types:check` passou. O link do logo usa a rota `/`; o item Início do menu lateral continua em `/admin`
 
 ## 2026-11-27 — Ticket 38, cobrança na Pagsmile
 
@@ -490,7 +490,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 38
 - Feito com auxílio: escolha de gateway no checkout, coluna `gateway` em pedidos e pagamentos, `ChargeOrder` e a imagem do QR na página do pagamento
 - Finalidade: a pessoa escolher Juntos Se Faz ou Pagsmile; a Pagsmile só cobra com CPF de 11 dígitos, sem gravar o documento, e um novo Pix repete o gateway do pedido
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou. A migration da coluna `gateway` rodou no banco local
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou. A migration da coluna `gateway` rodou no banco local
 
 ## 2026-11-27 — Ticket 39, consulta e aviso da Pagsmile
 
@@ -498,7 +498,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 39
 - Feito com auxílio: `RefreshPayment`, `ReceivePagsmileNotice`, `PagsmileWebhookController` e a rota `POST /webhooks/pagsmile`
 - Finalidade: a página consultar a Pagsmile e o aviso assinado confirmar o pedido uma vez, só com o valor igual ao da tentativa
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes)
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes)
 
 ## 2026-11-27 — Mapa de autorização
 
@@ -506,7 +506,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: definição de Gate e Policy, antes de implementar
 - Feito com auxílio: `docs/autorizacao.md`
 - Finalidade: definir onde entra middleware, o gate `access-admin` e as policies de livro, pedido, categoria, usuário, avatar e chave da API
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-28 — Ticket 34, chave da conta
 
@@ -514,7 +514,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 34
 - Feito com auxílio: tabela `api_keys`, `ApiKey`, `ApiKeyPolicy`, `ApiKeyController`, `AccountSettings.vue` e o atalho Chave da API
 - Finalidade: o usuário logado gerar uma chave, ver o valor uma vez e, depois, só o prefixo; gerar outra ou revogar invalida a anterior sem apagar a linha
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou. A migration rodou no MySQL local depois de subir o container `desafio-mysql-1`
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou. A migration rodou no MySQL local depois de subir o container `desafio-mysql-1`
 
 ## 2026-11-28 — Ticket 35 e Ticket 36, consulta da conta
 
@@ -522,7 +522,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 35 e Ticket 36
 - Feito com auxílio: `AuthenticateApiKey`, `AccountController`, `OrderPolicy::view`, `routes/api.php` e `docs/api.md`
 - Finalidade: a chave ler só compras e vendas da própria conta, sem sessão do navegador e sem devolver livro nem payload do gateway
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes)
+- Revisão: Revisado pelo autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes)
 
 ## 2026-11-28 — Manual da API para terceiros
 
@@ -530,7 +530,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 36, `docs/api.md`
 - Feito com auxílio: `docs/api.md`
 - Finalidade: deixar no manual só o uso da API, sem armazenamento da chave, regra de administrador nem nomes de colunas
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-28 — Duas documentações da API
 
@@ -538,7 +538,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 36, manuais da API
 - Feito com auxílio: `docs/api.md` e `docs/api-interna.md`
 - Finalidade: separar o manual de quem chama a API do funcionamento interno
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-28 — Ticket 31, testes do fluxo
 
@@ -546,7 +546,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 31
 - Feito com auxílio: `ChargeOrderTest`, `CommissionTest`, `AffiliateOrderTest`, `AccountApiTest`, `CheckoutTest` e `tests/TestCase.php`
 - Finalidade: a suíte provar o total enviado ao gateway, a comissão arredondada para baixo, a autoindicação sem comissão e as compras só do dono da chave, sem chamada real de rede
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test` passou (215 testes)
+- Revisão: Revisado pelo autor. `php8.3 artisan test` passou (215 testes)
 
 ## 2026-11-28 — Ticket 32, segurança e validação
 
@@ -554,7 +554,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: Ticket 32
 - Feito com auxílio: policies de livro, pedido, categoria, usuário e avatar; gate `access-admin`; Form Requests da sacola, da nova tentativa de Pix e da ação do painel; testes de preço no checkout, pedido alheio e leitura
 - Finalidade: cada um só mexe no que é seu, o POST do checkout não aceita preço inventado e o erro do gateway não mostra credencial
-- Revisão: Pendente de revisão do autor. `php8.3 artisan test` passou (217 testes)
+- Revisão: Revisado pelo autor. `php8.3 artisan test` passou (217 testes)
 
 ## 2026-11-28 — Manuais da API
 
@@ -562,7 +562,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: `docs/api.md` e `docs/api-interna.md`
 - Feito com auxílio: caminho da chave, `product_title` nulo, códigos `405` e `429`, e a retirada do `Gate::before`
 - Finalidade: os dois manuais descreverem o menu, o clique e as respostas que a API já devolve
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 
 ## 2026-11-28 — Domínio, conta e testes
 
@@ -570,5 +570,5 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: documentação funcional, antes do README do Ticket 33
 - Feito com auxílio: `docs/dominio.md`, `docs/conta.md`, `docs/testes.md` e o status de domínio em `docs/epicos/00-indice.md`
 - Finalidade: registrar o que o código faz sobre pedido e pagamento, a conta (e-mail verificado, as duas áreas de configuração e o administrador do seeder) e como rodar a suíte, sem alterar o README
-- Revisão: Pendente de revisão do autor
+- Revisão: Revisado pelo autor
 

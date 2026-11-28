@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Link, router, usePage } from '@inertiajs/vue3';
-import { CircleUser, LayoutDashboard, LogOut, Receipt, Settings, Share2 } from '@lucide/vue';
+import { CircleUser, KeyRound, LayoutDashboard, LogOut, Receipt, Settings, Share2 } from '@lucide/vue';
 import { computed } from 'vue';
+import ApiKeyController from '@/actions/App/Http/Controllers/ApiKeyController';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -59,6 +60,12 @@ function clearSession(): void {
                 <Link class="w-full cursor-pointer" :href="affiliate()">
                     <Share2 />
                     Indicar
+                </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem :as-child="true">
+                <Link class="w-full cursor-pointer" :href="ApiKeyController.index.url()">
+                    <KeyRound />
+                    Chave da API
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuItem :as-child="true">

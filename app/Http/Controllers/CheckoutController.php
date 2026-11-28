@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Checkout\RetryPaymentRequest;
 use App\Http\Requests\Checkout\StoreCheckoutRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -68,27 +69,15 @@ class CheckoutController extends Controller
         return $this->chargeAndRedirect($chargeOrder, $order, $user, $request->payerDocument());
     }
 
-    public function retry(Request $request, Order $order, ChargeOrder $chargeOrder): RedirectResponse
+    public function retry(RetryPaymentRequest $request, Order $order, ChargeOrder $chargeOrder): RedirectResponse
     {
         $user = $request->user();
 
-        if ($user === null || $order->user_id !== $user->id) {
+        if ($user === null) {
             abort(404);
         }
 
-        $document = null;
-
-        if ($order->gateway === Order::GATEWAY_PAGSMILE) {
-            $document = preg_replace('/\D/', '', (string) $request->input('document')) ?? '';
-
-            if (strlen($document) !== 11) {
-                return back()->withErrors([
-                    'document' => 'Informe o CPF com 11 dígitos.',
-                ]);
-            }
-        }
-
-        return $this->chargeAndRedirect($chargeOrder, $order, $user, $document);
+        return $this->chargeAndRedirect($chargeOrder, $order, $user, $request->payerDocument());
     }
 
     public function payment(Request $request, Order $order, RefreshPayment $refreshPayment): Response
@@ -140,9 +129,7 @@ class CheckoutController extends Controller
     {
         $user = $request->user();
 
-        if ($user === null || $order->user_id !== $user->id) {
-            abort(404);
-        }
+        abort_unless($user?->can('view', $order), 404);
     }
 
     private function consult(RefreshPayment $refreshPayment, Order $order): void

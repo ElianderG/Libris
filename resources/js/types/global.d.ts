@@ -23,6 +23,7 @@ declare module '@inertiajs/core' {
             flash: {
                 success: string | null;
                 error: string | null;
+                apiKey: string | null;
             };
             appearance: 'light' | 'dark' | 'system';
             googleLogin: boolean;

@@ -77,6 +77,8 @@ class BookController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
+        $this->authorize('delete', $product);
+
         if ($product->orderItems()->exists()) {
             return back()->with('error', 'Este livro já foi comprado. Despublique para tirá-lo da vitrine.');
         }
@@ -98,6 +100,8 @@ class BookController extends Controller
 
     public function unpublish(Product $product): RedirectResponse
     {
+        $this->authorize('unpublish', $product);
+
         $product->is_published = false;
         $product->save();
 

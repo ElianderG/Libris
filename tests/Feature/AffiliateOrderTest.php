@@ -1,8 +1,12 @@
 <?php
 
 use App\Models\AffiliateClick;
+use App\Models\Commission;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\User;
+use App\Services\Payments\ConfirmPayment;
+use App\Services\Payments\GatewayPayment;
 use Database\Seeders\CatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -75,6 +79,23 @@ it('grava afiliado nulo quando o cookie é do próprio comprador', function () {
 
     expect($order->affiliate_id)->toBeNull()
         ->and($order->affiliate_code)->toBeNull();
+});
+
+it('não gera comissão na autoindicação', function () {
+    $buyer = User::factory()->create();
+    $own = clickFor($buyer, 'token-proprio');
+
+    $order = buy($buyer, [], $own->token);
+    $payment = $order->payments()->first();
+
+    app(ConfirmPayment::class)->confirm(
+        $payment,
+        new GatewayPayment('payments_abc', Payment::STATUS_PAID, null, $order->total_cents),
+    );
+
+    expect($order->fresh()->affiliate_id)->toBeNull()
+        ->and($order->fresh()->status)->toBe(Order::STATUS_PAID)
+        ->and(Commission::query()->count())->toBe(0);
 });
 
 it('grava afiliado nulo quando o clique passou de 7 dias', function () {

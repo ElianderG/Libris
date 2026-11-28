@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\StoreProfileAvatarRequest;
+use App\Models\User;
 use App\Models\UserAvatar;
 use App\Support\AvatarImage;
 use Illuminate\Http\RedirectResponse;
@@ -79,9 +80,7 @@ class ProfileAvatarController extends Controller
     {
         $user = $request->user();
 
-        if ($user === null || $avatar->user_id !== $user->id) {
-            abort(404);
-        }
+        abort_unless($user instanceof User && $user->can('update', $avatar), 404);
 
         $user->forceFill(['avatar_id' => $avatar->id])->save();
 
@@ -94,9 +93,7 @@ class ProfileAvatarController extends Controller
     {
         $user = $request->user();
 
-        if ($user === null || $avatar->user_id !== $user->id) {
-            abort(404);
-        }
+        abort_unless($user instanceof User && $user->can('delete', $avatar), 404);
 
         if ($user->avatar_id === $avatar->id) {
             $user->forceFill(['avatar_id' => null])->save();

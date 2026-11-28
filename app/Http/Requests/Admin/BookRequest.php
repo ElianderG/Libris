@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Product;
 use App\Support\ProductRules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -15,7 +16,13 @@ class BookRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()?->is_admin === true;
+        $product = $this->route('product');
+
+        if ($product instanceof Product) {
+            return $this->user()?->can('update', $product) === true;
+        }
+
+        return $this->user()?->can('create', Product::class) === true;
     }
 
     protected function prepareForValidation(): void

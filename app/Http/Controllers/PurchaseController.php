@@ -58,9 +58,7 @@ class PurchaseController extends Controller
     {
         $user = $request->user();
 
-        if ($user === null || $order->user_id !== $user->id) {
-            abort(404);
-        }
+        abort_unless($user?->can('view', $order), 404);
 
         $order->load(['items.product', 'payments']);
 

@@ -11,7 +11,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 4 (testes com prioridade alta).
 **Menções na documentação:** `Desafio Técnico`, seção 6 (testes automatizados) e seção 7 (organização e qualidade do código, 20%).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** alta.
 **Depende de:** Ticket 13, Ticket 15, Ticket 19 e Ticket 35. Os casos de afiliado e o bloco de vendas da API dependem do Ticket 26.
 
@@ -57,7 +57,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 5 (código organizado e seguro).
 **Menções na documentação:** `Desafio Técnico`, seção 4 (validação, erros, credenciais) e seção 7 (segurança e validação, 10%).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Tickets implementados até aqui. Fazer por último, com o fluxo já montado.
 

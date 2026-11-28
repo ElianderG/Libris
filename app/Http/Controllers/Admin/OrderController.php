@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SettlePaymentRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -59,6 +60,8 @@ class OrderController extends Controller
 
     public function show(Order $order): Response
     {
+        $this->authorize('review', $order);
+
         $order->load([
             'user:id,name,email',
             'items',
@@ -98,13 +101,13 @@ class OrderController extends Controller
         ]);
     }
 
-    public function settle(Request $request, Order $order, Payment $payment, SettlePayment $settle): RedirectResponse
+    public function settle(SettlePaymentRequest $request, Order $order, Payment $payment, SettlePayment $settle): RedirectResponse
     {
         if ($payment->order_id !== $order->id) {
             abort(404);
         }
 
-        $action = $request->string('action')->toString();
+        $action = $request->action();
 
         try {
             $settle->settle($payment, $action);

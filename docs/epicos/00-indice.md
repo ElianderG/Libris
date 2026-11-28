@@ -76,8 +76,10 @@ Estas escolhas valem para todos os tickets. Não reabrir durante a implementaç�
 
 ## Status de domínio
 
-Pedido: `pending_payment`, `paid`, `canceled`, `expired`.
+O mapa que o código usa está em `docs/dominio.md`.
+
+Pedido: `pending_payment`, `paid`. Recusar, cancelar ou expirar o Pix não muda o pedido.
 
 Pagamento: `pending`, `paid`, `failed`, `canceled`, `expired`.
 
-Comissão: `pending` até o pagamento confirmar; então `confirmed`. Se o pagamento falha, a comissão nem chega a ser criada.
+Comissão: nasce `confirmed` quando o Pix confirma. Não existe `pending`. Sem confirmação, a linha não é criada.

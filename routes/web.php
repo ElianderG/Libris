@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AffiliateController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
@@ -47,14 +48,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/minha-conta/compras', [PurchaseController::class, 'index'])->name('purchases');
     Route::get('/minha-conta/compras/{order}', [PurchaseController::class, 'show'])->name('purchases.show');
     Route::get('/minha-conta/afiliado', [AffiliateController::class, 'index'])->name('affiliate');
+    Route::get('/minha-conta/configuracoes', [ApiKeyController::class, 'index'])->name('account.settings');
+    Route::post('/minha-conta/configuracoes', [ApiKeyController::class, 'store'])->name('account.settings.store');
+    Route::delete('/minha-conta/configuracoes', [ApiKeyController::class, 'destroy'])->name('account.settings.destroy');
 });
-
-Route::get('/biblioteca/{slug}', [LibraryController::class, 'show'])
-    ->where('slug', '[a-z0-9\-]+')
-    ->name('library.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/biblioteca', [LibraryController::class, 'index'])->name('library');
+    Route::get('/biblioteca/{slug}', [LibraryController::class, 'show'])
+        ->where('slug', '[a-z0-9\-]+')
+        ->name('library.show');
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 

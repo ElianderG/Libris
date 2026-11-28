@@ -45,31 +45,15 @@ class LibraryController extends Controller
         ]);
     }
 
-    public function show(Request $request, string $slug): Response
+    public function show(string $slug): Response
     {
-        $user = $request->user();
-
-        if ($user === null) {
-            abort(403);
-        }
-
         $product = Product::query()->where('slug', $slug)->first();
 
         if ($product === null) {
             abort(404);
         }
 
-        $owns = OrderItem::query()
-            ->where('product_id', $product->id)
-            ->whereHas('order', function ($query) use ($user): void {
-                $query->where('user_id', $user->id)
-                    ->where('status', Order::STATUS_PAID);
-            })
-            ->exists();
-
-        if (! $owns) {
-            abort(403);
-        }
+        $this->authorize('read', $product);
 
         return Inertia::render('LibraryBook', [
             'book' => [

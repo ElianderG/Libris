@@ -1,6 +1,6 @@
 # Autorização — Gate, Policy e middleware
 
-Mapa do que existe hoje e de onde cada mecanismo deve entrar. Nada disso está implementado ainda, fora o `Gate::before` e os middlewares.
+Mapa do que existe hoje. No código estão o gate `access-admin`, os middlewares, e as policies de livro, pedido, categoria, usuário, avatar e chave da API.
 
 O livro no código é o model `Product`. Não existe `User::books()`. Quem pagou é um item de pedido com status `paid`.
 
@@ -14,17 +14,13 @@ O livro no código é o model `Product`. Não existe `User::books()`. Quem pagou
 
 Middleware não olha o `{order}` nem o `{slug}`. Policy não autentica a chave da API nem o webhook. Gate não substitui a policy do livro: ability sem model vira gate; ability com model vira método da policy, inclusive `create` e `viewAny`, que não recebem o registro.
 
-## O `Gate::before` atual
+## O gate `access-admin`
 
-```30:32:app/Providers/AppServiceProvider.php
-        Gate::before(function (User $user): ?bool {
-            return $user->is_admin ? true : null;
-        });
+```33:33:app/Providers/AppServiceProvider.php
+        Gate::define('access-admin', fn (User $user): bool => $user->is_admin === true);
 ```
 
-Se o admin devolve `true` aqui, nenhuma policy roda para ele. `$this->authorize('read', $product)` deixaria qualquer administrador ler o livro de qualquer cliente. O mesmo vale para o pedido na área do cliente e para a API do Ticket 35: o épico 11 diz que a chave do admin vê a conta dele, não a loja.
-
-O atalho do Ticket 06 ("`Gate::before` liberando admin") deve sair quando as policies entrarem. Admin passa só nas abilities de painel, escritas dentro da policy ou do gate `access-admin`.
+Não há `Gate::before`. Administrador não herda ability de cliente. Ler um livro, ver um pedido na loja e revogar uma chave passam pela policy. O painel entra pelo gate `access-admin`, e cada ação do painel repete a regra na policy.
 
 ## Quem acessa o quê
 
@@ -105,7 +101,7 @@ A rota do cliente e a rota do painel não compartilham ability. Admin vê todo p
 
 | Ability | Regra | Onde |
 |---|---|---|
-| `view` | `$order->user_id === $user->id` | `PurchaseController::show`, `CheckoutController` (tela do Pix, atualizar, nova tentativa) |
+| `view` | `$order->user_id === $user->id` | API, comprovante e página do Pix, com 404 |
 | `viewAny` | usuário autenticado | Só documenta a lista. A query de `/minha-conta/compras` segue com `where user_id` |
 | `review` | `$user->is_admin` | `Admin\OrderController::show` |
 | `settle` | `$user->is_admin` | `Admin\OrderController::settle` |
@@ -147,7 +143,7 @@ O perfil (`name`, e-mail, senha) não entra aqui. A rota já é `auth`, e o cont
 
 Negada responde 404, no mesmo padrão do pedido. `GET /avatars/{id}` fica público: a foto é a URL que o navegador pede. A policy não fecha esse arquivo.
 
-### `ApiKeyPolicy` (quando o Ticket 34 existir)
+### `ApiKeyPolicy`
 
 | Ability | Regra |
 |---|---|
@@ -165,10 +161,10 @@ No Ticket 35, o middleware da chave descobre o usuário. `GET /api/v1/me/compras
 | `guest` | Login com Google |
 | `verified` | Biblioteca, dashboard, senha, exclusão da conta |
 | `admin` | Porta do `/admin`, passando a usar o gate `access-admin` |
-| `throttle` | Avatar, senha, webhook, e depois a API |
+| `throttle` | Avatar, senha, webhook, e a API: 60 por minuto por chave |
 | `RequirePassword` | Tela de segurança |
 
-`/biblioteca/{slug}` hoje não está no grupo `auth`. A policy de `read` exige um `User`; o controller já responde 403 sem sessão. Na implementação, a rota entra em `auth` e `verified`, igual à lista da biblioteca. A policy continua sendo a prova de que aquele usuário pagou.
+`/biblioteca/{slug}` está em `auth` e `verified`, igual à lista da biblioteca. Quem não pagou recebe 403 da `ProductPolicy::read`. Visitante vai para o login.
 
 Webhook, sacola e catálogo não ganham policy. Não há usuário dono do webhook, e a sacola é sessão.
 
@@ -179,10 +175,10 @@ Webhook, sacola e catálogo não ganham policy. Não há usuário dono do webhoo
 - Assinatura do webhook.
 - Esconder o link do painel no Vue. O Ticket 06 já trata isso como insuficiente. O Inertia não precisa receber uma matriz de `can`.
 
-## Ordem sugerida
+## Ordem que entrou no código
 
-1. Trocar o `Gate::before` pelo gate `access-admin` e apontar o middleware `admin` para ele.
-2. `ProductPolicy::read` na leitura da biblioteca, com teste de dono, de quem não pagou e de admin que não comprou.
-3. `OrderPolicy::view` nas rotas de cliente, mantendo 404.
-4. `review`, `settle`, categoria, usuário e avatar nas rotas que já existem.
-5. `ApiKeyPolicy` junto com o Ticket 34, reusando `OrderPolicy::view` no Ticket 35.
+1. O gate `access-admin` substituiu o `Gate::before`. O middleware `admin` chama esse gate.
+2. `ProductPolicy::read` na leitura da biblioteca.
+3. `OrderPolicy::view` nas rotas de cliente, com 404.
+4. `review`, `settle`, categoria, usuário e avatar nas rotas do painel e do perfil.
+5. `ApiKeyPolicy` e `OrderPolicy::view` na API da conta.

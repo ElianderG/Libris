@@ -85,6 +85,38 @@ it('cria um pedido pending_payment e recusa o segundo envio imediato', function 
     expect(Order::query()->count())->toBe(1);
 });
 
+it('ignora preço enviado no checkout e cobra o valor do banco', function () {
+    config([
+        'services.juntos_se_faz.base_url' => 'https://gateway.test',
+        'services.juntos_se_faz.token' => 'token-secreto-teste',
+    ]);
+    Http::fake([
+        'https://gateway.test/payments' => Http::response([
+            'id' => 'payments_abc',
+            'status' => 'pending',
+            'pix_code' => 'SIMULATED_PIX_NOT_PAYABLE_payments_abc',
+        ], 201),
+    ]);
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('cart.store'), ['slug' => 'a-janela-do-terceiro-andar']);
+
+    $this->actingAs($user)
+        ->post(route('checkout.store'), [
+            'name' => $user->name,
+            'email' => $user->email,
+            'price' => '0,01',
+            'total' => '0,01',
+            'total_cents' => 1,
+        ])
+        ->assertRedirect();
+
+    expect(Order::query()->value('total_cents'))->toBe(3790)
+        ->and(Payment::query()->value('amount_cents'))->toBe(3790);
+});
+
 it('remove um livro no checkout e esvazia a sacola', function () {
     $user = User::factory()->create();
 
@@ -153,6 +185,14 @@ it('escolhe a pagsmile e recusa cpf curto sem chamar o sandbox', function () {
             'code' => '10000',
             'trade_no' => 'trade-38',
             'trade_status' => 'PROCESSING',
+            'qr_code' => '00020126580014br.gov.bcb.pix',
+            'qr_code_url' => 'https://pagsmile.test/qr/38',
+        ]),
+        'https://pagsmile.test/trade/query' => Http::response([
+            'code' => '10000',
+            'trade_no' => 'trade-38',
+            'trade_status' => 'PROCESSING',
+            'order_amount' => '37.90',
             'qr_code' => '00020126580014br.gov.bcb.pix',
             'qr_code_url' => 'https://pagsmile.test/qr/38',
         ]),

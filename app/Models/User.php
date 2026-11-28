@@ -103,6 +103,19 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
+     * @return HasMany<ApiKey, $this>
+     */
+    public function apiKeys(): HasMany
+    {
+        return $this->hasMany(ApiKey::class);
+    }
+
+    public function currentApiKey(): ?ApiKey
+    {
+        return $this->apiKeys()->whereNull('revoked_at')->latest('id')->first();
+    }
+
+    /**
      * @return HasMany<Order, $this>
      */
     public function orders(): HasMany

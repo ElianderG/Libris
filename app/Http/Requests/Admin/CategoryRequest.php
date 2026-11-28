@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Category;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -9,7 +10,13 @@ class CategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->is_admin === true;
+        $category = $this->route('category');
+
+        if ($category instanceof Category) {
+            return $this->user()?->can('update', $category) === true;
+        }
+
+        return $this->user()?->can('create', Category::class) === true;
     }
 
     protected function prepareForValidation(): void

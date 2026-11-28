@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Cart\StoreCartRequest;
 use App\Models\Product;
 use App\Support\Cart;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,7 +24,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(Request $request, Cart $cart): RedirectResponse
+    public function store(StoreCartRequest $request, Cart $cart): RedirectResponse
     {
         $slug = $request->string('slug')->toString();
 

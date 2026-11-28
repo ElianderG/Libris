@@ -65,6 +65,22 @@ it('gera uma comissão com o percentual configurado e não repete', function () 
             ->where('commissions.0.amount', 'R$ 3,79'));
 });
 
+it('arredonda a comissão para baixo', function () {
+    config(['libris.affiliate.commission_percent' => 10]);
+
+    $buyer = User::factory()->create();
+    $affiliate = User::factory()->create();
+    $payment = payableOrder($buyer, $affiliate, 3795);
+
+    app(ConfirmPayment::class)->confirm(
+        $payment,
+        new GatewayPayment('payments_comissao', Payment::STATUS_PAID, null, 3795),
+    );
+
+    expect(Commission::query()->count())->toBe(1)
+        ->and(Commission::query()->value('amount_cents'))->toBe(379);
+});
+
 it('não gera comissão sem afiliado', function () {
     $buyer = User::factory()->create();
     $payment = payableOrder($buyer, null);

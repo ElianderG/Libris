@@ -15,7 +15,7 @@ Isto não é a API do Juntos Se Faz. O Ticket 14 é o Libris chamando o gateway.
 **Menções na transcrição:** Não há transcrição. Origem: decisão de produto nesta conversa — usuário autenticado gera uma chave e, a partir dela, acessa a própria conta.
 **Menções na documentação:** `Desafio Técnico`, seção 4 (desenvolvimento de uma API e armazenamento seguro das credenciais) e seção 6 (autenticação e boas práticas de segurança).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 05.
 
@@ -48,7 +48,7 @@ Tabela `api_keys`: `user_id`, `prefix`, `key_hash`, `last_used_at` nulo, `revoke
 **Menções na transcrição:** Não há transcrição. Origem: decisão de produto nesta conversa — com a chave, o usuário puxa os dados da própria conta, em especial os de venda.
 **Menções na documentação:** `Desafio Técnico`, seção 4 (API, consulta de pagamentos, validação e tratamento de erros) e seção 6 (histórico de transações e documentação da API).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 19, Ticket 34. O conteúdo de `vendas` depende do Ticket 26; sem esse ticket a lista vem vazia e o restante da API funciona.
 
@@ -92,7 +92,7 @@ Valores em centavos. Paginação de 20 itens. Sem chave, chave errada ou revogad
 **Menções na transcrição:** Não há transcrição. Origem: decisão de produto nesta conversa.
 **Menções na documentação:** `Desafio Técnico`, seção 6 (documentação da API) e seção 10 (README com as funcionalidades e a integração).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** Ticket 35.
 

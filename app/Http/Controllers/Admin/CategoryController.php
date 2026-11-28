@@ -71,6 +71,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
+        $this->authorize('delete', $category);
+
         if ($category->products()->exists()) {
             return back()->with('error', 'Esta categoria tem livros. Mova ou apague os livros antes de apagá-la.');
         }

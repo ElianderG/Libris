@@ -45,7 +45,7 @@ A aplicação abre em `http://localhost:8080`. O Compose sobe o PHP e o MySQL 8.
 
 ## Variáveis de ambiente
 
-Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Google, o Juntos Se Faz, a Pagsmile e o afiliado. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `GOOGLE_REDIRECT_URI` ficam vazios no exemplo, exceto o redirect, que aponta para `/auth/google/callback`. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. `PAGSMILE_BASE_URL` aponta para `https://gateway-test.pagsmile.com`. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório.
+Copie `.env.example` para `.env`. O arquivo lista a aplicação, o banco, o Docker, o Google, o Juntos Se Faz, a Pagsmile e o afiliado. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e `GOOGLE_REDIRECT_URI` ficam vazios no exemplo, exceto o redirect, que aponta para `/auth/google/callback`. `JUNTOS_SE_FAZ_BASE_URL` aponta para o sandbox documentado. `JUNTOS_SE_FAZ_TOKEN` e `JUNTOS_SE_FAZ_WEBHOOK_SECRET` ficam vazios no exemplo. `PAGSMILE_BASE_URL` aponta para `https://gateway-test.pagsmile.com`. `PAGSMILE_APP_ID` e `PAGSMILE_SECURITY_KEY` ficam vazios no exemplo. A comissão de exemplo é `10` e o cookie do afiliado dura `7` dias. Nenhum segredo entra no repositório. No ambiente publicado, `APP_DEBUG` fica `false`. Em local pode ficar `true`.
 
 ## Gateway
 
@@ -78,7 +78,7 @@ Cada livro publicado possui uma página individual em `/livros/{slug}`, que apre
 
 ### 2. Sacola de compras e checkout
 
-A sacola é armazenada na sessão do usuário e permite adicionar livros publicados, sem duplicar títulos. Na sacola e no checkout dá para remover um livro ou esvaziar tudo. O valor total é calculado com base nos preços atuais registrados no banco de dados.
+A sacola é armazenada na sessão do usuário e permite adicionar livros publicados, sem duplicar títulos. Na sacola e no checkout dá para remover um livro ou esvaziar tudo. O valor total é calculado com base nos preços atuais registrados no banco de dados. Um preço enviado no POST do checkout não entra no pedido.
 
 Na página de cada livro, estão disponíveis duas ações:
 
@@ -130,6 +130,12 @@ Usuários autenticados acessam a conta por meio de um avatar no cabeçalho, que 
 **Configurações de perfil:**
 
 Na página de configurações, o usuário pode enviar fotografias, ajustar o enquadramento e escolher qual imagem será utilizada como foto de perfil. A página pede `/avatars/{id}` no mesmo endereço do site, e a aplicação devolve o JPEG.
+
+**Chave da conta:**
+
+Em `/minha-conta/configuracoes`, o usuário autenticado gera uma chave no formato `libris_` mais 40 caracteres. O valor completo aparece uma vez. Depois, a página mostra só os 12 primeiros caracteres, com reticências. Gerar outra chave ou revogar preenche `revoked_at` da anterior; a linha permanece. O banco guarda o hash SHA-256 e o prefixo, nunca o texto da chave. Visitante vai para o login. Cada conta tem uma chave ativa, e a de um administrador não vê a loja inteira.
+
+Com `Authorization: Bearer` e essa chave, um sistema externo lê só a conta dela: `GET /api/v1/me`, `/api/v1/me/compras`, `/api/v1/me/compras/{order}` e `/api/v1/me/vendas`. A sessão do navegador não autentica essas rotas. Os valores vêm em centavos. Compra é o que a conta pagou. Venda é o pedido pago por outra pessoa a partir do link dela, com a comissão confirmada. Chave ausente, errada ou revogada responde `401` com a frase `Chave inválida.` Pedido de outra pessoa responde `404`. Outro método HTTP responde `405`. O limite é 60 requisições por minuto por chave; a seguinte responde `429`. A API não cria Pix; isso continua no checkout. O manual de uso está em `docs/api.md`. O funcionamento interno está em `docs/api-interna.md`.
 
 ### 5. Pagamentos via Pix
 
@@ -197,7 +203,7 @@ Em `/admin/pedidos`, a lista filtra por status e abre o pedido com os itens e o 
 
 ### 10. Pendências e limitações
 
-- A API da conta do usuário ainda não foi implementada.
+- A API da conta só lê dados. O Pix continua nascendo no checkout. O manual de uso está em `docs/api.md`. O funcionamento interno está em `docs/api-interna.md`.
 
 ## Uso de inteligência artificial
 
@@ -257,6 +263,13 @@ O registro detalhado está em `docs/uso-de-ia.md`.
 - Ticket 38: o checkout escolhe Juntos Se Faz ou Pagsmile. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='ChargeOrderTest|CheckoutTest|PaymentRetryTest|PaymentStatusTest|PlaceOrderTest|ConfirmPaymentTest'` passou (29 testes). `yarn types:check` passou.
 - Ticket 39: a consulta e o aviso da Pagsmile fecham o pedido pela mesma confirmação. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter='PaymentStatusTest|PagsmileWebhookTest|ConfirmPaymentTest|ChargeOrderTest'` passou (22 testes).
 - Mapa de autorização em `docs/autorizacao.md`: onde usar middleware, gate e policy. Revisão: pendente de revisão do autor. Nenhum código de acesso foi alterado.
+- Ticket 34: chave da conta em `/minha-conta/configuracoes`, com hash SHA-256 e prefixo mascarado. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou.
+- Ticket 35 e Ticket 36: consulta da própria conta em `/api/v1`, autenticada pela chave, e o passo a passo em `docs/api.md`. Revisão: pendente de revisão do autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes).
+- Manual da API: `docs/api.md` ficou só com o uso, sem armazenamento da chave, regra de administrador nem nomes de colunas. Revisão: pendente de revisão do autor.
+- Documentação da API separada: `docs/api.md` para quem chama e `docs/api-interna.md` para quem mantém. Revisão: pendente de revisão do autor.
+- Ticket 31: a suíte cobre o fluxo do dinheiro, da biblioteca e da API, sem token real e sem internet. Revisão: pendente de revisão do autor. `php8.3 artisan test` passou (215 testes).
+- Ticket 32: pedido, livro, categoria, usuário e avatar passam por policy; o painel entra pelo gate `access-admin`. O POST do checkout ignora preço enviado. Revisão: pendente de revisão do autor. `php8.3 artisan test` passou (217 testes).
+- Manuais da API: o caminho da chave ficou **Chave da API**, o clique fora do livro tem `product_title` nulo, e a tabela passou a citar `405` e `429`. Revisão: pendente de revisão do autor.
 
 ## Aplicação hospedada
 

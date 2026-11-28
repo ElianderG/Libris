@@ -508,3 +508,67 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Finalidade: definir onde entra middleware, o gate `access-admin` e as policies de livro, pedido, categoria, usuário, avatar e chave da API
 - Revisão: Pendente de revisão do autor
 
+## 2026-11-28 — Ticket 34, chave da conta
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 34
+- Feito com auxílio: tabela `api_keys`, `ApiKey`, `ApiKeyPolicy`, `ApiKeyController`, `AccountSettings.vue` e o atalho Chave da API
+- Finalidade: o usuário logado gerar uma chave, ver o valor uma vez e, depois, só o prefixo; gerar outra ou revogar invalida a anterior sem apagar a linha
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=ApiKeyTest` passou (6 testes). `yarn types:check` passou. A migration rodou no MySQL local depois de subir o container `desafio-mysql-1`
+
+## 2026-11-28 — Ticket 35 e Ticket 36, consulta da conta
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 35 e Ticket 36
+- Feito com auxílio: `AuthenticateApiKey`, `AccountController`, `OrderPolicy::view`, `routes/api.php` e `docs/api.md`
+- Finalidade: a chave ler só compras e vendas da própria conta, sem sessão do navegador e sem devolver livro nem payload do gateway
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test --filter=AccountApiTest` passou (9 testes)
+
+## 2026-11-28 — Manual da API para terceiros
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 36, `docs/api.md`
+- Feito com auxílio: `docs/api.md`
+- Finalidade: deixar no manual só o uso da API, sem armazenamento da chave, regra de administrador nem nomes de colunas
+- Revisão: Pendente de revisão do autor
+
+## 2026-11-28 — Duas documentações da API
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 36, manuais da API
+- Feito com auxílio: `docs/api.md` e `docs/api-interna.md`
+- Finalidade: separar o manual de quem chama a API do funcionamento interno
+- Revisão: Pendente de revisão do autor
+
+## 2026-11-28 — Ticket 31, testes do fluxo
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 31
+- Feito com auxílio: `ChargeOrderTest`, `CommissionTest`, `AffiliateOrderTest`, `AccountApiTest`, `CheckoutTest` e `tests/TestCase.php`
+- Finalidade: a suíte provar o total enviado ao gateway, a comissão arredondada para baixo, a autoindicação sem comissão e as compras só do dono da chave, sem chamada real de rede
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test` passou (215 testes)
+
+## 2026-11-28 — Ticket 32, segurança e validação
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 32
+- Feito com auxílio: policies de livro, pedido, categoria, usuário e avatar; gate `access-admin`; Form Requests da sacola, da nova tentativa de Pix e da ação do painel; testes de preço no checkout, pedido alheio e leitura
+- Finalidade: cada um só mexe no que é seu, o POST do checkout não aceita preço inventado e o erro do gateway não mostra credencial
+- Revisão: Pendente de revisão do autor. `php8.3 artisan test` passou (217 testes)
+
+## 2026-11-28 — Manuais da API
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: `docs/api.md` e `docs/api-interna.md`
+- Feito com auxílio: caminho da chave, `product_title` nulo, códigos `405` e `429`, e a retirada do `Gate::before`
+- Finalidade: os dois manuais descreverem o menu, o clique e as respostas que a API já devolve
+- Revisão: Pendente de revisão do autor
+
+## 2026-11-28 — Domínio, conta e testes
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: documentação funcional, antes do README do Ticket 33
+- Feito com auxílio: `docs/dominio.md`, `docs/conta.md`, `docs/testes.md` e o status de domínio em `docs/epicos/00-indice.md`
+- Finalidade: registrar o que o código faz sobre pedido e pagamento, a conta (e-mail verificado, as duas áreas de configuração e o administrador do seeder) e como rodar a suíte, sem alterar o README
+- Revisão: Pendente de revisão do autor
+

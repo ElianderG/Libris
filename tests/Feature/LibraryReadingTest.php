@@ -67,7 +67,7 @@ it('nega a leitura a quem não comprou e a slug inexistente', function () {
     $product = Product::query()->where('slug', 'o-mapa-que-cabia-no-bolso')->firstOrFail();
     giveBook($owner, $product);
 
-    $this->get(route('library.show', $product->slug))->assertForbidden();
+    $this->get(route('library.show', $product->slug))->assertRedirect(route('login'));
 
     $this->actingAs($other)
         ->get(route('library.show', $product->slug))
@@ -95,4 +95,14 @@ it('nega a leitura a quem não comprou e a slug inexistente', function () {
         ->get(route('library'))
         ->assertOk()
         ->assertInertia(fn ($page) => $page->has('books', 0));
+});
+
+it('nega a leitura ao administrador que não comprou', function () {
+    $admin = User::factory()->create();
+    $admin->forceFill(['is_admin' => true])->save();
+    $product = Product::query()->where('slug', 'a-janela-do-terceiro-andar')->firstOrFail();
+
+    $this->actingAs($admin)
+        ->get(route('library.show', $product->slug))
+        ->assertForbidden();
 });

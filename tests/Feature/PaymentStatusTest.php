@@ -133,6 +133,10 @@ it('esconde o pedido de outra conta', function () {
         ->post(route('payments.refresh', $order))
         ->assertNotFound();
 
+    $this->actingAs($admin)
+        ->post(route('payments.store', $order))
+        ->assertNotFound();
+
     expect($order->payments()->first()->status)->toBe(Payment::STATUS_PENDING);
     Http::assertNothingSent();
 });
@@ -148,6 +152,7 @@ it('mantém o último status quando a consulta falha', function () {
         ->get(route('payments.show', $order))
         ->assertOk()
         ->assertSessionHas('error', 'Não foi possível falar com o serviço de pagamento.')
+        ->assertDontSee('token-secreto-teste')
         ->assertInertia(fn ($page) => $page
             ->where('payment.status', Payment::STATUS_PENDING)
             ->where('payment.label', 'Pendente')
@@ -240,6 +245,7 @@ it('mantém o status da pagsmile quando a consulta cai', function () {
         ->get(route('payments.show', $order))
         ->assertOk()
         ->assertSessionHas('error', 'Não foi possível falar com o serviço de pagamento.')
+        ->assertDontSee('chave-secreta-teste')
         ->assertInertia(fn ($page) => $page->where('payment.status', Payment::STATUS_PENDING));
 
     expect($order->payments()->first()->status)->toBe(Payment::STATUS_PENDING)

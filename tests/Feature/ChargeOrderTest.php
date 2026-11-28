@@ -44,8 +44,13 @@ it('preenche o gateway_id e não grava o token', function () {
     $order = pendingOrder();
     $payment = app(ChargeOrder::class)->charge($order, $order->user);
 
+    Http::assertSent(function ($request) use ($order): bool {
+        return $request->url() === 'https://gateway.test/payments'
+            && $request['amount'] === $order->total_cents / 100;
+    });
+
     expect($payment->gateway_id)->toBe('payments_abc')
-        ->and($payment->amount_cents)->toBe(3790)
+        ->and($payment->amount_cents)->toBe($order->total_cents)
         ->and($payment->status)->toBe(Payment::STATUS_PENDING)
         ->and($payment->raw_request['reference'] ?? null)->toBe((string) $payment->id)
         ->and(json_encode($payment->raw_request))->not->toContain('token-secreto-teste')

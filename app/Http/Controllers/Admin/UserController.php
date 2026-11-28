@@ -46,6 +46,8 @@ class UserController extends Controller
             return back()->with('error', 'Você não pode alterar o próprio acesso.');
         }
 
+        $this->authorize('promote', $user);
+
         $user->is_admin = ! $user->is_admin;
         $user->save();
 
@@ -59,6 +61,8 @@ class UserController extends Controller
         if ($request->user()?->id === $user->id) {
             return back()->with('error', 'Você não pode apagar a própria conta.');
         }
+
+        $this->authorize('delete', $user);
 
         if ($this->hasStoreHistory($user)) {
             return back()->with('error', 'Essa conta tem pedidos ou comissões e não pode ser apagada.');

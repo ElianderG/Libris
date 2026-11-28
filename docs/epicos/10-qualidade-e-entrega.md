@@ -93,7 +93,7 @@
 **Menções na transcrição:** Não há transcrição. Origem: proposta de produto, seção 5 (documentação) e seção 6 do desafio sobre IA, que precisa ser cumprida porque este projeto está sendo construído com apoio do Cursor.
 **Menções na documentação:** `Desafio Técnico`, seção 8 (uso de IA, obrigatório no README), seção 9 (repositório novo, sem fork) e seção 10 (itens obrigatórios do README e prazo).
 
-**Status:** Pendente
+**Status:** Concluído
 **Prioridade:** obrigatória.
 **Depende de:** fluxo principal funcionando (até o Ticket 22 no mínimo). Atualizar o README de novo se afiliados e admin entrarem.
 

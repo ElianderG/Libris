@@ -578,7 +578,7 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: página inicial
 - Feito com auxílio: `resources/js/pages/Welcome.vue`
 - Finalidade: recompor a home no visual da livraria, sem mudar cabeçalho, dados nem fluxo
-- Revisão: Pendente de revisão do autor. `yarn types:check` passou. A página foi vista em claro e escuro, no desktop e no celular.
+- Revisão: Revisado pelo autor. `yarn types:check` passou. A página foi vista em claro e escuro, no desktop e no celular.
 
 ## 2026-11-28 — Aba Meus Livros
 
@@ -586,5 +586,13 @@ O autor do projeto precisa revisar cada item e conseguir explicar a decisão na 
 - Etapa: cabeçalho da loja
 - Feito com auxílio: `StoreHeader.vue`, `docs/conta.md` e o README
 - Finalidade: abrir a biblioteca dos livros pagos a partir do cabeçalho, no desktop e no menu do celular
-- Revisão: Pendente de revisão do autor. `yarn types:check` passou. A aba foi vista no desktop e no menu do celular; sem login, ela abre a entrada.
+- Revisão: Revisado pelo autor. `yarn types:check` passou. A aba foi vista no desktop e no menu do celular; sem login, ela abre a entrada.
+
+## 2026-11-28 — Ticket 33, README de entrega
+
+- Ferramenta: Cursor, Grok 4.7
+- Etapa: Ticket 33
+- Feito com auxílio: `README.md`
+- Finalidade: o avaliador seguir só o README, chegar na home com o seed, e encontrar no arquivo os itens do edital: gateways, status de pedido e pagamento, comissão sem saque, a API do Libris em `docs/api.md` e o uso de IA
+- Revisão: Revisado pelo autor.
 
